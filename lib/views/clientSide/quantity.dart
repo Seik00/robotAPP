@@ -20,21 +20,6 @@ class Quantity extends StatefulWidget {
 class _QuantityState extends State<Quantity>
     with SingleTickerProviderStateMixin {
 
-
-  getRequest() async {
-    var contentData = await Request().getRequest(Config().url + "api/market/lists", context);
-    print(contentData);
-    if(contentData != null){
-      if (contentData['code'] == 0) {
-      if (mounted) {
-        setState(() {
-        
-        });
-      }
-    }
-    }
-  }
-
   initializeData() async {
       final prefs = await SharedPreferences.getInstance();
       var token = prefs.getString('token');

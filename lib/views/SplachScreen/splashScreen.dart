@@ -29,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     validateLogin();
-    lookUp();
+    //lookUp();
   }
 
    lookUp() async {
@@ -92,11 +92,15 @@ class _SplashScreenState extends State<SplashScreen> {
       //   MaterialPageRoute(
       //     builder: (context) => SetSecPassword(widget.url,widget.onChangeLanguage)),
       // );
-       Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => LoginPage(widget.url,widget.onChangeLanguage)),
-      );
+      setState(() {
+        Timer(
+          Duration(seconds: 1),
+          () => Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => TopViewing(
+                      widget.url, widget.onChangeLanguage))));
+      });
     }else{
       setState(() {
         Timer(

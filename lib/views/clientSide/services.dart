@@ -1,15 +1,12 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:robot/API/config.dart';
 import 'package:robot/API/request.dart';
 import 'package:robot/vendor/i18n/localizations.dart';
-import 'package:robot/views/Explore/deposit.dart';
-import 'package:robot/views/Explore/invest.dart';
-import 'package:robot/views/Explore/newsList.dart';
-import 'package:robot/views/Explore/noticList.dart';
-import 'package:robot/views/SystemSetting/BonusCenter.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 class Services extends StatefulWidget {
   final url;
   final onChangeLanguage;
@@ -21,38 +18,26 @@ class Services extends StatefulWidget {
 
 class _ServicesState extends State<Services>
     with SingleTickerProviderStateMixin {
-  final keyIsFirstLoaded = 'is_first_loaded';
-  var currentLanguage;
-  var username;
-  var pointOne;
-  var packageIcon;
-  var totalCurrency;
-  var type;
-  var notice;
-  var language;
-  var title;
-  var description;
-  var createdAt;
-  var publicPath;
-  var annouceNumber;
-  var annouceNumber2;
-  var check = true;
 
-  getRequest() async {
-    var contentData = await Request().getRequest(Config().url + "api/member/get-member-info", context);
-    if(contentData != null){
-      if (contentData['code'] == 0) {
-      if (mounted) {
+
+  initializeData() async {
+      var body = {
+        'currency': 'CNY',
+      };
+      
+      var uri = Uri.https(Config().url2, 'api/market/lists', body);
+       print(uri);
+      var response = await http.get(uri, headers: {
+      
+      }).timeout(new Duration(seconds: 10));
+      var contentData = json.decode(response.body);
+      print(contentData);
         setState(() {
-          username = contentData['data']['username'];
-          pointOne = contentData['data']['point1'];
-          packageIcon = contentData['data']['package']['public_image_path'];
-          print(contentData);
+          //dataList = contentData['data'];
         });
-      }
-    }
-    }
+     
   }
+  
   
  TabController _tabController;
 
@@ -60,6 +45,7 @@ class _ServicesState extends State<Services>
   void initState() {
     _tabController = new TabController(length: 2, vsync: this);
     super.initState();
+    initializeData();
   }
   @override
   Widget build(BuildContext context) {

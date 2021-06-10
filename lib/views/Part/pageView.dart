@@ -60,7 +60,7 @@ class _TopViewingState extends State<TopViewing>
   void initState() {
     super.initState();
     getRequest();
-    lookUp();
+    //lookUp();
   }
  
 
@@ -123,11 +123,15 @@ class _TopViewingState extends State<TopViewing>
       //   MaterialPageRoute(
       //     builder: (context) => SetSecPassword(widget.url,widget.onChangeLanguage)),
       // );
-       Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => LoginPage(widget.url,widget.onChangeLanguage)),
-      );
+       setState(() {
+        Timer(
+          Duration(seconds: 1),
+          () => Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => TopViewing(
+                      widget.url, widget.onChangeLanguage))));
+      });
     }else if(active == 0){
       print(active);
       print('--------------------------------------');
