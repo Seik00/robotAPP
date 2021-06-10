@@ -1,0 +1,61 @@
+Flutter crash report.
+Please report a bug at https://github.com/flutter/flutter/issues.
+
+## command
+
+flutter run --machine --target lib\main.dart -d emulator-5554 --dart-define=flutter.inspector.structuredErrors=true --start-paused --web-server-debug-protocol ws --web-allow-expose-url --devtools-server-address http://127.0.0.1:9101/
+
+## exception
+
+NoSuchMethodError: NoSuchMethodError: The method 'contains' was called on null.
+Receiver: null
+Tried calling: contains("ext.flutter.activeDevToolsServerAddress")
+
+```
+#0      Object.noSuchMethod (dart:core-patch/object_patch.dart:54:5)
+#1      waitForExtension (package:flutter_tools/src/resident_runner.dart:1483:31)
+<asynchronous suspension>
+#2      ResidentRunner._callDevToolsUriExtension (package:flutter_tools/src/resident_runner.dart:1302:5)
+<asynchronous suspension>
+#3      Future.wait.<anonymous closure> (dart:async/future.dart)
+<asynchronous suspension>
+#4      ResidentRunner.maybeCallDevToolsUriServiceExtension (package:flutter_tools/src/resident_runner.dart:1291:7)
+<asynchronous suspension>
+```
+
+## flutter doctor
+
+```
+[✓] Flutter (Channel stable, 2.0.3, on Microsoft Windows [Version 10.0.19041.928], locale zh-CN)
+    • Flutter version 2.0.3 at C:\Users\Edward\flutter
+    • Framework revision 4d7946a68d (5 weeks ago), 2021-03-18 17:24:33 -0700
+    • Engine revision 3459eb2436
+    • Dart version 2.12.2
+
+[✓] Android toolchain - develop for Android devices (Android SDK version 29.0.2)
+    • Android SDK at C:\Users\Edward\AppData\Local\Android\sdk
+    • Platform android-30, build-tools 29.0.2
+    • Java binary at: C:\Program Files\Android\Android Studio\jre\bin\java
+    • Java version OpenJDK Runtime Environment (build 1.8.0_242-release-1644-b01)
+    • All Android licenses accepted.
+
+[✓] Chrome - develop for the web
+    • Chrome at C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+
+[✓] Android Studio (version 4.0)
+    • Android Studio at C:\Program Files\Android\Android Studio
+    • Flutter plugin version 46.0.2
+    • Dart plugin version 193.7361
+    • Java version OpenJDK Runtime Environment (build 1.8.0_242-release-1644-b01)
+
+[✓] VS Code (version 1.55.2)
+    • VS Code at C:\Users\Edward\AppData\Local\Programs\Microsoft VS Code
+    • Flutter extension version 3.21.0
+
+[✓] Connected device (3 available)
+    • Android SDK built for x86 (mobile) • emulator-5554 • android-x86    • Android 10 (API 29) (emulator)
+    • Chrome (web)                       • chrome        • web-javascript • Google Chrome 89.0.4389.128
+    • Edge (web)                         • edge          • web-javascript • Microsoft Edge 90.0.818.42
+
+• No issues found!
+```
