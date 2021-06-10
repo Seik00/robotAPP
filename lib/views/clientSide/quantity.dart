@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ui';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:robot/API/config.dart';
@@ -20,6 +21,30 @@ class Quantity extends StatefulWidget {
 class _QuantityState extends State<Quantity>
     with SingleTickerProviderStateMixin {
 
+  Timer _timer;
+  int count= 0;
+
+  startLoop(){
+    const oneSec = const Duration(seconds: 1);
+    _timer = new Timer.periodic(
+      oneSec,
+      (Timer timer) async {
+        // if (contentData['status']) {
+          var checkApi= await initializeData();
+          setState(() {
+            count++;
+          });
+          print(count);
+
+          if(!checkApi){
+            timer.cancel();
+
+          }
+      },
+    );
+
+  }
+
   initializeData() async {
       final prefs = await SharedPreferences.getInstance();
       var token = prefs.getString('token');
@@ -29,14 +54,22 @@ class _QuantityState extends State<Quantity>
       };
       var uri = Uri.https(Config().url2, 'api/market/lists', body);
 
-      var response = await http.get(uri, headers: {
-        'Authorization': 'Bearer $token'
-      }).timeout(new Duration(seconds: 10));
-      var contentData = json.decode(response.body);
-      print(contentData);
+      // var response = await http.get(uri, headers: {'Authorization': 'Bearer $token'}).timeout(new Duration(seconds: 10));
+      var response = await http.get(uri).timeout(new Duration(seconds: 10));
+      try {
+        var contentData = json.decode(response.body);
+        print(contentData);
+        
         setState(() {
           //dataList = contentData['data'];
         });
+        return true;
+        
+      } catch (e) {
+        print(e);
+        return false;
+        
+      }
      
   }
   
@@ -46,7 +79,8 @@ class _QuantityState extends State<Quantity>
   void initState() {
     _tabController = new TabController(length: 2, vsync: this);
     super.initState();
-    initializeData();
+    // initializeData();
+    startLoop();
   }
   @override
   Widget build(BuildContext context) {
