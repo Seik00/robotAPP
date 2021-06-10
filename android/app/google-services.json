@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1046686110755",
+    "project_id": "pump-home",
+    "storage_bucket": "pump-home.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1046686110755:android:ea9080612090b95867cd96",
+        "android_client_info": {
+          "package_name": "com.sae.SPORT"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1046686110755-rpdjaau5vfgc1nljvacch5alnm5qo3d5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdyGnXlVpY6Gsx4Z13l86WybRNUxF0Mnw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1046686110755-rpdjaau5vfgc1nljvacch5alnm5qo3d5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
