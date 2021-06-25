@@ -10,6 +10,7 @@ import 'package:robot/views/SystemSetting/customerService.dart';
 import 'package:robot/views/SystemSetting/invitation.dart';
 import 'package:robot/views/SystemSetting/myTeam.dart';
 import 'package:robot/views/SystemSetting/securityCenter.dart';
+import 'package:robot/views/Trade/tradeLog.dart';
 import '../../vendor/i18n/localizations.dart' show MyLocalizations;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:robot/API/config.dart';
@@ -32,12 +33,14 @@ class _SettingsState extends State<Settings>
   var type;
   var currentLanguage;
   var username;
+  var email;
   var language;
   var pattern;
   var package;
   var refId;
   var otp;
   var mobileNumber;
+  var robotList =[];
 
   getLanguage() async{
     final prefs = await SharedPreferences.getInstance();
@@ -48,18 +51,27 @@ class _SettingsState extends State<Settings>
    getRequest() async {
     var contentData = await Request().getRequest(Config().url + "api/member/get-member-info", context);
     if(contentData != null){
-       if (contentData['code'] == 0) {
       if (mounted) {
         setState(() {
-          username = contentData['data']['username'];
-          package = contentData['data']['package'];
+          print(contentData);
+          username = contentData['username'];
+          email = contentData['email'];
         });
       }
     }
+  }
 
+  getRobotList() async {
+    var contentData = await Request().getRequest(Config().url + "api/trade-robot/robotList", context);
     print(contentData);
+    if(contentData != null){
+      if (contentData['code'] == 0) {
+          setState(() {
+             robotList = contentData['data'];
+            print(robotList);
+          });
+      }
     }
-   
   }
 
   @override
@@ -67,6 +79,7 @@ class _SettingsState extends State<Settings>
     super.initState();
     getRequest();
     getLanguage();
+    getRobotList();
   }
   
   @override
@@ -100,20 +113,20 @@ class _SettingsState extends State<Settings>
                                     SizedBox(height:50),
                                     Image(
                                       image: NetworkImage(
-                                        'https://philip.greatwallsolution.com/sae.png'
+                                        'https://bosco.greatwallsolution.com/images/coin/BTC.png'
                                         ),
                                       height: 60,
                                       width: 60,
                                     ),
                                     SizedBox(height: 10),
                                     Container(
-                                      child: Text('Account1'),
+                                      child: Text(username==null?'':username,style: TextStyle(color:Colors.white),),
                                     ),
                                     Container(
-                                      child: Text('Account1@gmail.com'),
+                                      child: Text(email==null?'':email,style: TextStyle(color:Colors.white)),
                                     ),
                                     Container(
-                                      child: Text('Edit Profile'),
+                                      child: Text('Edit Profile',style: TextStyle(color:Colors.white)),
                                     ),
                                     SizedBox(height:10),
                                   ],
@@ -122,13 +135,13 @@ class _SettingsState extends State<Settings>
                               SizedBox(height: 10),
                               
                               InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => MyTeam(widget.url,widget.onChangeLanguage,refId)),
-                                  );
-                                },
+                                // onTap: () {
+                                //   Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) => MyTeam(widget.url,widget.onChangeLanguage,refId)),
+                                //   );
+                                // },
                                 child: Container(
                                   decoration: new BoxDecoration(
                                     color: Color(0xff595c64),
@@ -179,7 +192,64 @@ class _SettingsState extends State<Settings>
                                   ),
                                 ),
                               ),
-                             
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => RegisterStepOne(widget.url,widget.onChangeLanguage)),
+                                  );
+                                },
+                                child: Container(
+                                  decoration: new BoxDecoration(
+                                    color: Color(0xff595c64),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  margin: EdgeInsets.only(left:10,right:10,bottom: 10),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                        ),
+                                        margin: EdgeInsets.only(right: 20),
+                                        padding: EdgeInsets.all(10),
+                                        child: Image(
+                                          image: AssetImage(
+                                              "lib/assets/img/register.png"),
+                                          height: 30,
+                                          width: 40,
+                                        )
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Container(
+                                              child: Text(
+                                                MyLocalizations.of(context)
+                                                    .getData('register'),
+                                                style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          children: <Widget>[
+                                            Container(
+                                                child: (Icon(
+                                                    Icons.chevron_right_outlined,color: Colors.white,))),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                               InkWell(
                                 onTap: () {
                                   Navigator.push(
@@ -238,13 +308,12 @@ class _SettingsState extends State<Settings>
                                   ),
                                 ),
                               ),
-                              
                               InkWell(
                                 onTap: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => RegisterStepOne(widget.url,widget.onChangeLanguage,refId,otp,mobileNumber)),
+                                        builder: (context) => TransactionLog(widget.url,robotList[0]['id'])),
                                   );
                                 },
                                 child: Container(
@@ -263,7 +332,7 @@ class _SettingsState extends State<Settings>
                                         padding: EdgeInsets.all(10),
                                         child: Image(
                                           image: AssetImage(
-                                              "lib/assets/img/register.png"),
+                                              "lib/assets/img/transcation.png"),
                                           height: 30,
                                           width: 40,
                                         )
@@ -275,8 +344,7 @@ class _SettingsState extends State<Settings>
                                           children: <Widget>[
                                             Container(
                                               child: Text(
-                                                MyLocalizations.of(context)
-                                                    .getData('register'),
+                                                'Log',
                                                 style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
                                               ),
                                             ),

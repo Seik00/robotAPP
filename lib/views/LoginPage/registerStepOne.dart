@@ -8,15 +8,13 @@ import 'package:robot/views/LoginPage/registerStepTwo.dart';
 import '../../vendor/i18n/localizations.dart' show MyLocalizations;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'countryPicker.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 class RegisterStepOne extends StatefulWidget {
   final url;
   final onChangeLanguage;
-  final refId;
-  final otp;
-  final mobileNumber;
 
-  RegisterStepOne(this.url, this.onChangeLanguage,this.refId,this.otp,this.mobileNumber);
+  RegisterStepOne(this.url, this.onChangeLanguage);
   @override
   _RegisterStepOneState createState() => _RegisterStepOneState();
 }
@@ -28,6 +26,10 @@ class _RegisterStepOneState extends State<RegisterStepOne>
   TextEditingController countryController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   TextEditingController mobileController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController comfirmPasswordController = TextEditingController();
+  TextEditingController refIDController = TextEditingController();
   TextEditingController vcodeController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
 
@@ -51,7 +53,7 @@ class _RegisterStepOneState extends State<RegisterStepOne>
   }
 
   getCountryList() async {
-    var contentData = await Request().getRequest(Config().url + "api/global/country_list", context);
+    var contentData = await Request().getWithoutRequest(Config().url + "api/global/country_list", context);
     print(contentData);
     if (contentData != null) {
       if (contentData['status'] == true) {
@@ -70,18 +72,11 @@ class _RegisterStepOneState extends State<RegisterStepOne>
     }
   }
 
-  getMobile(){
-    mobileController.text = widget.mobileNumber;
-    print(mobileController.text);
-  }
   @override
   void initState() {
     super.initState();
     getCountryList();
     getLanguage();
-    getMobile();
-    print(widget.otp);
-    print('--------------');
   }
 
   @override
@@ -153,19 +148,21 @@ class _RegisterStepOneState extends State<RegisterStepOne>
                             _inputUsername(),
                             SizedBox(height: 30.0),
                             
-                            widget.mobileNumber == null?
-                            _inputMobile():
-                            _inputSavedMobile(),
+                            _inputMobile(),
                             SizedBox(height: 30.0),
 
-                             _inputUsername(),
+                             _inputEmail(),
                             SizedBox(height: 30.0),
 
-                             _inputUsername(),
+                             _inputPassword(),
                             SizedBox(height: 30.0),
 
-                             _inputUsername(),
+                             _inputConfirmPassword(),
                             SizedBox(height: 30.0),
+
+                             _inputRefID(),
+                            SizedBox(height: 30.0),
+
                             Container(
                             child: GestureDetector(
                             onTap: ()async{
@@ -337,6 +334,106 @@ class _RegisterStepOneState extends State<RegisterStepOne>
     );
   }
 
+  _inputEmail() {
+    return new Container(
+      child: TextFormField(
+        controller: emailController,
+        validator: validateInput,
+        autofocus: false,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        decoration: new InputDecoration(
+        hintText: MyLocalizations.of(context).getData('email'),
+        contentPadding: const EdgeInsets.all(18.0),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(25),
+          borderSide: BorderSide(color: Colors.grey, width: 1),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+      ),
+        keyboardType: TextInputType.text,
+        onSaved: (str) {
+          print(str);
+        },
+      ),
+    );
+  }
+
+  _inputPassword() {
+    return new Container(
+      child: TextFormField(
+        controller: passwordController,
+        obscureText: visible,
+        validator: validateInput,
+        autofocus: false,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        decoration: new InputDecoration(
+        hintText: MyLocalizations.of(context).getData('password'),
+        contentPadding: const EdgeInsets.all(18.0),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(25),
+          borderSide: BorderSide(color: Colors.grey, width: 1),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+      ),
+        keyboardType: TextInputType.text,
+        onSaved: (str) {
+          print(str);
+        },
+      ),
+    );
+  }
+
+   _inputConfirmPassword() {
+    return new Container(
+      child: TextFormField(
+        controller: comfirmPasswordController,
+        obscureText: visible,
+        validator: validateInput,
+        autofocus: false,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        decoration: new InputDecoration(
+        hintText: MyLocalizations.of(context).getData('confirm_password'),
+        contentPadding: const EdgeInsets.all(18.0),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(25),
+          borderSide: BorderSide(color: Colors.grey, width: 1),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+      ),
+        keyboardType: TextInputType.text,
+        onSaved: (str) {
+          print(str);
+        },
+      ),
+    );
+  }
+   _inputRefID() {
+    return new Container(
+      child: TextFormField(
+        controller: refIDController,
+        validator: validateInput,
+        autofocus: false,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        decoration: new InputDecoration(
+        hintText: MyLocalizations.of(context).getData('ref_id'),
+        contentPadding: const EdgeInsets.all(18.0),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(25),
+          borderSide: BorderSide(color: Colors.grey, width: 1),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+      ),
+        keyboardType: TextInputType.text,
+        onSaved: (str) {
+          print(str);
+        },
+      ),
+    );
+  }
   // _inputMobile() {
   //   return new Container(
   //     width: 250,
@@ -369,56 +466,6 @@ class _RegisterStepOneState extends State<RegisterStepOne>
   //     ),
   //   );
   // }
-
-  _inputSavedMobile() {
-    return Row(
-      children: [
-        Stack(
-          children: [
-            Container(
-              width: 250,
-              child: TextFormField(
-              controller: mobileController,
-              autofocus: false,
-              readOnly: true,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              decoration: new InputDecoration(
-                hintText: widget.mobileNumber,
-              contentPadding: const EdgeInsets.only(top:8.0,bottom: 8,left: 70,right: 8),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0),
-                borderSide: BorderSide(color: Colors.grey, width: 1),
-              ),
-              filled: true,
-              fillColor: Colors.white,
-            ),
-              keyboardType: TextInputType.number,
-              onSaved: (str) {
-                print(str);
-              },
-            ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left:8),
-              width: 80,
-              // color: Colors.red,
-              child: TextField(
-                onChanged: (text) {
-                  setState(() {
-                    selectedPhoneCode = text;
-                    print(selectedPhoneCode);
-                  });
-                 
-                },
-                controller: phoneController,
-                enabled: false,
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
 
   // _inputSavedMobile() {
   //   return new Container(
@@ -488,23 +535,63 @@ class _RegisterStepOneState extends State<RegisterStepOne>
     return null;
   }
 
-  _sendToServer() {
+   _sendToServer() {
     if (_key.currentState.validate()) {
       _key.currentState.save();
-      
+      var tmap = new Map<String, dynamic>();
       if (mounted)
         setState(() {
-           Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => RegisterStepTwo(
-                    widget.url,widget.onChangeLanguage,selectedCountryID,usernameController.text,mobileController.text,selectedCountryCode,widget.refId,widget.otp)),
-          );
+          tmap['country_id'] = selectedCountryID.toString();
+          tmap['user_group'] = '1';
+          tmap['username'] = usernameController.text;
+          tmap['email'] = emailController.text;
+          tmap['contact_number'] = mobileController.text;
+          tmap['password'] = passwordController.text;
+          tmap['password_confirmation'] = comfirmPasswordController.text;
+          tmap['ref_id'] = refIDController.text;
+          tmap['pay_type'] = 'point1';
+           print('===========================================');
+          print(tmap['username']);
+          print(tmap['user_group']);
+          print(tmap['country_id']);
+          print(tmap['email']);
+          print(tmap['contact_number']);
+          print(tmap['ref_id']);
+          print(tmap['password']);
+          print(tmap['password_confirmation']);
+          print('===========================================');
         });
+       postData(tmap);
     } else {
       setState(() {
         _validate = true;
       });
+    }
+  }
+
+  postData(bodyData) async {
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var contentData = await Request().postRequest(Config().url+"api/member/register-member", bodyData, token, context);
+    
+    print(contentData);
+    if(contentData!=null){
+      if (contentData['code'] == 0) {
+           AwesomeDialog(
+            context: context,
+            animType: AnimType.LEFTSLIDE,
+            headerAnimationLoop: false,
+            dialogType: DialogType.SUCCES,
+            autoHide: Duration(seconds: 2),
+            title: MyLocalizations.of(context).getData('success'),
+            desc:MyLocalizations.of(context).getData('operation_success'),
+            onDissmissCallback: () {
+             Navigator.pop(context);
+            })
+          ..show();
+    } else {
+     
+    }
     }
   }
 }

@@ -1,410 +1,487 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:robot/API/config.dart';
 import 'package:robot/API/request.dart';
 import 'package:robot/vendor/i18n/localizations.dart';
+import 'package:robot/views/Explore/apiBinding.dart';
+import 'package:robot/views/Explore/buyPin.dart';
+import 'package:robot/views/Explore/changeWallet.dart';
 import 'package:robot/views/Explore/deposit.dart';
+import 'package:robot/views/Explore/invest.dart';
 import 'package:robot/views/Explore/transfer.dart';
-import 'package:robot/views/Explore/wallet_record.dart';
+import 'package:robot/views/Explore/transferPin.dart';
 import 'package:robot/views/Explore/withdraw.dart';
-import 'package:skeleton_text/skeleton_text.dart';
-import 'package:robot/views/clientSide/createService.dart';
-import 'package:intl/intl.dart';
-
+import 'package:robot/views/SystemSetting/invitation.dart';
+import 'package:robot/views/Trade/trade.dart';
+import 'package:robot/views/Trade/tradeDetails.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 class MyAssests extends StatefulWidget {
-
   final url;
+  final onChangeLanguage;
 
-  MyAssests(this.url);
+  MyAssests(this.url, this.onChangeLanguage);
   @override
   _MyAssestsState createState() => _MyAssestsState();
 }
 
 class _MyAssestsState extends State<MyAssests>
     with SingleTickerProviderStateMixin {
-  final scrollController = ScrollController();
-  var pointOne;
-  bool moreRequest = false;
-  bool loading = true;
-  var  total_income;
-  var total_income_today;
-   var totalCurrency;
 
+  var dataList = [];
+  var usdt;
+  var gas;
+  var walletType = 'point1';
+  
   getRequest() async {
     var contentData = await Request().getRequest(Config().url + "api/member/get-member-info", context);
     if(contentData != null){
-      if (contentData['code'] == 0) {
       if (mounted) {
         setState(() {
-          pointOne = contentData['data']['point1'];
+          print(contentData);
+          usdt = contentData['point1'];
+          gas = contentData['point2'];
         });
       }
-    }
     }
   }
 
-  getHomeInfo() async {
-    var contentData = await Request().getRequest(Config().url + "api/member/home-page", context);
-    if(contentData != null){
-      if (contentData['code'] == 0) {
-      if (mounted) {
-        setState(() {
-        total_income = contentData['data']['total_income'];
-        total_income_today = contentData['data']['total_income_today'];
-        totalCurrency = contentData['data']['total_asset_currency'];
-        });
-      }
-    }
-    }
+  initializeData(walletType) async {
+      final prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString('token');
+
+      var body = {
+        'wallet': walletType,
+      };
+      var uri = Uri.https(Config().url2, 'api/record/wallet-record', body);
+
+      var response = await http.get(uri, headers: {
+        'Authorization': 'Bearer $token'
+      }).timeout(new Duration(seconds: 10));
+      var contentData = json.decode(response.body);
+    
+      setState(() {
+        dataList = contentData['data']['data'];
+        print(dataList);
+        print('--------');
+    });
   }
+
+  
+ TabController _tabController;
 
   @override
   void initState() {
     super.initState();
+    _tabController = new TabController(length: 2, vsync: this);
     getRequest();
-    getHomeInfo();
+    initializeData(walletType);
   }
-
   @override
   Widget build(BuildContext context) {
+     
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Color(0xff212630),
       appBar: PreferredSize(
           child: AppBar(
             backgroundColor: Theme.of(context).backgroundColor,
             elevation: 0,
           ),
           preferredSize: Size.fromHeight(0)),
-      body: Container(
-        child: Column(
-          children: [
-            Expanded(
-              child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  // color: Theme.of(context).backgroundColor,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('lib/assets/img/background.png'),
-                        fit: BoxFit.cover),
+      body: Stack(
+        children: [
+          Container(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: Text(MyLocalizations.of(context).getData('wallet'),style: TextStyle(color: Colors.white),),
+                ),
+                Container(
+                  padding: EdgeInsets.all(4),
+                  decoration: new BoxDecoration(
+                    color:Colors.grey,
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        SizedBox(height: 20),
-                        Center(
-                            child: Container(
-                          child: Text(
-                            MyLocalizations.of(context).getData('wallet'),
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        )),
-                        SizedBox(height: 10),
-                        Container(
-                          margin: EdgeInsets.only(top: 20, bottom: 20),
-                          child: GridView.count(
-                            primary: false,
-                            shrinkWrap: true,
-                            crossAxisCount: 2,
-                            childAspectRatio: 2,
-                            crossAxisSpacing: 10.0,
-                            mainAxisSpacing: 10.0,
-                            children: [
-                              GestureDetector(
-                                onTap: () {},
-                                child: Container(
-                                  padding: EdgeInsets.only(left: 10, right: 10),
-                                  decoration: BoxDecoration(
-                                          color: Color(0xff361c60),
-                                          border: Border.all(width:1,color:Colors.white),
-                                          borderRadius: BorderRadius.circular(20)),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Container(
-                                        padding: EdgeInsets.only(bottom: 5),
-                                        child: Text(
-                                           MyLocalizations.of(context).getData('today_income'),
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,color: Colors.white),
-                                        ),
-                                      ),
-                                      Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Container(
-                                              child: Text(
-                                                'USD',
-                                                style: TextStyle(fontSize: 14,color: Colors.white),
-                                              ),
-                                            ),
-                                            Row(
-                                                  children:[
-                                                    Container(
-                                                      child: Text(
-                                                        '+',
-                                                        style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold),
-                                                      ),
-                                                    ),
-                                                    total_income_today == null
-                                                    ? Container(
-                                                        child: Row(
-                                                        children: <Widget>[
-                                                          Text('')
-                                                        ],
-                                                      ))
-                                                    : Container(
-                                                        child: Text(
-                                                          total_income_today,
-                                                          style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold),
-                                                          overflow: TextOverflow.ellipsis,
-                                                        ),
-                                                      )
-                                                  ]
-                                                )
-                                          ])
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {},
-                                child: Container(
-                                  padding: EdgeInsets.only(left: 10, right: 10),
-                                  decoration: BoxDecoration(
-                                          color: Color(0xff361c60),
-                                          border: Border.all(width:1,color:Colors.white),
-                                          borderRadius: BorderRadius.circular(20)),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Container(
-                                        padding: EdgeInsets.only(bottom: 5),
-                                        child: Text(
-                                          MyLocalizations.of(context).getData('earn'),
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,color: Colors.white),
-                                        ),
-                                      ),
-                                      Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Container(
-                                                  child: Text(
-                                                    'USD',
-                                                    style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold),
-                                                  ),
-                                                ),
-                                                Row(
-                                                  children:[
-                                                    Container(
-                                                      child: Text(
-                                                        '+',
-                                                        style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold),
-                                                      ),
-                                                    ),
-                                                    total_income == null
-                                                    ? Container(
-                                                        child: Row(
-                                                        children: <Widget>[
-                                                          Text('')
-                                                        ],
-                                                      ))
-                                                    : Container(
-                                                        child: Text(
-                                                          total_income,
-                                                          style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold),
-                                                          overflow: TextOverflow.ellipsis,
-                                                        ),
-                                                      )
-                                                  ]
-                                                )
-                                              ])
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: (){
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => WalletRecord(widget.url)),
-                            );
-                          },
-                          child: Container(
-                              padding: EdgeInsets.only(right: 20),
-                              child: Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Text(
-                                    MyLocalizations.of(context)
-                                        .getData('wallet_record'),
-                                    style: TextStyle(
-                                        decoration: TextDecoration.underline,
-                                        color: Colors.white,
-                                        fontSize: 16),
-                                  ))),
-                        ),
-                        SizedBox(height: 10),
-                        Center(
-                            child: Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.all(30),
-                          margin: EdgeInsets.only(left: 20, right: 20),
-                          decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(16),
-                                          gradient: LinearGradient(
-                                          begin: Alignment.topCenter,
-                                          end: Alignment.bottomCenter,
-                                          colors: [Color(0xff7CAAD5), Color(0xff8263CE)])
-                                      ),
-                          child: Column(
-                            children: [
+                  child: TabBar(
+                  isScrollable: true,
+                  unselectedLabelColor: Colors.black,
+                  labelColor: Colors.black,
+                  unselectedLabelStyle: TextStyle(fontSize:13),
+                  labelStyle: TextStyle(fontSize:16),
+                  indicator: BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [Color(0xfff6fb15), Color(0xfffed323)]),
+                  borderRadius: BorderRadius.circular(10),
+                  ),
+                  onTap: (index) {
+                    if(index == 0){
+                      initializeData('point1');
+                    }else{
+                      initializeData('point2');
+                    }
+                  },
+                  tabs: [
+                    Tab(
+                      text: 'USDT',
+                    ),
+                    Tab(
+                      text: 'GAS',
+                    )
+                  ],
+                  controller: _tabController,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                ),
+                ),
+                
+                Expanded(
+                  child: TabBarView(
+                    children: [
+                      SingleChildScrollView(
+                        child: Column(
+                          children: [
                             Container(
-                              child: Text(
-                                MyLocalizations.of(context)
-                                    .getData('my_assets'),
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                                textAlign: TextAlign.center,
-                              ),
+                            width: MediaQuery.of(context).size.width,
+                            decoration: new BoxDecoration(
+                              color: Color(0xff595c64),
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                            SizedBox(height: 40),
+                            margin: EdgeInsets.only(top:20,bottom:10,left: 10,right: 10),
+                            padding:EdgeInsets.all(20),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                               Text(MyLocalizations.of(context).getData('total_assets_converted_USDT'),style: TextStyle(color:Colors.white,fontSize: 16),),
+                               SizedBox(height: 10,),
+                               Text(usdt==null?'':usdt,style: TextStyle(color:Colors.white,fontSize: 26)),
+                               SizedBox(height: 5,),
+                               usdt==null?Text(''):
+                               Text('≈ ' + usdt +' USD',style: TextStyle(color:Colors.white,fontSize: 14)),
+                              ],
+                            ),
+                            ),
                             Container(
                               child:Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
-                                Text('USD',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.white),),
-                                Padding(padding: EdgeInsets.only(left: 10.0)),
-                                 Container(
-                                      child: pointOne == null
-                                          ? Container(
-                                              child: Row(
-                                              children: <Widget>[
-                                                Text('')
-                                              ],
-                                            ))
-                                          : Container(
-                                              child: Text(
-                                                pointOne,
-                                                textAlign: TextAlign.left,
-                                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color:Colors.white),
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
+                                  Container(
+                                    child: Column(children: <Widget>[
+                                    FlatButton(
+                                      onPressed: () => {
+                                        // Navigator.push(
+                                        //   context,
+                                        //   MaterialPageRoute(
+                                        //       builder: (context) => Deposit(widget.url,widget.onChangeLanguage)),
+                                        // ).then((value) {
+                                        //   getRequest();getRequest();
+                                        // })
+                                      },
+                                      padding: EdgeInsets.all(10.0),
+                                      child: Column(
+                                        // Replace with a Row for horizontal icon + text
+                                        children: <Widget>[
+                                          Container(
+                                            decoration: new BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              border: Border.all(color: Colors.white,width: 3, )
                                             ),
+                                            child: Image(
+                                              image: AssetImage(
+                                                  "lib/assets/img/trade_one_shot.png"),
+                                              height: 60,
+                                              width: 60,
+                                            ),
+                                          ),
+                                          SizedBox(height: 5,),
+                                          Text(MyLocalizations.of(context).getData('deposit'),style: TextStyle(color:Colors.white),)
+                                        ],
+                                      ),
+                                    ),
+                                  ])),
+                                  Container(
+                                    child: Column(children: <Widget>[
+                                    FlatButton(
+                                      onPressed: () => {
+                                        // Navigator.push(
+                                        //   context,
+                                        //   MaterialPageRoute(
+                                        //       builder: (context) => Withdraw(widget.url)),
+                                        // ).then((value) {
+                                        //   getRequest();getRequest();
+                                        // })
+                                      },
+                                      padding: EdgeInsets.all(10.0),
+                                      child: Column(
+                                        // Replace with a Row for horizontal icon + text
+                                        children: <Widget>[
+                                            Container(
+                                            decoration: new BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              border: Border.all(color: Colors.white,width: 3, )
+                                            ),
+                                            child: Image(
+                                              image: AssetImage(
+                                                  "lib/assets/img/trade_clearance sale.png"),
+                                              height: 60,
+                                              width: 60,
+                                            ),
+                                          ),
+                                          SizedBox(height: 5,),
+                                          Text(MyLocalizations.of(context).getData('withdraw'),style: TextStyle(color:Colors.white),)
+                                        ],
+                                      ),
+                                    ),
+                                  ])),
+                                  Container(
+                                    child: Column(children: <Widget>[
+                                    FlatButton(
+                                      onPressed: () => {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => ChangeWallet(widget.url)),
+                                        ).then((value) {
+                                          getRequest();initializeData('point1');
+                                        })
+                                      },
+                                      padding: EdgeInsets.all(10.0),
+                                      child: Column(
+                                        // Replace with a Row for horizontal icon + text
+                                        children: <Widget>[
+                                          Container(
+                                            decoration: new BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              border: Border.all(color: Colors.white,width: 3, )
+                                            ),
+                                            child: Image(
+                                              image: AssetImage(
+                                                  "lib/assets/img/trade_replenishment.png"),
+                                              height: 60,
+                                              width: 60,
+                                            ),
+                                          ),
+                                          SizedBox(height: 5,),
+                                          Text(MyLocalizations.of(context).getData('change_wallet'),style: TextStyle(color:Colors.white),)
+                                        ],
+                                      ),
+                                    ),
+                                  ])),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height:10),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(MyLocalizations.of(context).getData('history_record'),style: TextStyle(color:Colors.white,fontSize: 18),),
+                            ),
+                            
+                            Container(
+                              child: dataList == null || dataList.isEmpty ? 
+                              Container(
+                                padding: EdgeInsets.only(top:20),
+                                margin: EdgeInsets.only(bottom:120),
+                                child: Center(
+                                  child: Text(MyLocalizations.of(context).getData('no_record'),style: TextStyle(color:Colors.white),),
+                                ),
+                              ):ListView.builder(
+                                primary: false,
+                                shrinkWrap: true,
+                                itemCount: dataList.length,
+                                itemBuilder: (BuildContext ctxt, int index) {
+                                return Container(
+                                  padding: EdgeInsets.all(10),
+                                  margin: EdgeInsets.all(10),
+                                  decoration: new BoxDecoration(
+                                  color: Color(0xff595c64),
+                                  borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                      child: ExpansionTile(
+                                        title: Container(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(dataList[index]['detail'],style: TextStyle(color: Colors.white,fontSize: 18),),
+                                              SizedBox(height:5),
+                                              dataList[index]['action'] =='-'?
+                                              Text('-'+dataList[index]['found'],style: TextStyle(color: Colors.redAccent,fontSize: 20)):
+                                              Text('+'+dataList[index]['found'],style: TextStyle(color: Colors.greenAccent,fontSize: 20)),
+                                              SizedBox(height:5),
+                                            ],
+                                          ),
+                                        ),
+                                        children: <Widget>[
+                                          Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              SizedBox(height:10),
+                                              Container(
+                                                alignment: Alignment.bottomLeft,
+                                                padding: EdgeInsets.only(left:15),
+                                                child: Row(
+                                                  children: [
+                                                    Text(MyLocalizations.of(context).getData('order_time'),style: TextStyle(color: Colors.white70)),
+                                                    Text(dataList[index]['created_at'],style: TextStyle(color: Colors.white70)),
+                                                  ],
+                                                )),
+                                              SizedBox(height:5),
+                                              Container(
+                                                alignment: Alignment.bottomLeft,
+                                                padding: EdgeInsets.only(left:15),
+                                                child: Row(
+                                                  children: [
+                                                    Text(MyLocalizations.of(context).getData('previous_balance')+ ' : ',style: TextStyle(color: Colors.white70)),
+                                                    Text(dataList[index]['previous'].toString()+ ' USDT',style: TextStyle(color: Colors.white70)),
+                                                  ],
+                                                )),
+                                              SizedBox(height:5),
+                                              Container(
+                                                alignment: Alignment.bottomLeft,
+                                                padding: EdgeInsets.only(left:15),
+                                                child: Row(
+                                                  children: [
+                                                    Text(MyLocalizations.of(context).getData('current_balance')+ ' : ',style: TextStyle(color: Colors.white70)),
+                                                    Text(dataList[index]['current'].toString()+ ' USDT',style: TextStyle(color: Colors.white70)),
+                                                  ],
+                                                )),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     )
-                              ],)
+                                    ],
+                                  ),
+                                );
+                                }),
+                            )
+                          ],
+                        ),
+                      ),
+
+                      Container(
+                        child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Container(
+                            width: MediaQuery.of(context).size.width,
+                            decoration: new BoxDecoration(
+                              color: Color(0xff595c64),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            margin: EdgeInsets.only(top:20,bottom:10,left: 10,right: 10),
+                            padding:EdgeInsets.all(20),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                               Text(MyLocalizations.of(context).getData('total_assets_converted_USDT'),style: TextStyle(color:Colors.white,fontSize: 16),),
+                               SizedBox(height: 10,),
+                               Text(gas==null?'':gas,style: TextStyle(color:Colors.white,fontSize: 26)),
+                               SizedBox(height: 5,),
+                               gas==null?Text(''):
+                               Text(gas==''?'':'≈ ' + gas +' USD',style: TextStyle(color:Colors.white,fontSize: 14)),
+                              ],
+                            ),
                             ),
                             Container(
-                                  child:Row(
-                                     mainAxisAlignment: MainAxisAlignment.center,
-                                     children: [
-                                    Text(
-                                     '≈',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    totalCurrency == null
-                                      ? Container():
-                                    Text(
-                                      totalCurrency,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ],)
+                              child: dataList == null || dataList.isEmpty ? 
+                              Container(
+                                padding: EdgeInsets.only(top:20),
+                                child: Center(
+                                  child: Text(MyLocalizations.of(context).getData('no_record'),style: TextStyle(color:Colors.white),),
                                 ),
-                            SizedBox(height: 60),
-                            GestureDetector(
-                            onTap: ()async{
-                                setState(() {
-                                  Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Withdraw(
-                                          widget.url,)),
-                                ).then((value) {
-                                        getRequest();getHomeInfo();
-                                      });
-                              });
-                            }, 
-                              child: Center(
-                                child: Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        gradient: LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [Color(0xff3DC2EA), Color(0xff7C1999)])
-                                    ),
-                                    margin: EdgeInsets.all(5),
-                                    width: MediaQuery.of(context).size.width/2,
-                                    height: MediaQuery.of(context).size.height / 15,
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      MyLocalizations.of(context).getData('withdraw'),
-                                      style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
-                                    )),
-                              ),
-                            ),
-                            GestureDetector(
-                            onTap: ()async{
-                                setState(() {
-                                Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Transfer(
-                                        widget.url,)),
-                                ).then((value) {
-                                  getRequest();getHomeInfo();
-                                });
-                              });
-                            }, 
-                              child: Center(
-                                child: Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        gradient: LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [Color(0xff3DC2EA), Color(0xff7C1999)])
-                                    ),
-                                    margin: EdgeInsets.all(5),
-                                    width: MediaQuery.of(context).size.width/2,
-                                    height: MediaQuery.of(context).size.height / 15,
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      MyLocalizations.of(context).getData('transfer'),
-                                      style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
-                                    )),
-                              ),
+                              ):ListView.builder(
+                                primary: false,
+                                shrinkWrap: true,
+                                itemCount: dataList.length,
+                                itemBuilder: (BuildContext ctxt, int index) {
+                                return Container(
+                                  padding: EdgeInsets.all(10),
+                                  margin: EdgeInsets.all(10),
+                                  decoration: new BoxDecoration(
+                                  color: Color(0xff595c64),
+                                  borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                      child: ExpansionTile(
+                                        title: Container(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(dataList[index]['detail'],style: TextStyle(color: Colors.white,fontSize: 18),),
+                                              SizedBox(height:5),
+                                              dataList[index]['action'] =='-'?
+                                              Text('-'+dataList[index]['found'],style: TextStyle(color: Colors.redAccent,fontSize: 20)):
+                                              Text('+'+dataList[index]['found'],style: TextStyle(color: Colors.greenAccent,fontSize: 20)),
+                                              SizedBox(height:5),
+                                            ],
+                                          ),
+                                        ),
+                                        children: <Widget>[
+                                          Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              SizedBox(height:10),
+                                              Container(
+                                                alignment: Alignment.bottomLeft,
+                                                padding: EdgeInsets.only(left:15),
+                                                child: Row(
+                                                  children: [
+                                                    Text(MyLocalizations.of(context).getData('order_time'),style: TextStyle(color: Colors.white70)),
+                                                    Text(dataList[index]['created_at'],style: TextStyle(color: Colors.white70)),
+                                                  ],
+                                                )),
+                                              SizedBox(height:5),
+                                              Container(
+                                                alignment: Alignment.bottomLeft,
+                                                padding: EdgeInsets.only(left:15),
+                                                child: Row(
+                                                  children: [
+                                                    Text(MyLocalizations.of(context).getData('previous_balance')+ ' : ',style: TextStyle(color: Colors.white70)),
+                                                    Text(dataList[index]['previous'].toString()+ ' USDT',style: TextStyle(color: Colors.white70)),
+                                                  ],
+                                                )),
+                                              SizedBox(height:5),
+                                              Container(
+                                                alignment: Alignment.bottomLeft,
+                                                padding: EdgeInsets.only(left:15),
+                                                child: Row(
+                                                  children: [
+                                                    Text(MyLocalizations.of(context).getData('current_balance')+ ' : ',style: TextStyle(color: Colors.white70)),
+                                                    Text(dataList[index]['current'].toString()+ ' USDT',style: TextStyle(color: Colors.white70)),
+                                                  ],
+                                                )),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                    ],
+                                  ),
+                                );
+                                }),
                             )
-                          ]),
-                        ))
-                      ])),
+                          ],
+                        ),
+                      ),
+                        ),
+                    ],
+                    controller: _tabController,
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

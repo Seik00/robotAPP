@@ -64,14 +64,11 @@ getLanguage() async{
  getRequest() async {
     var contentData = await Request().getRequest(Config().url + "api/member/get-member-info", context);
     if(contentData != null){
-      if (contentData['code'] == 0) {
       if (mounted) {
         setState(() {
-          pointOne = contentData['data']['point1'];
-          price = contentData['data']['package']['price'];
+          pointOne = contentData['point1'];
         });
       }
-    }
     }
     print(contentData);
   }
@@ -111,15 +108,15 @@ getLanguage() async{
       }
       }
     }else{
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => UserBank(widget.url)),
-      ).then((value) {
-          if (value == null) {
-            Navigator.pop(context, true);
-          }
-        });
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //       builder: (context) => UserBank(widget.url)),
+      // ).then((value) {
+      //     if (value == null) {
+      //       Navigator.pop(context, true);
+      //     }
+      //   });
     }
   }
 
@@ -155,7 +152,7 @@ getLanguage() async{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Color(0xff212630),
       appBar: PreferredSize(
           child: AppBar(
             backgroundColor: Theme.of(context).backgroundColor,
@@ -168,14 +165,6 @@ getLanguage() async{
         },
         child: Stack(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("lib/assets/img/background.png"),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
             Container(
             child: SingleChildScrollView(
               child: Column(
@@ -240,7 +229,7 @@ getLanguage() async{
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                          Text('USD',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.white),),
+                          Text('USDT',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.white),),
                           Padding(padding: EdgeInsets.only(left: 10.0)),
                            Container(
                             child: pointOne == null
@@ -291,6 +280,83 @@ getLanguage() async{
                     )
                   ),
                   SizedBox(height:20),
+                  Container(
+                    decoration: new BoxDecoration(
+                    color: Color(0xff595c64),
+                    borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ExpansionTile(
+                      title: Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('bankName',style: TextStyle(color: Colors.white,fontSize: 18),),
+                            SizedBox(height:5),
+                            Text('bankUser',style: TextStyle(color: Colors.white,fontSize: 16)),
+                            SizedBox(height:5),
+                          ],
+                        ),
+                      ),
+                      children: <Widget>[
+                        Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height:10),
+                            Container(
+                              alignment: Alignment.bottomLeft,
+                              padding: EdgeInsets.only(left:15),
+                              child: Row(
+                                children: [
+                                  Text('Order Time : ',style: TextStyle(color: Colors.white70)),
+                                  Text('bankName',style: TextStyle(color: Colors.white70)),
+                                ],
+                              )),
+                            SizedBox(height:5),
+                              Container(
+                              alignment: Alignment.bottomLeft,
+                              padding: EdgeInsets.only(left:15),
+                              child: Row(
+                                children: [
+                                  Text('First Buy In Amount : ',style: TextStyle(color: Colors.white70)),
+                                  Text('bankName',style: TextStyle(color: Colors.white70)),
+                                ],
+                              )),
+                              SizedBox(height:5),
+                              Container(
+                              alignment: Alignment.bottomLeft,
+                              padding: EdgeInsets.only(left:15),
+                              child: Row(
+                                children: [
+                                  Text('Numbers of cover up : ',style: TextStyle(color: Colors.white70)),
+                                  Text('bankName',style: TextStyle(color: Colors.white70)),
+                                ],
+                              )),
+                              SizedBox(height:5),
+                              Container(
+                              alignment: Alignment.bottomLeft,
+                              padding: EdgeInsets.only(left:15),
+                              child: Row(
+                                children: [
+                                  Text('Take profit ratio : ',style: TextStyle(color: Colors.white70)),
+                                  Text('bankName',style: TextStyle(color: Colors.white70)),
+                                ],
+                              )),
+                              SizedBox(height:5),
+                              Container(
+                              alignment: Alignment.bottomLeft,
+                              padding: EdgeInsets.only(left:15),
+                              child: Row(
+                                children: [
+                                  Text('Earnings callback : ',style: TextStyle(color: Colors.white70)),
+                                  Text('bankName',style: TextStyle(color: Colors.white70)),
+                                ],
+                              )),
+                              SizedBox(height:5),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 Container(
                   padding: EdgeInsets.only(left: 30, right: 30, top: 0),
                   child: Form(
@@ -300,55 +366,7 @@ getLanguage() async{
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           SizedBox(height: 30.0),
-                           Container(
-                            child: Text(MyLocalizations.of(context).getData('withdraw_way'),style: TextStyle(color: Colors.white,fontSize: 16),),
-                          ),
-                          SizedBox(height: 5.0),
-                          Container(
-                            padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: Colors.white,
-                            border: Border.all()),
-                            child: DropdownButton(
-                              isExpanded: true,
-                              value: _value,
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text(MyLocalizations.of(context).getData('withdraw_bonus')),
-                                  value: 1,
-                                ),
-                                DropdownMenuItem(
-                                  child: Text(MyLocalizations.of(context).getData('withdraw_principal')),
-                                  value: 2,
-                                ),
-                              ],
-                              onChanged: (value) {
-                                setState(() {
-                                  _value = value;
-                                  if(_value==2){
-                                    amountController.text = price;
-                                    var totalPrice = double.parse(price);
-                                    total = totalPrice * double.parse(buy);
-                                    rateController.text = total.toStringAsFixed(2);
-                                    print(rateController.text);
-                                    
-                                  }else{
-                                    amountController.text = '';
-                                    rateController.text = '';
-                                  }
-                                });
-                              }),
-                          ), 
-                          SizedBox(height:5),
-                          _value==2?
-                          Container(
-                            child: Text(MyLocalizations.of(context).getData('confirmation'),style: TextStyle(color: Colors.red,fontSize: 16),),
-                          ):
-                          Container(
-                          ), 
-                          SizedBox(height:20),
+                          
                           Container(
                             child: Text(MyLocalizations.of(context).getData('amount')+'(USD)',style: TextStyle(color: Colors.white,fontSize: 16),),
                           ),
@@ -385,11 +403,6 @@ getLanguage() async{
                           ),
                         ),
 
-                          Container(
-                            child: Text(MyLocalizations.of(context).getData('sec_password'),style: TextStyle(color: Colors.white,fontSize: 16),),
-                          ),
-                          SizedBox(height: 5.0),
-                          _inputPassword(),
                           SizedBox(height: 30.0),
 
                           AbsorbPointer(
@@ -404,19 +417,17 @@ getLanguage() async{
                               child: Center(
                                 child: Container(
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        gradient: LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [Color(0xff3DC2EA), Color(0xff7C1999)])
-                                    ),
-                                    margin: EdgeInsets.all(20),
-                                    width: MediaQuery.of(context).size.width/2,
+                                      borderRadius: BorderRadius.circular(10),
+                                      gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [Color(0xfffaef1d), Color(0xfff9f21a)])
+                                  ),
                                     height: MediaQuery.of(context).size.height / 15,
                                     alignment: Alignment.center,
                                     child: Text(
                                       MyLocalizations.of(context).getData('submit'),
-                                      style: TextStyle(color: Colors.white),
+                                      style: TextStyle(color: Colors.black),
                                     )),
                               ),
                             ),
@@ -424,143 +435,7 @@ getLanguage() async{
                         ],
                       )),
                 ),
-                Container(
-                  padding: EdgeInsets.all(20),
-                  child: Text(
-                    MyLocalizations.of(context).getData('withdraw_description'),style: TextStyle(color: Colors.red),
-                  ),
-                ),
-                Container(
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [Color(0xff7CAAD5), Color(0xff8263CE)])
-                    ),
-                    width: MediaQuery.of(context).size.width,
-                    alignment: Alignment.center,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.only(bottom:5),
-                          child: Text(
-                            MyLocalizations.of(context).getData('bank_details'),
-                            style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 16),
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                          Text(MyLocalizations.of(context).getData('bank_country'),style: TextStyle(fontSize: 16,color: Colors.white),),
-                          Padding(padding: EdgeInsets.only(left: 10.0)),
-                           Container(
-                            child: bankCountry == null
-                              ? Container(
-                                  child: Row(
-                                  children: <Widget>[
-                                    Text('')
-                                  ],
-                                ))
-                              : Container(
-                                  child: Text(
-                                    language ==  'zh'?
-                                    dataList['country']['name']:
-                                    dataList['country']['name_en'],
-                                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16,color:Colors.white),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ))
-                        ],),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                          Text(MyLocalizations.of(context).getData('bank_name'),style: TextStyle(fontSize: 16,color: Colors.white),),
-                          Padding(padding: EdgeInsets.only(left: 10.0)),
-                           Container(
-                            child: bankName == null
-                              ? Container(
-                                  child: Row(
-                                  children: <Widget>[
-                                    Text('')
-                                  ],
-                                ))
-                              : Container(
-                                  child: Text(
-                                    bankName,
-                                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16,color:Colors.white),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ))
-                        ],),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                          Text(MyLocalizations.of(context).getData('bank_user'),style: TextStyle(fontSize: 16,color: Colors.white),),
-                          Padding(padding: EdgeInsets.only(left: 10.0)),
-                           Container(
-                            child: bankUser == null
-                              ? Container(
-                                  child: Row(
-                                  children: <Widget>[
-                                    Text('')
-                                  ],
-                                ))
-                              : Container(
-                                  child: Text(
-                                    bankUser,
-                                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16,color:Colors.white),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ))
-                        ],),
-                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                          Text(MyLocalizations.of(context).getData('bank_number'),style: TextStyle(fontSize: 16,color: Colors.white),),
-                          Padding(padding: EdgeInsets.only(left: 10.0)),
-                           Container(
-                            child: bankNumber == null
-                              ? Container(
-                                  child: Row(
-                                  children: <Widget>[
-                                    Text('')
-                                  ],
-                                ))
-                              : Container(
-                                  child: Text(
-                                    bankNumber,
-                                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16,color:Colors.white),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ))
-                        ],),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                          Text(MyLocalizations.of(context).getData('bank_branch'),style: TextStyle(fontSize: 16,color: Colors.white),),
-                          Padding(padding: EdgeInsets.only(left: 10.0)),
-                           Container(
-                            child: bankBranch == null
-                              ? Container(
-                                  child: Row(
-                                  children: <Widget>[
-                                    Text('')
-                                  ],
-                                ))
-                              : Container(
-                                  child: Text(
-                                    bankBranch,
-                                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16,color:Colors.white),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ))
-                        ],),
-                      ],
-                    )
-                  ),
+               
                   SizedBox(height:20),
                 ],
               ),

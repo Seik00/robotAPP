@@ -47,6 +47,19 @@ class Request {
           btnOkColor: Colors.red)
           ..show();
         }
+        else if(contentData['message'] =='MEMBER_EXITS'){
+          AwesomeDialog(
+          context: context,
+          dialogType: DialogType.ERROR,
+          animType: AnimType.RIGHSLIDE,
+          headerAnimationLoop: false,
+          title: MyLocalizations.of(context).getData('error'),
+          desc: MyLocalizations.of(context).getData('member_exist'),
+          btnOkOnPress: () {},
+          btnOkIcon: Icons.cancel,
+          btnOkColor: Colors.red)
+          ..show();
+        }
         else if(contentData['message'] =='USER_NO_MOBILE'){
           AwesomeDialog(
           context: context,
@@ -156,6 +169,54 @@ class Request {
           headerAnimationLoop: false,
           title: MyLocalizations.of(context).getData('error'),
           desc: MyLocalizations.of(context).getData('sec_pwd_wrong'),
+          btnOkOnPress: () {},
+          btnOkIcon: Icons.cancel,
+          btnOkColor: Colors.red)
+          ..show();
+        }else if(contentData['message'] =='NOT_ENUF_GAS'){
+          AwesomeDialog(
+          context: context,
+          dialogType: DialogType.ERROR,
+          animType: AnimType.RIGHSLIDE,
+          headerAnimationLoop: false,
+          title: MyLocalizations.of(context).getData('error'),
+          desc: MyLocalizations.of(context).getData('not_enough_point_2'),
+          btnOkOnPress: () {},
+          btnOkIcon: Icons.cancel,
+          btnOkColor: Colors.red)
+          ..show();
+        }else if(contentData['message'] =='ROBOT_EXIST'){
+          AwesomeDialog(
+          context: context,
+          dialogType: DialogType.ERROR,
+          animType: AnimType.RIGHSLIDE,
+          headerAnimationLoop: false,
+          title: MyLocalizations.of(context).getData('error'),
+          desc: MyLocalizations.of(context).getData('robot_exist'),
+          btnOkOnPress: () {},
+          btnOkIcon: Icons.cancel,
+          btnOkColor: Colors.red)
+          ..show();
+        }else if(contentData['message'] =='ROBOT_NOT_ACTIVE'){
+          AwesomeDialog(
+          context: context,
+          dialogType: DialogType.ERROR,
+          animType: AnimType.RIGHSLIDE,
+          headerAnimationLoop: false,
+          title: MyLocalizations.of(context).getData('error'),
+          desc: MyLocalizations.of(context).getData('robot_not_active'),
+          btnOkOnPress: () {},
+          btnOkIcon: Icons.cancel,
+          btnOkColor: Colors.red)
+          ..show();
+        }else if(contentData['message'] =='NO_BIND_API'){
+          AwesomeDialog(
+          context: context,
+          dialogType: DialogType.ERROR,
+          animType: AnimType.RIGHSLIDE,
+          headerAnimationLoop: false,
+          title: MyLocalizations.of(context).getData('error'),
+          desc: MyLocalizations.of(context).getData('no_bind_api'),
           btnOkOnPress: () {},
           btnOkIcon: Icons.cancel,
           btnOkColor: Colors.red)
@@ -476,6 +537,63 @@ class Request {
       headers = {'Authorization': 'Bearer' + token};
 
     }
+
+    try { 
+
+      http.Response response = await http.get(url, headers: headers).timeout(new Duration(seconds: 10));
+      
+      print(response.statusCode);    
+
+      if (response.statusCode == 200) {
+        var contentData = json.decode(response.body); 
+        return contentData;
+        
+
+      }else if (response.statusCode == 500) {
+        Fluttertoast.showToast(
+          msg: MyLocalizations.of(context).getData('internalError'),
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Color(0xFFDCDCDC),
+          textColor: Colors.black,
+        );
+        return null;
+
+      }else if(response.statusCode == 401){
+        Fluttertoast.showToast(
+          msg: MyLocalizations.of(context).getData('unauthorized'),
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Color(0xFFDCDCDC),
+          textColor: Colors.black,
+        );
+        return null;
+
+      }else{
+        return null;
+      }
+    } on TimeoutException catch (e) {
+      print(e.toString());
+      return null;
+      
+    } on SocketException catch (e) {
+      print(e.toString());
+      return null;
+
+    }catch (exception) {
+      Fluttertoast.showToast(
+        msg: MyLocalizations.of(context).getData('internalError'),
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Color(0xFFDCDCDC),
+        textColor: Colors.black,
+      );
+      return null;
+    }
+    
+  }
+
+  getWithoutRequest(url, context) async {
 
     try { 
 

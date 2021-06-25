@@ -52,6 +52,7 @@ dev_dependencies:
   list_treeview: ^0.2.5+1
   package_info: ^0.4.3+4
   flutter_hms_gms_availability: ^1.0.0
+  firebase_messaging:
 
 flutter:
   uses-material-design: true
@@ -69,4 +70,4 @@ flutter:
 flutter_icons:
   android: true
   ios: true
-  image_path: "lib/assets/img/sae.png"
+  image_path: "lib/assets/img/icon.png"

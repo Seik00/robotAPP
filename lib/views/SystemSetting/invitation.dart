@@ -27,13 +27,12 @@ class _InvitationState extends State<Invitation> with SingleTickerProviderStateM
   getRequest() async {
     var contentData = await Request().getRequest(Config().url + "api/member/get-member-info", context);
     if(contentData != null){
-      if (contentData['code'] == 0) {
       if (mounted) {
         setState(() {
-          shareLink = contentData['data']['share_link'];
+          shareLink = contentData['share_link'];
+          print(shareLink);
         });
       }
-    }
     }
   }
 
@@ -191,18 +190,18 @@ class _InvitationState extends State<Invitation> with SingleTickerProviderStateM
                     Container(
                       child: Text(
                       MyLocalizations.of(context).getData('scan'),
-                      style: TextStyle(color: Colors.white,fontSize: 26,fontWeight: FontWeight.bold),)
+                      style: TextStyle(color: Colors.white,fontSize: 22,fontWeight: FontWeight.bold),)
                     ),
                     Container(
                       child: Text(
                       MyLocalizations.of(context).getData('download'),
-                      style: TextStyle(color: Colors.white,fontSize: 26,fontWeight: FontWeight.bold),)
+                      style: TextStyle(color: Colors.white,fontSize: 22,fontWeight: FontWeight.bold),)
                     ),
                     Container(
                       child: Flexible(
                         child: Text(
                         MyLocalizations.of(context).getData('experience'),
-                        style: TextStyle(color: Colors.white,fontSize: 26,fontWeight: FontWeight.bold,),),
+                        style: TextStyle(color: Colors.white,fontSize: 22,fontWeight: FontWeight.bold,),),
                       )
                     )
                   ],),
@@ -219,13 +218,14 @@ class _InvitationState extends State<Invitation> with SingleTickerProviderStateM
                 child:Container(
                   child: Text(
                     MyLocalizations.of(context).getData('scan_qr'),
-                    style: TextStyle(color: Colors.grey[350],fontSize: 26,fontWeight: FontWeight.bold),),)
+                    style: TextStyle(color: Colors.grey[350],fontSize: 18,fontWeight: FontWeight.bold),),)
               ),
             ),
             SizedBox(height:10),
-            Center(child: Container(
-              padding: EdgeInsets.all(20),
-              child: Text(MyLocalizations.of(context).getData('invite_desc'),textAlign: TextAlign.center,style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),),)),
+            // Center(child: Container(
+            //   padding: EdgeInsets.all(20),
+            //   child: Text(MyLocalizations.of(context).getData('invite_desc'),textAlign: TextAlign.center,style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),),)
+            //   ),
              SizedBox(height:20),
             Center(
               child: Container(
@@ -262,37 +262,16 @@ class _InvitationState extends State<Invitation> with SingleTickerProviderStateM
                     gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [Color(0xff3DC2EA), Color(0xff7C1999)])
+                    colors: [Color(0xfffaef1d), Color(0xfff9f21a)])
                 ),
-                margin: EdgeInsets.all(10),
                 width: MediaQuery.of(context).size.width/2,
                 height: MediaQuery.of(context).size.height / 15,
                 alignment: Alignment.center,
-                child: Text(MyLocalizations.of(context).getData('copy'),style: TextStyle(color: Colors.white),
+                child: Text(MyLocalizations.of(context).getData('copy'),style: TextStyle(color: Colors.black),
                 )),
               ),
             ),
-            Center(
-              child: GestureDetector(
-                onTap: () {
-                   _showPattern();
-                },
-                child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [Color(0xff3DC2EA), Color(0xff7C1999)])
-                ),
-                margin: EdgeInsets.all(10),
-                width: MediaQuery.of(context).size.width/2,
-                height: MediaQuery.of(context).size.height / 15,
-                alignment: Alignment.center,
-                child: Text(MyLocalizations.of(context).getData('swap_bg'),style: TextStyle(color: Colors.white),
-                )),
-              ),
-            )
+          
           ],
         ),
       ),

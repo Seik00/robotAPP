@@ -455,10 +455,10 @@ class _MyTeamState extends State<MyTeam> {
                                                                 child: Text(MyLocalizations.of(context).getData('check'),style: TextStyle(color: Colors.greenAccent))):
                                                                 GestureDetector(
                                                                  onTap: (){
-                                                                  Navigator.push(
-                                                                    context,
-                                                                    MaterialPageRoute(builder: (context) => RegisterStepOne(widget.url,widget.onChangeLanguage,widget.refId= dataList[index]['username'].toString(),otp,mobileNumber)),
-                                                                  );
+                                                                  // Navigator.push(
+                                                                  //   context,
+                                                                  //   MaterialPageRoute(builder: (context) => RegisterStepOne(widget.url,widget.onChangeLanguage,widget.refId= dataList[index]['username'].toString(),otp,mobileNumber)),
+                                                                  // );
                                                                 },
                                                                 child: Text(MyLocalizations.of(context).getData('register'),style: TextStyle(color: Colors.greenAccent)))
                                                               ],)

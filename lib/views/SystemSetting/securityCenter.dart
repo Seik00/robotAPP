@@ -23,16 +23,77 @@ class _SecurityCenterState extends State<SecurityCenter>
     with SingleTickerProviderStateMixin {
   final scrollController = ScrollController();
 
+  var currentLanguage;
 
   @override
   void initState() {
     super.initState();
   }
 
+  Future<void> _showLanguages() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+            backgroundColor: Colors.blue[100],
+            title: Text(MyLocalizations.of(context).getData('languageSetting'),style: TextStyle(color: Colors.black)),
+            content: Wrap(
+              direction: Axis.vertical,
+              spacing: 15,
+              children: <Widget>[
+                GestureDetector(
+                    onTap: () {
+                      widget.onChangeLanguage("zh");
+                      currentLanguage = "zh";
+                      Navigator.pop(context);
+                    },
+                    child: Row(children: [
+                      Container(
+                        margin: EdgeInsets.only(right:10),
+                        width: 30.0,
+                        height: 30.0,
+                        decoration: new BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          image: new DecorationImage(
+                              fit: BoxFit.cover,
+                              image: AssetImage("lib/assets/img/cn_flag.png")
+                          )
+                      )),
+                      Text(MyLocalizations.of(context).getData('zh'),style: TextStyle(color: Colors.black),)
+                    ],)
+                   ),
+                GestureDetector(
+                    onTap: () {
+                      widget.onChangeLanguage("en");
+                      currentLanguage = "en";
+                      Navigator.pop(context);
+                    },
+                    child: Row(children:[
+                      Container(
+                        margin: EdgeInsets.only(right:10),
+                        width: 30.0,
+                        height: 30.0,
+                        decoration: new BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          image: new DecorationImage(
+                              fit: BoxFit.cover,
+                              image: AssetImage("lib/assets/img/uk_flag.png")
+                          )
+                      )),
+                      Text(MyLocalizations.of(context).getData('en'),style: TextStyle(color: Colors.black))
+                    ]),
+                   ),
+              ],
+            ));
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Color(0xff212630),
       appBar: PreferredSize(
           child: AppBar(
             backgroundColor: Theme.of(context).backgroundColor,
@@ -46,11 +107,7 @@ class _SecurityCenterState extends State<SecurityCenter>
               child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   // color: Theme.of(context).backgroundColor,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('lib/assets/img/background.png'),
-                        fit: BoxFit.cover),
-                  ),
+                  
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -91,7 +148,7 @@ class _SecurityCenterState extends State<SecurityCenter>
                                   padding: EdgeInsets.all(10),
                                   child: Image(
                                     image: AssetImage(
-                                        "lib/assets/img/me_node.png"),
+                                        "lib/assets/img/me_team.png"),
                                     height: 30,
                                     width: 40,
                                   )
@@ -131,11 +188,7 @@ class _SecurityCenterState extends State<SecurityCenter>
                         ),
                         InkWell(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ChangeSecurityPwd(widget.url)),
-                            );
+                            _showLanguages();
                           },
                           child: Container(
                             margin: EdgeInsets.only(bottom: 10, top: 10),
@@ -162,7 +215,7 @@ class _SecurityCenterState extends State<SecurityCenter>
                                       Container(
                                         child: Text(
                                           MyLocalizations.of(context)
-                                              .getData('change_security_pwd'),
+                                              .getData('language'),
                                           style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
                                         ),
                                       ),
@@ -183,120 +236,7 @@ class _SecurityCenterState extends State<SecurityCenter>
                             ),
                           ),
                         ),
-                        Divider(
-                          height: 1,
-                          color: Colors.grey[400],
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => UserBank(widget.url)),
-                            );
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(bottom: 10, top: 10),
-                            child: Row(
-                              children: <Widget>[
-                                Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                  ),
-                                  margin: EdgeInsets.only(right: 20),
-                                  padding: EdgeInsets.all(10),
-                                  child: Image(
-                                    image: AssetImage(
-                                        "lib/assets/img/me_customer_service.png"),
-                                    height: 30,
-                                    width: 40,
-                                  )
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Container(
-                                        child: Text(
-                                          MyLocalizations.of(context)
-                                              .getData('change_bank_detail'),
-                                          style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      Container(
-                                          child: (Icon(
-                                              Icons.chevron_right_outlined,color: Colors.white,))),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Divider(
-                          height: 10,
-                          color: Colors.grey[400],
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => CountryChanges(widget.url)),
-                            );
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(bottom: 10, top: 10),
-                            child: Row(
-                              children: <Widget>[
-                                Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                  ),
-                                  margin: EdgeInsets.only(right: 20),
-                                  padding: EdgeInsets.all(10),
-                                  child: Image(
-                                    image: AssetImage(
-                                        "lib/assets/img/me_customer_service.png"),
-                                    height: 30,
-                                    width: 40,
-                                  )
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Container(
-                                        child: Text(
-                                          MyLocalizations.of(context)
-                                              .getData('change_country'),
-                                          style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      Container(
-                                          child: (Icon(
-                                              Icons.chevron_right_outlined,color: Colors.white,))),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                     
                       ])),
             ),
           ],

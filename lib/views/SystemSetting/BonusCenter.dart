@@ -33,7 +33,7 @@ class _BonusCenterrState extends State<BonusCenter>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Color(0xff212630),
       appBar: PreferredSize(
           child: AppBar(
             backgroundColor: Theme.of(context).backgroundColor,
@@ -47,11 +47,6 @@ class _BonusCenterrState extends State<BonusCenter>
               child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   // color: Theme.of(context).backgroundColor,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('lib/assets/img/background.png'),
-                        fit: BoxFit.cover),
-                  ),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -134,65 +129,7 @@ class _BonusCenterrState extends State<BonusCenter>
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) => BonusRecord(widget.url,widget.type = 'dynamic_bonus')),
-                            );
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(bottom: 10, top: 10),
-                            child: Row(
-                              children: <Widget>[
-                                Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                  ),
-                                  margin: EdgeInsets.only(right: 20),
-                                  padding: EdgeInsets.all(10),
-                                  child: Image(
-                                    image: AssetImage(
-                                        "lib/assets/img/dynamic_bonus.png"),
-                                    height: 30,
-                                    width: 40,
-                                  )
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Container(
-                                        child: Text(
-                                          MyLocalizations.of(context)
-                                              .getData('dynamic_bonus'),
-                                          style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      Container(
-                                          child: (Icon(
-                                              Icons.chevron_right_outlined,color: Colors.white,))),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Divider(
-                          height: 1,
-                          color: Colors.grey[400],
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) =>  BonusRecord(widget.url,widget.type = 'special_bonus')),
+                              MaterialPageRoute(builder: (context) =>  BonusRecord(widget.url,widget.type = 'sponsor_bonus')),
                             );
                           },
                           child: Container(
@@ -220,7 +157,7 @@ class _BonusCenterrState extends State<BonusCenter>
                                       Container(
                                         child: Text(
                                           MyLocalizations.of(context)
-                                              .getData('special_bonus'),
+                                              .getData('sponsor_bonus'),
                                           style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
                                         ),
                                       ),

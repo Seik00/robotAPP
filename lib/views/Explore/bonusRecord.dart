@@ -69,7 +69,7 @@ class _BonusRecordState extends State<BonusRecord> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Color(0xff212630),
       appBar: PreferredSize(
           child: AppBar(
             backgroundColor: Theme.of(context).backgroundColor,
@@ -78,14 +78,6 @@ class _BonusRecordState extends State<BonusRecord> {
           preferredSize: Size.fromHeight(0)),
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("lib/assets/img/background.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
           Container(
           child: SingleChildScrollView(
             child: Column(
@@ -128,19 +120,11 @@ class _BonusRecordState extends State<BonusRecord> {
                           style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 16),
                         ),
                       )
-                      else if(widget.type == 'dynamic_bonus')
-                      Container(
-                        padding: EdgeInsets.only(bottom:5),
-                        child: Text(
-                          MyLocalizations.of(context).getData('dynamic_bonus_balance'),
-                          style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 16),
-                        ),
-                      )
                       else
                       Container(
                         padding: EdgeInsets.only(bottom:5),
                         child: Text(
-                          MyLocalizations.of(context).getData('special_bonus_balance'),
+                          MyLocalizations.of(context).getData('sponsor_bonus_balance'),
                           style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 16),
                       )),
                       Row(

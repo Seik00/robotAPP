@@ -6,6 +6,8 @@ import 'package:flutter/scheduler.dart';
 import 'package:robot/views/LoginPage/loginPage.dart';
 import 'package:robot/views/SystemSetting/setSecPassword.dart';
 import 'package:robot/views/SystemSetting/settings.dart';
+import 'package:robot/views/clientSide/circle.dart';
+import 'package:robot/views/clientSide/market.dart';
 import 'package:robot/views/clientSide/myAssest.dart';
 import 'package:robot/views/clientSide/quantity.dart';
 import 'package:robot/views/clientSide/share.dart';
@@ -114,6 +116,7 @@ class _TopViewingState extends State<TopViewing>
       checkIsLogin();
     }
     }
+   
   }
 
   checkIsLogin() async{
@@ -151,17 +154,17 @@ class _TopViewingState extends State<TopViewing>
       _pageOptions = [
         Services(widget.url, widget.onChangeLanguage),
         Quantity(widget.url, widget.onChangeLanguage),
-        Upload(widget.url, widget.onChangeLanguage),
-        MyAssests(widget.url),
+        //Market(widget.url, widget.onChangeLanguage),
+        MyAssests(widget.url,widget.onChangeLanguage),
         Settings(widget.url, widget.onChangeLanguage),
       ];
 
     setIcon(){
         return [
           TabItem(icon: Icons.home,title:MyLocalizations.of(context).getData('home')),
-          TabItem(icon: Icons.compare_arrows,title:MyLocalizations.of(context).getData('share')),
-          TabItem(icon: Icons.language,title:MyLocalizations.of(context).getData('upload')),
-          TabItem(icon: Icons.notifications,title:MyLocalizations.of(context).getData('wallet')),
+          TabItem(icon: Icons.compare_arrows,title: MyLocalizations.of(context).getData('quantitative')),
+          //TabItem(icon: Icons.language,title:'Market'),
+          TabItem(icon: Icons.monetization_on,title:MyLocalizations.of(context).getData('my_assets')),
           TabItem(icon: Icons.person,title:MyLocalizations.of(context).getData('me')),
         ];
     }

@@ -70,7 +70,7 @@ class _UserBankState extends State<UserBank> {
   }
 
   getCountryList() async {
-    var contentData = await Request().getRequest(Config().url + "api/global/country_list", context);
+    var contentData = await Request().getWithoutRequest(Config().url + "api/global/country_list", context);
     print(contentData);
     if (contentData != null) {
       if (contentData['status'] == true) {
@@ -130,7 +130,7 @@ class _UserBankState extends State<UserBank> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Color(0xff212630),
       appBar: PreferredSize(
           child: AppBar(
             backgroundColor: Theme.of(context).backgroundColor,
@@ -143,14 +143,6 @@ class _UserBankState extends State<UserBank> {
         },
         child: Stack(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("lib/assets/img/background.png"),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
             Container(
             child: SingleChildScrollView(
               child: Column(
@@ -215,13 +207,6 @@ class _UserBankState extends State<UserBank> {
                           _inputBankBranch(),
                           SizedBox(height: 30.0),
 
-                          Container(
-                            child: Text(MyLocalizations.of(context).getData('sec_password'),style: TextStyle(color: Colors.white,fontSize: 16),),
-                          ),
-                          SizedBox(height: 5.0),
-                          _inputSecPassword(),
-                          SizedBox(height: 30.0),
-
                           GestureDetector(
                             onTap: ()async{
                               setState(() {
@@ -235,15 +220,13 @@ class _UserBankState extends State<UserBank> {
                                       gradient: LinearGradient(
                                       begin: Alignment.topCenter,
                                       end: Alignment.bottomCenter,
-                                      colors: [Color(0xff3DC2EA), Color(0xff7C1999)])
+                                      colors: [Color(0xfffaef1d), Color(0xfff9f21a)])
                                   ),
-                                  margin: EdgeInsets.all(20),
-                                  width: MediaQuery.of(context).size.width/2,
                                   height: MediaQuery.of(context).size.height / 15,
                                   alignment: Alignment.center,
                                   child: Text(
                                     MyLocalizations.of(context).getData('submit'),
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(color: Colors.black),
                                   )),
                             ),
                           )
@@ -476,12 +459,11 @@ class _UserBankState extends State<UserBank> {
           tmap['bank_user'] = bankUserController.text;
           tmap['bank_number'] = bankNumberController.text;
           tmap['branch'] = bankBranchController.text;
-          tmap['sec_password'] = secPwdController.text;
+         
           print(tmap['bank_country']);
           print(tmap['bank_name']);
           print(tmap['bank_user']);
           print(tmap['bank_number']);
-          print(tmap['sec_password']);
         });
       postData(tmap);
     } else {

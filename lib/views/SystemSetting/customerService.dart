@@ -74,7 +74,7 @@ class _CustomerServiceState extends State<CustomerService> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Color(0xff212630),
       appBar: PreferredSize(
           child: AppBar(
             backgroundColor: Theme.of(context).backgroundColor,
@@ -87,14 +87,6 @@ class _CustomerServiceState extends State<CustomerService> {
         },
         child: Stack(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("lib/assets/img/background.png"),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
             Container(
             child: SingleChildScrollView(
               child: Column(
@@ -180,20 +172,18 @@ class _CustomerServiceState extends State<CustomerService> {
                             }, 
                             child: Center(
                               child: Container(
-                                  decoration: BoxDecoration(
+                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
                                       gradient: LinearGradient(
                                       begin: Alignment.topCenter,
                                       end: Alignment.bottomCenter,
-                                      colors: [Color(0xff3DC2EA), Color(0xff7C1999)])
+                                      colors: [Color(0xfffaef1d), Color(0xfff9f21a)])
                                   ),
-                                  margin: EdgeInsets.all(20),
-                                  width: MediaQuery.of(context).size.width/2,
                                   height: MediaQuery.of(context).size.height / 15,
                                   alignment: Alignment.center,
                                   child: Text(
                                     MyLocalizations.of(context).getData('submit'),
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(color: Colors.black),
                                   )),
                             ),
                           )

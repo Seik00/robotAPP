@@ -69,6 +69,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   getRequest() async {
     var contentData = await Request().getRequest(Config().url + "api/member/get-member-info", context);
+    print(contentData);
     if(contentData != null){
       if (contentData['code'] == 0) {
       if (mounted) {
@@ -81,8 +82,13 @@ class _SplashScreenState extends State<SplashScreen> {
     }
     checkIsLogin();
     print(contentData);
+    }else{
+        // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => SetSecPassword(widget.url,widget.onChangeLanguage)),
+      // );
     }
-    
   }
 
    checkIsLogin() async{

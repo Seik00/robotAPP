@@ -95,10 +95,10 @@ class _VerifyOtpState extends State<VerifyOtp>
         title: MyLocalizations.of(context).getData('success'),
         desc:MyLocalizations.of(context).getData('operation_success'),
         onDissmissCallback: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) =>  RegisterStepOne(widget.url,widget.onChangeLanguage,refId,otp,mobileNumber)),
-          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) =>  RegisterStepOne(widget.url,widget.onChangeLanguage,refId,otp,mobileNumber)),
+          // );
         })
       ..show();
     } else {

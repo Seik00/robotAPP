@@ -95,117 +95,10 @@ class _DepositState extends State<Deposit> {
     }
   }
 
-  initializeData(bankID) async {
-      final prefs = await SharedPreferences.getInstance();
-      var token = prefs.getString('token');
-
-      var body = {
-        'country_id': bankID.toString(),
-      };
-      print(body);
-      var uri = Uri.https(Config().url2, 'api/project/get-deposit-bank', body);
-
-      var response = await http.get(uri, headers: {
-        'Authorization': 'Bearer $token'
-      }).timeout(new Duration(seconds: 10));
-      var contentData = json.decode(response.body);
-    
-      setState(() {
-          dataList = contentData['data']['system_bank'];
-         
-          print(dataList);
-          for (var i = 0; i < dataList.length; i++) {
-            setState(() {
-             
-              if (countryList[i]["name_en"] == 'Indonesia') {
-                selectedBank = dataList[0]["bank_name"];
-                selectedBankID = dataList[0]["id"].toString();
-                selectedBankUser = dataList[0]["bank_user"].toString();
-                selectedBankNumber = dataList[0]["bank_number"].toString();
-                selectedBankBranch = dataList[0]["branch"].toString();
-                selectedBankSwiftCode = dataList[0]["swift_code"].toString();
-              }
-             
-                 bankName.add(dataList[i]["bank_name"]);
-                return bankName;
-             
-              
-              //print(bankName[i]);
-            });
-          }
-          if(dataList.length == 0){
-              selectedBank = '';
-              selectedBankID = '';
-              selectedBankUser = '';
-              selectedBankNumber = '';
-              selectedBankBranch = '';
-          }else if(dataList.length != 0){
-            
-          }
-        });
-  }
-
-  //  getSystemBankID() async {
-  //   var contentData = await Request().getRequest(Config().url + "api/project/get-deposit-bank", context);
-  //   if(contentData != null){
-  //     if (contentData['code'] == 0) {
-  //     if (mounted) {
-  //       setState(() {
-  //         dataList = contentData['data']['system_bank'];
-  //         selectedBank = dataList[0]["bank_name"];
-  //         selectedBankID = dataList[0]["id"].toString();
-  //         selectedBankUser = dataList[0]["bank_user"].toString();
-  //         selectedBankNumber = dataList[0]["bank_number"].toString();
-  //         selectedBankBranch = dataList[0]["branch"].toString();
-  //         selectedBankSwiftCode = dataList[0]["swift_code"].toString();
-  //         print(dataList);
-  //         for (var i = 0; i < dataList.length; i++) {
-  //           setState(() {
-  //             if (countryList[i]["name_en"] == 'Malaysia') {
-  //               selectednewCountryCode = language == 'en'?countryList[i]["name_en"]:countryList[i]["name"];
-  //               selectednewCountryID = countryList[i]['id'];
-  //             }
-  //             bankName.add(dataList[i]["bank_name"]);
-              
-  //             print(bankName[i]);
-  //           });
-  //         }
-  //       });
-  //     }
-  //   }
-  //   }
-  // }
-
-   getCountryList() async {
-    var contentData = await Request().getRequest(Config().url + "api/global/country_list", context);
-  
-    if (contentData != null) {
-      if (contentData['status'] == true) {
-        countryList = contentData['data'];
-        for (var i = 0; i < countryList.length; i++) {
-          setState(() {
-            if (countryList[i]["name_en"] == 'Malaysia') {
-              selectedCountryCode = language == 'en'?countryList[i]["name_en"]:countryList[i]["name"];
-              selectednewCountryCode = language == 'en'?countryList[i]["name_en"]:countryList[i]["name"];
-              selectedCountryID = countryList[i]['id'];
-              selectednewCountryID = countryList[i]['id'];
-              currency = countryList[i]["short_form"];
-              rate = countryList[i]["sell"];
-            }
-            countryName.add(language == 'en'?countryList[i]["name_en"]:countryList[i]["name"]);
-            newcountryName.add(language == 'en'?countryList[i]["name_en"]:countryList[i]["name"]);
-          });
-        }
-      }
-    }
-  }
-
   @override
   void initState() {
     super.initState();
     getRequest();
-    getCountryList();
-    initializeData('2');
     getLanguage();
   }
   upload(file) async {
@@ -310,6 +203,7 @@ class _DepositState extends State<Deposit> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff212630),
       appBar: PreferredSize(
           child: AppBar(
             backgroundColor: Theme.of(context).backgroundColor,
@@ -318,21 +212,7 @@ class _DepositState extends State<Deposit> {
           preferredSize: Size.fromHeight(0)),
       body: NotificationListener<ScrollNotification>(
         // ignore: missing_return
-        onNotification: (scrollNotification){
-          if (scrollNotification is ScrollStartNotification) {
-            countryState.currentState.closeMenu();
-            newcountryState.currentState.closeMenu();
-            bankState.currentState.closeMenu();
-          }else if (scrollNotification is ScrollUpdateNotification) {
-            countryState.currentState.closeMenu();
-            newcountryState.currentState.closeMenu();
-            bankState.currentState.closeMenu();
-          } else if (scrollNotification is ScrollEndNotification) {
-            countryState.currentState.closeMenu();
-            newcountryState.currentState.closeMenu();
-            bankState.currentState.closeMenu();
-          }
-        }, 
+      
         child: new GestureDetector(
            onTap: () {
             FocusScope.of(context).requestFocus(new FocusNode());
@@ -342,14 +222,6 @@ class _DepositState extends State<Deposit> {
           },
           child: Stack(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("lib/assets/img/background.png"),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
               Container(
               child: SingleChildScrollView(
                 child: Column(
@@ -393,78 +265,6 @@ class _DepositState extends State<Deposit> {
                         ),
                       ),
                     ),
-                    Container(
-                        margin: EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: Colors.white.withOpacity(0.2)
-                      ),
-                      child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 0,vertical: 10),
-                      child: SingleChildScrollView(
-                        padding: EdgeInsets.only(left: 10, right: 10,),
-                        child: Center(
-                          child: Column(
-                            children: <Widget>[
-                            countryList == null?Container():
-                            ListView.builder(
-                            primary: false,
-                            shrinkWrap: true,
-                            itemCount: countryList.length,
-                            itemBuilder: (BuildContext ctxt, int index) {
-                            return Container(
-                              padding: EdgeInsets.all(10),
-                              child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    child: Row(
-                                      children: [
-                                      Container(
-                                          margin: EdgeInsets.only(right:10),
-                                          child: Image(
-                                            image: NetworkImage(
-                                              countryList ==null?
-                                              'https://philip.greatwallsolution.com/sae.png':
-                                              countryList[index]['flag']),
-                                            height: 60,
-                                            width: 60,
-                                          )
-                                        ),
-                                      SizedBox(width:20),
-                                      Container(
-                                        child:Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children:[
-                                            Text(MyLocalizations.of(context).getData('country'),style: TextStyle(color:Colors.white,fontSize:14,)),
-                                            Text(language=='zh'?countryList[index]['name']:countryList[index]['name_en'],style: TextStyle(color:Colors.grey,fontSize:16,fontWeight:FontWeight.bold)),
-                                          ]
-                                        )
-                                      ),
-                                      SizedBox(width:20),
-                                      Expanded(
-                                        child:Column(
-                                          crossAxisAlignment: CrossAxisAlignment.end,
-                                          children:[
-                                            Text(MyLocalizations.of(context).getData('rate'),style: TextStyle(color:Colors.white,fontSize:14,)),
-                                            Text(countryList[index]['sell'],style: TextStyle(color:Colors.purpleAccent,fontSize:16,fontWeight:FontWeight.bold)),
-                                          ]
-                                        )
-                                      ),
-                                      ],
-                                    ),
-                                  ),
-                                )
-                              ],
-                              ),
-                            );
-                            }),
-                            ],
-                          ),
-                        ),
-                      )),
-                    ),  
                     Center(
                       child: Container(
                         padding: EdgeInsets.all(20),
@@ -566,10 +366,7 @@ class _DepositState extends State<Deposit> {
                                 );
                             })
                       ),
-                      Container(
-                          margin: EdgeInsets.only(left:20,right: 20),
-                          child: Text(MyLocalizations.of(context).getData('country_rate'),style: TextStyle(color: Colors.white,fontSize: 16),),
-                        ),
+                     
                         countryList == null?Container():
                         Row(
                         children: [
@@ -664,195 +461,6 @@ class _DepositState extends State<Deposit> {
                         ),
                       ),
                       SizedBox(height:20),
-                      Container(
-                          margin: EdgeInsets.only(left:20,right: 20),
-                          child: Text(MyLocalizations.of(context).getData('country'),style: TextStyle(color: Colors.white,fontSize: 16),),
-                        ),
-                        countryList == null?Container():
-                        Row(
-                        children: [
-                              Expanded(
-                                child: Container(
-                                  margin: EdgeInsets.only(left:20,right: 20),
-                                  width: MediaQuery.of(context).size.width,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border.all(
-                                      color: Colors.grey,
-                                      width: 1,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                
-                                  child: CountryPicker(
-                                    key: newcountryState,
-                                    name: selectednewCountryCode,
-                                    lists: newcountryName,
-                                    iconColor: Colors.white,
-                                    backgroundColor: Colors.white,
-                                    borderRadius: BorderRadius.circular(5),
-                                    borderSide: BorderSide(width: 1, color: Colors.white),
-                                    onChange: (index) {
-                                        countryState.currentState.closeMenu();
-                                        bankState.currentState.closeMenu();
-                                        setState(() {
-                                          
-                                          selectednewCountryCode = language =='en'?countryList[index]["name_en"]:countryList[index]["name"];
-                                          selectednewCountryID = countryList[index]["id"];
-                                          bankID = selectednewCountryID;
-                                          initializeData(bankID);
-                                          bankName = [];
-                                      });
-                                    
-                                    },
-                                  ),
-                                ),
-                              ),
-                        ],
-                      ),
-                      SizedBox(height:20),
-                        Container(
-                          margin: EdgeInsets.only(left:20,right: 20),
-                          child: Text(MyLocalizations.of(context).getData('bank_name'),style: TextStyle(color: Colors.white,fontSize: 16),),
-                        ),
-                      Row(
-                        children: [
-                              Expanded(
-                                child: Container(
-                                  margin: EdgeInsets.only(left:20,right: 20,top: 5),
-                                  width: MediaQuery.of(context).size.width,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border.all(
-                                      color: Colors.grey,
-                                      width: 1,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                
-                                  child: CountryPicker(
-                                    key: bankState,
-                                    name: selectedBank,
-                                    lists: bankName,
-                                    iconColor: Colors.white,
-                                    backgroundColor: Colors.white,
-                                    borderRadius: BorderRadius.circular(5),
-                                    borderSide: BorderSide(width: 1, color: Colors.white),
-                                    onChange: (index) {
-                                       countryState.currentState.closeMenu();
-                                       newcountryState.currentState.closeMenu();
-                                        setState(() {
-                                          selectedBank = dataList[index]["bank_name"];
-                                          selectedBankID = dataList[index]["id"].toString();
-                                          selectedBankUser = dataList[index]["bank_user"].toString();
-                                          selectedBankNumber = dataList[index]["bank_number"].toString();
-                                          selectedBankBranch = dataList[index]["branch"].toString();
-                                          selectedBankSwiftCode = dataList[index]["swift_code"].toString();
-                                          print(selectedBankID);
-                                      });
-                                    
-                                    },
-                                  ),
-                                ),
-                              ),
-                        ],
-                      ),
-                      SizedBox(height:20),
-                        Container(
-                          margin: EdgeInsets.only(left:20,right: 20),
-                          child: Text(MyLocalizations.of(context).getData('bank_details'),style: TextStyle(color: Colors.white,fontSize: 16),),
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [Color(0xff9957ED), Color(0xff7835E5)])
-                          ),
-                           margin: EdgeInsets.only(left:20,right: 20,top: 5),
-                           child: Column(children: [
-                             Row(
-                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                               children: [
-                                  Container(
-                                   padding: EdgeInsets.all(10),
-                                   child: Text(MyLocalizations.of(context).getData('bank_user'),style: TextStyle(color:Colors.white,fontWeight: FontWeight.bold),)),
-                                  Container(
-                                   padding: EdgeInsets.all(10),
-                                   child: Text(selectedBankUser,style: TextStyle(color:Colors.white,))),
-                               ],
-                             ),
-                             Divider(
-                                      height: 2,
-                                      color: Colors.white,
-                                    ),
-                             Row(
-                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                               children: [
-                                  Container(
-                                   padding: EdgeInsets.all(10),
-                                   child: Text(MyLocalizations.of(context).getData('bank_number'),style: TextStyle(color:Colors.white,fontWeight: FontWeight.bold),)),
-                                  Container(
-                                   padding: EdgeInsets.all(10),
-                                   child: Text(selectedBankNumber,style: TextStyle(color:Colors.white,),)),
-                               ],
-                             ),
-                             Divider(
-                                      height: 2,
-                                      color: Colors.white,
-                                    ),
-                             Row(
-                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                               children: [
-                                  Container(
-                                   padding: EdgeInsets.all(10),
-                                   child: Text(MyLocalizations.of(context).getData('bank_branch'),style: TextStyle(color:Colors.white,fontWeight: FontWeight.bold),)),
-                                  Container(
-                                   padding: EdgeInsets.all(10),
-                                   child: Text(selectedBankBranch,style: TextStyle(color:Colors.white,))),
-                               ],
-                             ),
-                            //  Divider(
-                            //           height: 2,
-                            //           color: Colors.white,
-                            //         ),
-                            //  Row(
-                            //    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            //    children: [
-                            //       Container(
-                            //        padding: EdgeInsets.all(10),
-                            //        child: Text(MyLocalizations.of(context).getData('swift_code'),style: TextStyle(color:Colors.white,fontWeight: FontWeight.bold),)),
-                            //       Container(
-                            //        padding: EdgeInsets.all(10),
-                            //        child: Text(selectedBankSwiftCode,style: TextStyle(color:Colors.white,))),
-                            //    ],
-                            //  ),
-                           ],),
-                        ),
-                        // Container(
-                        //   margin: EdgeInsets.only(left: 20,right: 20,bottom: 20,top: 5),
-                        //   child: TextFormField(
-                        //     readOnly: true,
-                        //     obscureText: visible,
-                        //     autovalidateMode: AutovalidateMode.onUserInteraction,
-                        //     decoration: new InputDecoration(
-                        //           hintText:  rateController.text,
-                        //           contentPadding: const EdgeInsets.all(8.0),
-                        //           border: OutlineInputBorder(
-                        //             borderRadius: BorderRadius.circular(8.0),
-                        //             borderSide: BorderSide(color: Colors.grey, width: 1),
-                        //           ),
-                        //           filled: true,
-                        //           fillColor: Colors.white,
-                        //         ),
-                        //     keyboardType: TextInputType.text,
-                        //     onSaved: (str) {
-                        //       print(str);
-                        //     },
-                        //   ),
-                        // ),
                       Card(
                         elevation: 3,
                         shape: RoundedRectangleBorder(

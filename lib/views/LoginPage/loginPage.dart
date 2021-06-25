@@ -5,9 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:robot/API/config.dart';
 import 'package:robot/API/request.dart';
 import 'package:robot/views/LoginPage/forgetPasswordStepOne.dart';
+import 'package:robot/views/LoginPage/freeRegister.dart';
 import 'package:robot/views/LoginPage/registerStepOne.dart';
 import 'package:robot/views/Part/pageView.dart';
-import 'package:robot/views/SystemSetting/verifyOtp.dart';
 import '../../vendor/i18n/localizations.dart' show MyLocalizations;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
@@ -15,6 +15,7 @@ import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:io' show Platform;
 import 'package:flutter_hms_gms_availability/flutter_hms_gms_availability.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class LoginPage extends StatefulWidget {
   final url;
@@ -44,6 +45,7 @@ class _LoginPageState extends State<LoginPage>
   var refId;
   var otp = '1';
   var mobileNumber;
+  String firebaseToken = " ";
 
   lookUp() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -117,11 +119,11 @@ class _LoginPageState extends State<LoginPage>
                 children: [
                  TextButton(onPressed: ()async{
                 try {
-                  launch("market://details?id=" + 'com.sae.SPORT');
+                  launch("market://details?id=" + 'com.robot.INFINITY');
                 } on PlatformException catch(e) {
-                    launch("https://play.google.com/store/apps/details?id=" + 'com.sae.SPORT');        
+                    launch("https://play.google.com/store/apps/details?id=" + 'com.robot.INFINITY');        
                 } finally {
-                  launch("https://play.google.com/store/apps/details?id=" + 'com.sae.SPORT');        
+                  launch("https://play.google.com/store/apps/details?id=" + 'com.robot.INFINITY');        
                 }
               }, 
               child: Text(MyLocalizations.of(context).getData('go_google__download'),style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)),
@@ -261,21 +263,40 @@ class _LoginPageState extends State<LoginPage>
       });
     }
   }
-
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   @override
   void initState() {
     super.initState();
     initialiseLanguage();
-    lookUp();
-    FlutterHmsGmsAvailability.isGmsAvailable.then((t) {
-      setState(() {
-        gms = t;
-      });
+    //lookUp();
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        setState(() {});
+        print("onMessage: $message");
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        setState(() {});
+        print("onLaunch: $message");
+      },
+      onResume: (Map<String, dynamic> message) async {
+        setState(() {});
+        print("onResume: $message");
+      },
+    );
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, badge: true, alert: true));
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      print("Settings registered: $settings");
     });
-    FlutterHmsGmsAvailability.isHmsAvailable.then((t) {
+    _firebaseMessaging.getToken().then((String deviceToken) {
+      assert(deviceToken != null);
       setState(() {
-        hms = t;
+        firebaseToken = deviceToken;
       });
+      print('-----');
+      print(firebaseToken);
+      print('-----');
     });
   }
 
@@ -394,7 +415,7 @@ class _LoginPageState extends State<LoginPage>
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => RegisterStepOne(widget.url,widget.onChangeLanguage,refId,otp,mobileNumber)),
+                                                builder: (context) => FreeRegister(widget.url,widget.onChangeLanguage)),
                                           );
                                         },
                                         child: Text(
@@ -512,9 +533,7 @@ class _LoginPageState extends State<LoginPage>
   String validatePassword(String value) {
     if (value.isEmpty) {
       return 'Password is required';
-    } else if (value.length < 4) {
-      return 'Password must be at least 4 characters';
-    }
+    } 
     return null;
   }
 
