@@ -9,6 +9,7 @@ import 'package:robot/views/Part/pageView.dart';
 import 'package:robot/views/Trade/startUp.dart';
 import 'package:robot/views/Trade/tradeDetails.dart';
 import 'package:robot/views/Trade/transactionRecord.dart';
+import 'package:robot/views/widget/loaderForScroll.dart';
 import '../../vendor/i18n/localizations.dart' show MyLocalizations;
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -40,6 +41,8 @@ class _TradeState extends State<Trade> {
   var dataList;
   double price;
 
+  bool isLoading = true;
+
   @override
   void initState() {
     super.initState();
@@ -50,7 +53,7 @@ class _TradeState extends State<Trade> {
   @override
   void dispose() {
     _timer.cancel();
-    startLoop();
+    // startLoop();
     super.dispose();
   }
 
@@ -60,18 +63,18 @@ class _TradeState extends State<Trade> {
       oneSec,
       (Timer timer) async {
         // if (contentData['status']) {
+          var checkApi= await initializeData();
+        
           if (this.mounted) {
-            var checkApi= await initializeData();
-         
             setState(() {
               count++;
             });
-         
+          }
+        
 
           if(!checkApi){
             timer.cancel();
 
-          }
           }
       },
     );
@@ -85,36 +88,40 @@ class _TradeState extends State<Trade> {
       var body = {
         'robot_id': widget.robotID.toString(),
       };
-      print(body);
+      // print(body);
       var uri = Uri.https(Config().url2, 'api/trade-robot/robotInfo', body);
    
-      var response = await http.get(uri, headers: {
-        'Authorization': 'Bearer $token'
-      }).timeout(new Duration(seconds: 10));
-      var contentData = json.decode(response.body);
-      print('--------------');
-      print(contentData);
-      print('---------------');
+      
+      // print('--------------');
+      // print(contentData);
+      // print('---------------');
+      print(count);
       try {
+        var response = await http.get(uri, headers: {
+          'Authorization': 'Bearer $token'
+        }).timeout(new Duration(seconds: 10));
+        var contentData = json.decode(response.body);
         if(contentData != null){
-        if (contentData['code'] == 0) {
-          if (this.mounted) {
-            setState(() {
-            robotList = contentData['data'];  
-            if(robotList!=null){
-                revenue = double.parse(robotList['revenue']);
-                price = double.parse(robotList['price']);
-                if(robotList['values_str'].length!=0){
-                  info2 = json.decode(robotList['values_str']);
-                }
+          if (contentData['code'] == 0) {
+            if (this.mounted) {
+              setState(() {
+              robotList = contentData['data'];  
+              if(robotList!=null){
+                  revenue = double.parse(robotList['revenue']);
+                  price = double.parse(robotList['price']);
+                  if(robotList['values_str'].length!=0){
+                    info2 = json.decode(robotList['values_str']);
+                  }
+              }
+            });
             }
-          });
           }
-        }
         } 
+        setState(() {
+          isLoading = false;
+        });
         return true;
       } catch (e) {
-       
         return false;
         
       }
@@ -339,10 +346,11 @@ class _TradeState extends State<Trade> {
                           ),
                            GestureDetector(
                              onTap: (){
+                                _timer.cancel();
                                 Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) => TransactionRecord(widget.url)),
-                              );
+                              ).then((value) => startLoop());
                              },
                              child: Container(
                               padding: EdgeInsets.only(right:10),
@@ -400,16 +408,18 @@ class _TradeState extends State<Trade> {
                           ),
                           SizedBox(height: 20,),
                           Row(
-                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Container(
                                       child: Container(
                                         child: Text(
-                                          info2 == null  || info2 == '' ?'0.00':
+                                          info2 == null  || info2 == '' ?'':
                                           info2['deal_money'].toStringAsFixed(3),
                                           style: TextStyle(color: Colors.white,fontSize: 14),
                                         ),
@@ -429,11 +439,12 @@ class _TradeState extends State<Trade> {
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Container(
                                       child: Container(
                                         child: Text(
-                                          info2 == null  || info2 == '' ?'0.00':
+                                          info2 == null  || info2 == '' ?'':
                                           info2['base_price'].toStringAsFixed(3),
                                           style: TextStyle(color: Colors.white,fontSize: 14),
                                         ),
@@ -453,11 +464,12 @@ class _TradeState extends State<Trade> {
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Container(
                                       child: Container(
                                         child: Text(
-                                          info2 == null  || info2 == '' ?'0.00':
+                                          info2 == null  || info2 == '' ?'':
                                            info2['order_count'].toString(),
                                           style: TextStyle(color: Colors.white,fontSize: 14),
                                         ),
@@ -478,16 +490,18 @@ class _TradeState extends State<Trade> {
                           ),
                            SizedBox(height: 20,),
                           Row(
-                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Expanded(
                                 child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
                                       child: Container(
                                         child: Text(
-                                          info2 == null  || info2 == '' ?'0.00':
+                                          info2 == null  || info2 == '' ?'':
                                           info2['deal_amount'].toStringAsFixed(3),
                                           style: TextStyle(color: Colors.white,fontSize: 14),
                                         ),
@@ -506,12 +520,13 @@ class _TradeState extends State<Trade> {
                               ),
                               Expanded(
                                 child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
                                       child: Container(
                                         child: Text(
-                                          price == null ?'0.00':
+                                          price == null ?'':
                                           price.toStringAsFixed(8),
                                           style: TextStyle(color: Colors.white,fontSize: 14),
                                         ),
@@ -530,12 +545,13 @@ class _TradeState extends State<Trade> {
                               ),
                               Expanded(
                                 child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
                                       child: Container(
                                         child: Text(
-                                          info2 == null  || info2 == '' ?'0.00%':
+                                          info2 == null  || info2 == '' ?'':
                                           revenue.toStringAsFixed(3) + '%',
                                           style: TextStyle(color: Colors.white,fontSize: 14),
                                         ),
@@ -746,7 +762,7 @@ class _TradeState extends State<Trade> {
                                 SizedBox(width:15),
                                 Container(
                                     child: Text(
-                                      robotList==null || robotList.isEmpty ? '0':robotList['first_order_value'].toString(),
+                                      robotList==null || robotList.isEmpty ? '':robotList['first_order_value'].toString(),
                                       style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold),
                                     ),
                                   ),
@@ -786,7 +802,7 @@ class _TradeState extends State<Trade> {
                                 SizedBox(width:15),
                                 Container(
                                     child: Text(
-                                      robotList==null || robotList.isEmpty ? '0':robotList['max_order_count'].toString(),
+                                      robotList==null || robotList.isEmpty ? '':robotList['max_order_count'].toString(),
                                       style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold),
                                     ),
                                   ),
@@ -826,7 +842,7 @@ class _TradeState extends State<Trade> {
                                 SizedBox(width:15),
                                 Container(
                                     child: Text(
-                                      robotList==null || robotList.isEmpty ? '0':robotList['stop_profit_rate'].toString() + '%',
+                                      robotList==null || robotList.isEmpty ? '':robotList['stop_profit_rate'].toString() + '%',
                                       style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold),
                                     ),
                                   ),
@@ -866,7 +882,7 @@ class _TradeState extends State<Trade> {
                                 SizedBox(width:15),
                                 Container(
                                     child: Text(
-                                      robotList==null || robotList.isEmpty ? '0':robotList['stop_profit_callback_rate'].toString()+ '%',
+                                      robotList==null || robotList.isEmpty ? '':robotList['stop_profit_callback_rate'].toString()+ '%',
                                       style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold),
                                     ),
                                   ),
@@ -906,7 +922,7 @@ class _TradeState extends State<Trade> {
                                 SizedBox(width:15),
                                 Container(
                                     child: Text(
-                                      robotList==null || robotList.isEmpty ? '0':robotList['cover_rate'].toString()+ '%',
+                                      robotList==null || robotList.isEmpty ? '':robotList['cover_rate'].toString()+ '%',
                                       style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold),
                                     ),
                                   ),
@@ -946,7 +962,7 @@ class _TradeState extends State<Trade> {
                                 SizedBox(width:15),
                                 Container(
                                     child: Text(
-                                      robotList==null || robotList.isEmpty ? '0':robotList['cover_callback_rate'].toString()+ '%',
+                                      robotList==null || robotList.isEmpty ? '':robotList['cover_callback_rate'].toString()+ '%',
                                       style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold),
                                     ),
                                   ),
@@ -962,6 +978,7 @@ class _TradeState extends State<Trade> {
               ),
             ),
           ),
+            if(isLoading)LoaderScroll(),
           ],
         ),
       ),
@@ -970,7 +987,7 @@ class _TradeState extends State<Trade> {
           children: [
             Expanded(
               child: RaisedButton(
-                onPressed: () {
+                onPressed: isLoading?null:() {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => robotList==null ||robotList.isEmpty? StartUp(widget.url,widget.type,widget.marketId): TradeDetails(widget.url,widget.onChangeLanguage,robotList['id'],robotList['first_order_value'],robotList['max_order_count'],robotList['stop_profit_rate'],robotList['stop_profit_callback_rate'],robotList['cover_rate'],robotList['cover_callback_rate'],robotList['recycle_status'],robotList['status'])),).then((value) => initializeData()
@@ -983,7 +1000,7 @@ class _TradeState extends State<Trade> {
             ),
             Expanded(
               child: RaisedButton(
-                onPressed: () {
+                onPressed: isLoading?null:() {
                   if(robotList==null || robotList.isEmpty)
                   AwesomeDialog(
                     context: context,

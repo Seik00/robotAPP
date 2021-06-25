@@ -80,6 +80,32 @@ class _QuantityState extends State<Quantity>
 
   }
 
+  getLocalStorage()async{
+    final prefs = await SharedPreferences.getInstance();
+
+    var tempList = prefs.getString('marketList');
+    if (tempList!=null) {
+      setState(() {
+        dataList = json.decode(tempList);
+      });
+    }
+    startLoop();
+
+  }
+
+  getLocalStorage2()async{
+    final prefs = await SharedPreferences.getInstance();
+
+    var tempList = prefs.getString('marketList2');
+    if (tempList!=null) {
+      setState(() {
+        dataList2 = json.decode(tempList);
+      });
+    }
+    startLoop2();
+
+  }
+
    initializeData() async {
       final prefs = await SharedPreferences.getInstance();
       var token = prefs.getString('token');
@@ -88,23 +114,25 @@ class _QuantityState extends State<Quantity>
         'platform': 'binance',
         'type': 'spot',
       };
-      print(body);
+      // print(body);
+      print('part1:' + count.toString());
       var uri = Uri.https(Config().url2, 'api/trade-robot/marketList', body);
    
       var response = await http.get(uri, headers: {
         'Authorization': 'Bearer $token'
       }).timeout(new Duration(seconds: 10));
       var contentData = json.decode(response.body);
-      print(contentData);
+      // print(contentData);
       try {
         if(contentData != null){
-        if (contentData['code'] == 0) {
-           if (this.mounted) {
-              setState(() {
-                dataList = contentData['data'];
-              });
-            }
-        }
+          if (contentData['code'] == 0) {
+            if (this.mounted) {
+                setState(() {
+                  dataList = contentData['data'];
+                  prefs.setString('marketList', json.encode(dataList));
+                });
+              }
+          }
         } 
         return true;
       } catch (e) {
@@ -122,23 +150,24 @@ class _QuantityState extends State<Quantity>
         'platform': 'huobi',
         'type': 'spot',
       };
-      print(body);
+      // print(body);
       var uri = Uri.https(Config().url2, 'api/trade-robot/marketList', body);
 
       var response = await http.get(uri, headers: {
         'Authorization': 'Bearer $token'
       }).timeout(new Duration(seconds: 10));
       var contentData = json.decode(response.body);
-      print(contentData);
+      print('part2:' + count.toString());
       try {
         if(contentData != null){
-        if (contentData['code'] == 0) {
-          if (this.mounted) {
-            setState(() {
-              dataList2 = contentData['data'];
-            });
+          if (contentData['code'] == 0) {
+            if (this.mounted) {
+              setState(() {
+                dataList2 = contentData['data'];
+                prefs.setString('marketList2', json.encode(dataList2));
+              });
+            }
           }
-        }
         } 
         return true;
       } catch (e) {
@@ -155,7 +184,7 @@ class _QuantityState extends State<Quantity>
     if (this.mounted) {
       if (contentData['code'] == 0) {
         setState(() {
-          print(contentData['data'].length);
+          // print(contentData['data'].length);
           coin = contentData['data'].toList();
           usdt = coin.singleWhere((element) =>
               element['asset'] == 'USDT', orElse: () {
@@ -177,7 +206,8 @@ class _QuantityState extends State<Quantity>
       'platform': 'binance',
     };
     getAPIInfo(bodyUSDT);
-    startLoop();
+    getLocalStorage();
+    // startLoop();
   }
 
  
@@ -200,10 +230,14 @@ class _QuantityState extends State<Quantity>
             backgroundColor: Color(0xff474c56),
             bottom: TabBar(
                 onTap: (index) {
+                  setState(() {
+                    _timer.cancel();
+                    count = 0;
+                  });
                   if(index == 0){
                     startLoop();
-                  }else{
-                    startLoop2();
+                  }else if(index == 1){
+                    getLocalStorage2();
                   }
                 },
               tabs: [
@@ -213,6 +247,7 @@ class _QuantityState extends State<Quantity>
             ),
           ),
           body:TabBarView(
+            physics: NeverScrollableScrollPhysics(),
             children: [
               Container(
                 child:  dataList == null || dataList.isEmpty ?Center(child: CircularProgressIndicator()):
@@ -242,10 +277,11 @@ class _QuantityState extends State<Quantity>
                         itemBuilder: (BuildContext ctxt, int index) {
                         return GestureDetector(
                            onTap: (){
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => Trade(widget.url,widget.onChangeLanguage,type,dataList[index]['id'],dataList[index]['market_name'],dataList[index]['market_name'])),
-                              );
+                            _timer.cancel();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Trade(widget.url,widget.onChangeLanguage,type,dataList[index]['id'],dataList[index]['market_name'],dataList[index]['market_name'])),
+                            ).then((value) => startLoop());
                           },
                           child: Container(
                                 padding: EdgeInsets.all(10),
@@ -328,10 +364,11 @@ class _QuantityState extends State<Quantity>
                 itemBuilder: (BuildContext ctxt, int index) {
                 return GestureDetector(
                    onTap: (){
+                      _timer.cancel();
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => Trade(widget.url,widget.onChangeLanguage,type2,dataList2[index]['id'],dataList2[index]['market_name'],dataList[index]['market_name'])),
-                      );
+                      ).then((value) => startLoop2());
                   },
                   child: Container(
                         padding: EdgeInsets.all(10),

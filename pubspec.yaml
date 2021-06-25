@@ -53,6 +53,7 @@ dev_dependencies:
   package_info: ^0.4.3+4
   flutter_hms_gms_availability: ^1.0.0
   firebase_messaging:
+  flutter_spinkit: "^4.1.2"
 
 flutter:
   uses-material-design: true

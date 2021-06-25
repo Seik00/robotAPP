@@ -135,7 +135,9 @@ class _ServicesState extends State<Services>
 
   @override
   void dispose() {
-    _timer.cancel();
+    if (_timer!=null) {
+      _timer.cancel();
+    }
 
     super.dispose();
   }
@@ -735,7 +737,7 @@ class _ServicesState extends State<Services>
                                       child: Text(robotList[index]['market_name'],style: TextStyle(color: Colors.white),),
                                     ),
                                     Container(
-                                      child: Text(revenue.toStringAsFixed(3) + '%',style: TextStyle(color: Colors.white),),
+                                      child: Text(double.parse(robotList[index]['revenue']).toStringAsFixed(3) + '%',style: TextStyle(color: Colors.white),),
                                     )
                                   ],
                                 ),
@@ -787,7 +789,7 @@ class _ServicesState extends State<Services>
                                       child: Text(robotList[index]['market_name'],style: TextStyle(color: Colors.white),),
                                     ),
                                     Container(
-                                      child: Text(revenue.toStringAsFixed(3) + '%',style: TextStyle(color: Colors.white),),
+                                      child: Text(double.parse(robotList[index]['revenue']).toStringAsFixed(3) + '%',style: TextStyle(color: Colors.white),),
                                     )
                                   ],
                                 ),
