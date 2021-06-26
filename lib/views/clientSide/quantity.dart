@@ -109,6 +109,12 @@ class _QuantityState extends State<Quantity>
 
   }
 
+  dealAmount(data){
+    var jsonData = json.decode(data['robot_info']['values_str']);
+    return jsonData['deal_amount'].toString();
+
+  }
+
    initializeData() async {
       final prefs = await SharedPreferences.getInstance();
       var token = prefs.getString('token');
@@ -124,7 +130,7 @@ class _QuantityState extends State<Quantity>
         'Authorization': 'Bearer $token'
       }).timeout(new Duration(seconds: 10));
       var contentData = json.decode(response.body);
-      // print(contentData);
+
       try {
         if(contentData != null){
           if (contentData['code'] == 0) {
@@ -353,10 +359,12 @@ class _QuantityState extends State<Quantity>
                                               ),
                                               child: 
                                               Text(
-                                              dataList[index]['robot_info']['recycle_status']==0?
-                                              MyLocalizations.of(context).getData('single'):
-                                              MyLocalizations.of(context).getData('cycle')
-                                              ,style: TextStyle(color: Colors.black,fontSize: 12),),),
+                                                dataList[index]['robot_info']['recycle_status']==0?
+                                                MyLocalizations.of(context).getData('single'):
+                                                MyLocalizations.of(context).getData('cycle')
+                                                ,style: TextStyle(color: Colors.black,fontSize: 12),
+                                              ),
+                                            ),
                                           ],
                                         ),
                                         Container(
@@ -405,7 +413,7 @@ class _QuantityState extends State<Quantity>
                                             Container(child: Text(MyLocalizations.of(context).getData('quantity'),style: TextStyle(color: Colors.grey))), 
                                             SizedBox(width: 10),
                                             Container(child: 
-                                            Text(dataList[index]['robot_info']==null?'':'',
+                                            Text(dataList[index]['robot_info']!=null?dealAmount(dataList[index]):'',
                                             style: TextStyle(color: Colors.grey))),
                                           ],
                                         ),
