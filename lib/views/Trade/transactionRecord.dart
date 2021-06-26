@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:robot/API/config.dart';
@@ -8,37 +10,50 @@ import '../../vendor/i18n/localizations.dart' show MyLocalizations;
 import 'package:skeleton_text/skeleton_text.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class TransactionRecord extends StatefulWidget {
    final url;
+   final robotID;
 
-  TransactionRecord(this.url);
+  TransactionRecord(this.url,this.robotID);
   @override
   _TransactionRecordState createState() => _TransactionRecordState();
 }
 
 class _TransactionRecordState extends State<TransactionRecord> {
   var type = '';
-  var dataList =[];
+  var dataList;
  
-  getAllInfo() async {
-    var contentData = await Request().getRequest(Config().url + "api/trade-robot/robotList", context);
-    print(contentData);
-    if(contentData != null){
+  initializeData() async {
+      final prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString('token');
+
+      var body = {
+        'robot_id': widget.robotID.toString(),
+      };
+      print(body);
+      var uri = Uri.https(Config().url2, 'api/trade-robot/log', body);
+   
+      var response = await http.get(uri, headers: {
+        'Authorization': 'Bearer $token'
+      }).timeout(new Duration(seconds: 10));
+      var contentData = json.decode(response.body);
+        print(contentData);
       if (contentData['code'] == 0) {
-          setState(() {
-             dataList = contentData['data'];
-            print(dataList);
-          });
+        setState(() {
+           dataList = contentData['data']['data'];
+      
+        });
       }
-    }
+      
   }
 
 
   @override
   void initState() {
     super.initState();
-    getAllInfo();
+    initializeData();
   }
 
 
@@ -87,13 +102,14 @@ class _TransactionRecordState extends State<TransactionRecord> {
                             child: 
                             Container(
                                alignment: Alignment.centerLeft,
-                              child: Text(MyLocalizations.of(context).getData('transaction'),style: TextStyle(color: Colors.white,fontSize: 20),))),
+                              child: Text(MyLocalizations.of(context).getData('log'),style: TextStyle(color: Colors.white,fontSize: 20),))),
                           
                         ],
                       ),
                     ],
                   ),
                 ),
+                dataList==null?Container():
                 ListView.builder(
                   primary: false,
                   shrinkWrap: true,
@@ -114,11 +130,10 @@ class _TransactionRecordState extends State<TransactionRecord> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(dataList[index]['market_name'],style: TextStyle(color: Colors.white,fontSize: 18),),
+                                  Text(dataList[index]['platform'],style: TextStyle(color: Colors.white,fontSize: 18),),
                                   SizedBox(height:5),
-                                  Text(double.parse(dataList[index]['revenue']).toStringAsFixed(3),style: TextStyle(color: Colors.white,fontSize: 20)),
+                                  Text(dataList[index]['content'],style: TextStyle(color: Colors.white,fontSize: 14)),
                                   SizedBox(height:5),
-                                  Text(MyLocalizations.of(context).getData('average_buy_in'),style: TextStyle(color: Colors.white)),
                                 ],
                               ),
                             ),
@@ -137,65 +152,6 @@ class _TransactionRecordState extends State<TransactionRecord> {
                                       ],
                                     )),
                                   SizedBox(height:5),
-                                   Container(
-                                    alignment: Alignment.bottomLeft,
-                                    padding: EdgeInsets.only(left:15),
-                                    child: Row(
-                                      children: [
-                                        Text(MyLocalizations.of(context).getData('first_buy_in_amount')+ ' : ',style: TextStyle(color: Colors.white70)),
-                                        Text(dataList[index]['first_order_value'].toString()+ ' USDT',style: TextStyle(color: Colors.white70)),
-                                      ],
-                                    )),
-                                    SizedBox(height:5),
-                                    Container(
-                                    alignment: Alignment.bottomLeft,
-                                    padding: EdgeInsets.only(left:15),
-                                    child: Row(
-                                      children: [
-                                        Text(MyLocalizations.of(context).getData('numbers_of_cover_up')+ ' : ',style: TextStyle(color: Colors.white70)),
-                                        Text(dataList[index]['max_order_count'].toString(),style: TextStyle(color: Colors.white70)),
-                                      ],
-                                    )),
-                                    SizedBox(height:5),
-                                    Container(
-                                    alignment: Alignment.bottomLeft,
-                                    padding: EdgeInsets.only(left:15),
-                                    child: Row(
-                                      children: [
-                                        Text(MyLocalizations.of(context).getData('take_profit_ratio')+ ' : ',style: TextStyle(color: Colors.white70)),
-                                        Text(dataList[index]['stop_profit_rate'].toString()+ '%',style: TextStyle(color: Colors.white70)),
-                                      ],
-                                    )),
-                                    SizedBox(height:5),
-                                    Container(
-                                    alignment: Alignment.bottomLeft,
-                                    padding: EdgeInsets.only(left:15),
-                                    child: Row(
-                                      children: [
-                                        Text(MyLocalizations.of(context).getData('earnings_callback')+ ' : ',style: TextStyle(color: Colors.white70)),
-                                        Text(dataList[index]['stop_profit_callback_rate'].toString()+ '%',style: TextStyle(color: Colors.white70)),
-                                      ],
-                                    )),
-                                    SizedBox(height:5),
-                                    Container(
-                                    alignment: Alignment.bottomLeft,
-                                    padding: EdgeInsets.only(left:15),
-                                    child: Row(
-                                      children: [
-                                        Text(MyLocalizations.of(context).getData('margin_call_drop')+ ' : ',style: TextStyle(color: Colors.white70)),
-                                        Text(dataList[index]['cover_rate'].toString()+ '%',style: TextStyle(color: Colors.white70)),
-                                      ],
-                                    )),
-                                    SizedBox(height:5),
-                                    Container(
-                                    alignment: Alignment.bottomLeft,
-                                    padding: EdgeInsets.only(left:15),
-                                    child: Row(
-                                      children: [
-                                        Text(MyLocalizations.of(context).getData('buy_in_callback')+ ' : ',style: TextStyle(color: Colors.white70)),
-                                        Text(dataList[index]['cover_callback_rate'].toString()+ '%',style: TextStyle(color: Colors.white70)),
-                                      ],
-                                    )),
                                 ],
                               ),
                             ],

@@ -308,63 +308,63 @@ class _SettingsState extends State<Settings>
                                   ),
                                 ),
                               ),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => TransactionLog(widget.url,robotList[0]['id'])),
-                                  );
-                                },
-                                child: Container(
-                                  decoration: new BoxDecoration(
-                                    color: Color(0xff595c64),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  margin: EdgeInsets.only(left:10,right:10,bottom: 10),
-                                  child: Row(
-                                    children: <Widget>[
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                        ),
-                                        margin: EdgeInsets.only(right: 20),
-                                        padding: EdgeInsets.all(10),
-                                        child: Image(
-                                          image: AssetImage(
-                                              "lib/assets/img/transcation.png"),
-                                          height: 30,
-                                          width: 40,
-                                        )
-                                      ),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Container(
-                                              child: Text(
-                                                'Log',
-                                                style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.end,
-                                          children: <Widget>[
-                                            Container(
-                                                child: (Icon(
-                                                    Icons.chevron_right_outlined,color: Colors.white,))),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                              // InkWell(
+                              //   onTap: () {
+                              //     Navigator.push(
+                              //       context,
+                              //       MaterialPageRoute(
+                              //           builder: (context) => TransactionLog(widget.url,robotList[0]['id'])),
+                              //     );
+                              //   },
+                              //   child: Container(
+                              //     decoration: new BoxDecoration(
+                              //       color: Color(0xff595c64),
+                              //       borderRadius: BorderRadius.circular(10),
+                              //     ),
+                              //     margin: EdgeInsets.only(left:10,right:10,bottom: 10),
+                              //     child: Row(
+                              //       children: <Widget>[
+                              //         Container(
+                              //           decoration: BoxDecoration(
+                              //             shape: BoxShape.circle,
+                              //           ),
+                              //           margin: EdgeInsets.only(right: 20),
+                              //           padding: EdgeInsets.all(10),
+                              //           child: Image(
+                              //             image: AssetImage(
+                              //                 "lib/assets/img/transcation.png"),
+                              //             height: 30,
+                              //             width: 40,
+                              //           )
+                              //         ),
+                              //         Expanded(
+                              //           child: Column(
+                              //             crossAxisAlignment:
+                              //                 CrossAxisAlignment.start,
+                              //             children: <Widget>[
+                              //               Container(
+                              //                 child: Text(
+                              //                   'Log',
+                              //                   style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
+                              //                 ),
+                              //               ),
+                              //             ],
+                              //           ),
+                              //         ),
+                              //         Expanded(
+                              //           child: Column(
+                              //             crossAxisAlignment: CrossAxisAlignment.end,
+                              //             children: <Widget>[
+                              //               Container(
+                              //                   child: (Icon(
+                              //                       Icons.chevron_right_outlined,color: Colors.white,))),
+                              //             ],
+                              //           ),
+                              //         ),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
                               InkWell(
                                 onTap: () {
                                   Navigator.push(

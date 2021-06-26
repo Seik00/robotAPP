@@ -129,63 +129,63 @@ class _SecurityCenterState extends State<SecurityCenter>
                           ),
                         ),
                         SizedBox(height: 20),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => ChangePwd(widget.url)),
-                            );
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(bottom: 10, top: 10),
-                            child: Row(
-                              children: <Widget>[
-                                Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                  ),
-                                  margin: EdgeInsets.only(right: 20),
-                                  padding: EdgeInsets.all(10),
-                                  child: Image(
-                                    image: AssetImage(
-                                        "lib/assets/img/me_team.png"),
-                                    height: 30,
-                                    width: 40,
-                                  )
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Container(
-                                        child: Text(
-                                          MyLocalizations.of(context)
-                                              .getData('change_login_pwd'),
-                                          style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      Container(
-                                          child: (Icon(
-                                              Icons.chevron_right_outlined,color: Colors.white,))),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Divider(
-                          height: 1,
-                          color: Colors.grey[400],
-                        ),
+                        // InkWell(
+                        //   onTap: () {
+                        //     Navigator.push(
+                        //       context,
+                        //       MaterialPageRoute(builder: (context) => ChangePwd(widget.url)),
+                        //     );
+                        //   },
+                        //   child: Container(
+                        //     margin: EdgeInsets.only(bottom: 10, top: 10),
+                        //     child: Row(
+                        //       children: <Widget>[
+                        //         Container(
+                        //           decoration: BoxDecoration(
+                        //             shape: BoxShape.circle,
+                        //           ),
+                        //           margin: EdgeInsets.only(right: 20),
+                        //           padding: EdgeInsets.all(10),
+                        //           child: Image(
+                        //             image: AssetImage(
+                        //                 "lib/assets/img/me_team.png"),
+                        //             height: 30,
+                        //             width: 40,
+                        //           )
+                        //         ),
+                        //         Expanded(
+                        //           child: Column(
+                        //             crossAxisAlignment:
+                        //                 CrossAxisAlignment.start,
+                        //             children: <Widget>[
+                        //               Container(
+                        //                 child: Text(
+                        //                   MyLocalizations.of(context)
+                        //                       .getData('change_login_pwd'),
+                        //                   style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
+                        //                 ),
+                        //               ),
+                        //             ],
+                        //           ),
+                        //         ),
+                        //         Expanded(
+                        //           child: Column(
+                        //             crossAxisAlignment: CrossAxisAlignment.end,
+                        //             children: <Widget>[
+                        //               Container(
+                        //                   child: (Icon(
+                        //                       Icons.chevron_right_outlined,color: Colors.white,))),
+                        //             ],
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
+                        // Divider(
+                        //   height: 1,
+                        //   color: Colors.grey[400],
+                        // ),
                         InkWell(
                           onTap: () {
                             _showLanguages();

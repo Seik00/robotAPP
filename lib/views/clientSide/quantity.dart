@@ -32,9 +32,12 @@ class _QuantityState extends State<Quantity>
   var bodyUSDT;
   List coin;
   var usdt;
+  var huobi;
+  var money;
   var coinUsdt ='USDT';
   Timer _timer;
   int count= 0;
+  var info;
 
   startLoop(){
     const oneSec = const Duration(seconds: 1);
@@ -114,7 +117,6 @@ class _QuantityState extends State<Quantity>
         'platform': 'binance',
         'type': 'spot',
       };
-      // print(body);
       print('part1:' + count.toString());
       var uri = Uri.https(Config().url2, 'api/trade-robot/marketList', body);
    
@@ -130,8 +132,26 @@ class _QuantityState extends State<Quantity>
                 setState(() {
                   dataList = contentData['data'];
                   prefs.setString('marketList', json.encode(dataList));
+                  
+                  //info = json.encode(coin[0]['robot_info']['values_str']);
+                  
+                  // for(int i= 0; i<dataList.length; i++){
+                  //    info = json.decode(dataList[i]['robot_info']['values_str']);
+
+                  //    if(contentData['data']['robot_info']==null){
+                  //       coin = contentData['data']['robot_info'].toList();
+                  //       //info = json.decode(coin);
+                  //       print(coin);
+                  //     }else{
+                  //       print('jibai');
+                  //     }
+                  // }
+                 
+                  
                 });
+                
               }
+              
           }
         } 
         return true;
@@ -150,7 +170,6 @@ class _QuantityState extends State<Quantity>
         'platform': 'huobi',
         'type': 'spot',
       };
-      // print(body);
       var uri = Uri.https(Config().url2, 'api/trade-robot/marketList', body);
 
       var response = await http.get(uri, headers: {
@@ -182,20 +201,21 @@ class _QuantityState extends State<Quantity>
     var token = prefs.getString('token');
     var contentData = await Request().postRequest(Config().url+"api/trade-account/accountBalance", bodyData, token, context);
     if (this.mounted) {
-      if (contentData['code'] == 0) {
         setState(() {
-          // print(contentData['data'].length);
-          coin = contentData['data'].toList();
-          usdt = coin.singleWhere((element) =>
-              element['asset'] == 'USDT', orElse: () {
-                return null;
-            });
+          
+          money = contentData;
+          print(money);
+          // coin = contentData['data'].toList();
+          // usdt = coin.singleWhere((element) =>
+          //     element['asset'] == 'USDT', orElse: () {
+          //       return null;
+          //   });
 
-            print(usdt);
+          //   print('------');
+          //   print(usdt);
+          //   print('------');
         });
-        } else {
         
-        }
     }
   }
 
@@ -235,9 +255,13 @@ class _QuantityState extends State<Quantity>
                     count = 0;
                   });
                   if(index == 0){
+                    getAPIInfo(bodyUSDT = {'platform': 'binance',});
                     startLoop();
+                    print(money['data']);
                   }else if(index == 1){
+                    getAPIInfo(bodyUSDT = {'platform': 'huobi',});
                     getLocalStorage2();
+                    print(money['data']);
                   }
                 },
               tabs: [
@@ -263,9 +287,10 @@ class _QuantityState extends State<Quantity>
                         child: Row(
                           children: [
                             Text(MyLocalizations.of(context).getData('usdt_balance')),
-                            usdt == null?
+                            money ==null?Text(''):
+                            money['code'] == 1?
                             Text('0.00'):
-                            Text(usdt['free']),
+                            Text(money['data'].toString()),
                           ],
                         ),
                       ),
@@ -278,9 +303,14 @@ class _QuantityState extends State<Quantity>
                         return GestureDetector(
                            onTap: (){
                             _timer.cancel();
-                            Navigator.push(
+                            dataList[index]['robot_info'] == null?
+                             Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) => Trade(widget.url,widget.onChangeLanguage,type,dataList[index]['id'],dataList[index]['market_name'],dataList[index]['market_name'])),
+                            ).then((value) => startLoop()):
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Trade(widget.url,widget.onChangeLanguage,type,dataList[index]['id'],dataList[index]['market_name'],dataList[index]['robot_info']['id'])),
                             ).then((value) => startLoop());
                           },
                           child: Container(
@@ -309,15 +339,36 @@ class _QuantityState extends State<Quantity>
                                         //     width: 20,
                                         //   ),
                                         // ),
-                                        Container(
-                                          child: Text(dataList[index]['market_name'],style: TextStyle(color: Colors.grey),),),
+                                        Row(
+                                          children: [
+                                            Container(
+                                              child: Text(dataList[index]['market_name'],style: TextStyle(color: Colors.white),),),
+                                            SizedBox(width:10),
+                                            dataList[index]['robot_info']==null?Container():
+                                            Container(
+                                              padding: EdgeInsets.all(5),
+                                              decoration: BoxDecoration(
+                                                color: Colors.yellowAccent,
+                                                borderRadius: BorderRadius.circular(3),
+                                              ),
+                                              child: 
+                                              Text(
+                                              dataList[index]['robot_info']['recycle_status']==0?
+                                              MyLocalizations.of(context).getData('single'):
+                                              MyLocalizations.of(context).getData('cycle')
+                                              ,style: TextStyle(color: Colors.black,fontSize: 12),),),
+                                          ],
+                                        ),
                                         Container(
                                           padding: EdgeInsets.all(10),
                                           decoration: new BoxDecoration(
                                             color: Colors.yellowAccent,
                                             borderRadius: BorderRadius.circular(3),
                                           ),
-                                          child: Text('0.00%'),
+                                          child: 
+                                          Text(
+                                            dataList[index]['robot_info'] ==null?'0.00%':
+                                            double.parse(dataList[index]['robot_info']['revenue']).toStringAsFixed(2)+'%')
                                         )
                                       ],
                                     ),
@@ -340,8 +391,31 @@ class _QuantityState extends State<Quantity>
                                             Container(child: Text(MyLocalizations.of(context).getData('floating'),style: TextStyle(color: Colors.grey))),
                                              SizedBox(width: 10),
                                             double.parse(dataList[index]['change']) > 0?
-                                            Text(dataList[index]['change']+'%',style: TextStyle(color: Colors.greenAccent)):
-                                            Text(dataList[index]['change']+'%',style: TextStyle(color: Colors.redAccent)),
+                                            Text(double.parse(dataList[index]['change']).toStringAsFixed(2)+'%',style: TextStyle(color: Colors.greenAccent)):
+                                            Text(double.parse(dataList[index]['change']).toStringAsFixed(2)+'%',style: TextStyle(color: Colors.redAccent)),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Container(child: Text(MyLocalizations.of(context).getData('quantity'),style: TextStyle(color: Colors.grey))), 
+                                            SizedBox(width: 10),
+                                            Container(child: 
+                                            Text(dataList[index]['robot_info']==null?'':'',
+                                            style: TextStyle(color: Colors.grey))),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Container(child: Text(MyLocalizations.of(context).getData('floating'),style: TextStyle(color: Colors.grey))),
+                                             SizedBox(width: 10),
+                                            double.parse(dataList[index]['change']) > 0?
+                                            Text(double.parse(dataList[index]['change']).toStringAsFixed(2)+'%',style: TextStyle(color: Colors.greenAccent)):
+                                            Text(double.parse(dataList[index]['change']).toStringAsFixed(2)+'%',style: TextStyle(color: Colors.redAccent)),
                                           ],
                                         ),
                                       ],
@@ -357,87 +431,133 @@ class _QuantityState extends State<Quantity>
                 ),
               ),
               Container(
-                child:  dataList2 == null || dataList2.isEmpty ?Center(child: CircularProgressIndicator()):ListView.builder(
-                primary: false,
-                shrinkWrap: true,
-                itemCount: dataList2.length,
-                itemBuilder: (BuildContext ctxt, int index) {
-                return GestureDetector(
-                   onTap: (){
-                      _timer.cancel();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Trade(widget.url,widget.onChangeLanguage,type2,dataList2[index]['id'],dataList2[index]['market_name'],dataList[index]['market_name'])),
-                      ).then((value) => startLoop2());
-                  },
-                  child: Container(
-                        padding: EdgeInsets.all(10),
-                        margin: EdgeInsets.all(10),
-                        decoration: new BoxDecoration(
-                        color: Color(0xff595c64),
-                        borderRadius: BorderRadius.circular(10),
+                child:  dataList2 == null || dataList2.isEmpty ?Center(child: CircularProgressIndicator()):
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.yellowAccent,
                         ),
-                        child: Column(
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.all(10),
+                        child: Row(
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                // Container(
-                                //   decoration: BoxDecoration(
-                                //     shape: BoxShape.circle,
-                                //   ),
-                                //   margin: EdgeInsets.only(right: 20),
-                                //   padding: EdgeInsets.all(10),
-                                //   child:  Image(
-                                //     image: NetworkImage(
-                                //       dataList[index]['img_url']
-                                //       ),
-                                //     height: 20,
-                                //     width: 20,
-                                //   ),
-                                // ),
-                                Container(
-                                  child: Text(dataList2[index]['market_name'],style: TextStyle(color: Colors.grey),),),
-                                Container(
-                                  padding: EdgeInsets.all(10),
-                                  decoration: new BoxDecoration(
-                                    color: Colors.yellowAccent,
-                                    borderRadius: BorderRadius.circular(3),
-                                  ),
-                                  child: Text('0.00%'),
-                                )
-                              ],
-                            ),
-                            Divider(
-                              height: 10,
-                              color: Colors.grey[400],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                 Row(
-                                  children: [
-                                    Container(child: Text(MyLocalizations.of(context).getData('market_price'),style: TextStyle(color: Colors.grey))), 
-                                    SizedBox(width: 10),
-                                    Container(child: Text(dataList2[index]['price'],style: TextStyle(color: Colors.grey))),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Container(child: Text(MyLocalizations.of(context).getData('floating'),style: TextStyle(color: Colors.grey))),
-                                      SizedBox(width: 10),
-                                    double.parse(dataList2[index]['change']) > 0?
-                                    Text(dataList2[index]['change']+'%',style: TextStyle(color: Colors.greenAccent)):
-                                    Text(dataList2[index]['change']+'%',style: TextStyle(color: Colors.redAccent)),
-                                  ],
-                                ),
-                              ],
-                            ),
+                            Text(MyLocalizations.of(context).getData('usdt_balance')),
+                            money ==null?Text(''):
+                            money['code'] == 1?
+                            Text('0.00'):
+                            Text(money['data'].toString()),
                           ],
                         ),
                       ),
-                );
-                }),
+                      Container(
+                        child: ListView.builder(
+                        primary: false,
+                        shrinkWrap: true,
+                        itemCount: dataList2.length,
+                        itemBuilder: (BuildContext ctxt, int index) {
+                        return GestureDetector(
+                           onTap: (){
+                              _timer.cancel();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => Trade(widget.url,widget.onChangeLanguage,type2,dataList2[index]['id'],dataList2[index]['market_name'],dataList[index]['market_name'])),
+                              ).then((value) => startLoop2());
+                          },
+                          child: Container(
+                                padding: EdgeInsets.all(10),
+                                margin: EdgeInsets.all(10),
+                                decoration: new BoxDecoration(
+                                color: Color(0xff595c64),
+                                borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        // Container(
+                                        //   decoration: BoxDecoration(
+                                        //     shape: BoxShape.circle,
+                                        //   ),
+                                        //   margin: EdgeInsets.only(right: 20),
+                                        //   padding: EdgeInsets.all(10),
+                                        //   child:  Image(
+                                        //     image: NetworkImage(
+                                        //       dataList[index]['img_url']
+                                        //       ),
+                                        //     height: 20,
+                                        //     width: 20,
+                                        //   ),
+                                        // ),
+                                       Row(
+                                          children: [
+                                            Container(
+                                              child: Text(dataList2[index]['market_name'],style: TextStyle(color: Colors.white),),),
+                                            SizedBox(width:10),
+                                            dataList2[index]['robot_info']==null?Container():
+                                            Container(
+                                              padding: EdgeInsets.all(5),
+                                              decoration: BoxDecoration(
+                                                color: Colors.yellowAccent,
+                                                borderRadius: BorderRadius.circular(3),
+                                              ),
+                                              child: 
+                                              Text(
+                                              dataList2[index]['robot_info']['recycle_status']==0?
+                                              MyLocalizations.of(context).getData('single'):
+                                              MyLocalizations.of(context).getData('cycle')
+                                              ,style: TextStyle(color: Colors.black,fontSize: 12),),),
+                                          ],
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.all(10),
+                                          decoration: new BoxDecoration(
+                                            color: Colors.yellowAccent,
+                                            borderRadius: BorderRadius.circular(3),
+                                          ),
+                                          child: 
+                                          Text(
+                                            dataList2[index]['robot_info'] ==null?'0.00%':
+                                            double.parse(dataList2[index]['robot_info']['revenue']).toStringAsFixed(2)+'%')
+                                        )
+                                      ],
+                                    ),
+                                    Divider(
+                                      height: 10,
+                                      color: Colors.grey[400],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                         Row(
+                                          children: [
+                                            Container(child: Text(MyLocalizations.of(context).getData('market_price'),style: TextStyle(color: Colors.grey))), 
+                                            SizedBox(width: 10),
+                                            Container(child: Text(dataList2[index]['price'],style: TextStyle(color: Colors.grey))),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Container(child: Text(MyLocalizations.of(context).getData('floating'),style: TextStyle(color: Colors.grey))),
+                                              SizedBox(width: 10),
+                                            double.parse(dataList2[index]['change']) > 0?
+                                            Text(double.parse(dataList2[index]['change']).toStringAsFixed(2)+'%',style: TextStyle(color: Colors.greenAccent)):
+                                            Text(double.parse(dataList2[index]['change']).toStringAsFixed(2)+'%',style: TextStyle(color: Colors.redAccent)),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                        );
+                        }),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),

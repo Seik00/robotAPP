@@ -39,9 +39,10 @@ class _TransactionLogState extends State<TransactionLog> {
         'Authorization': 'Bearer $token'
       }).timeout(new Duration(seconds: 10));
       var contentData = json.decode(response.body);
-      print(contentData);
+      
       setState(() {
-        dataList = contentData['data']['data'];
+        dataList = contentData['data'];
+        print(contentData);
       });
   }
 
@@ -105,6 +106,7 @@ class _TransactionLogState extends State<TransactionLog> {
                     ],
                   ),
                 ),
+                dataList == null ? Container():
                 ListView.builder(
                   primary: false,
                   shrinkWrap: true,

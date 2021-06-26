@@ -4,6 +4,7 @@ import 'package:robot/API/config.dart';
 import 'package:robot/API/request.dart';
 import 'package:robot/main.dart';
 import 'package:robot/views/Explore/investRecord.dart';
+import 'package:robot/views/Part/pageView.dart';
 import '../../vendor/i18n/localizations.dart' show MyLocalizations;
 import 'package:skeleton_text/skeleton_text.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -11,10 +12,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class StartUp extends StatefulWidget {
    final url;
+   final onChangeLanguage;
    final type;
    final marketId;
 
-  StartUp(this.url,this.type,this.marketId);
+  StartUp(this.url,this.onChangeLanguage,this.type,this.marketId);
   @override
   _StartUpState createState() => _StartUpState();
 }
@@ -40,6 +42,8 @@ class _StartUpState extends State<StartUp> {
   bool _hasBeenPressed3 = false;
   bool _hasBeenPressed4 = false;
   var robotList = [];
+  bool checkApiBinding = true;
+  var load = true;
 
   void _handleRadioValueChange(int value) {
     setState(() {
@@ -65,34 +69,36 @@ class _StartUpState extends State<StartUp> {
       'platform': widget.type,
     };
     getAPIInfo(body);
-    getRobotList();
   }
+
+  // getAPIInfo(bodyData) async {
+  //   print(bodyData);
+  //   print('----------');
+  //   final prefs = await SharedPreferences.getInstance();
+  //   var token = prefs.getString('token');
+  //   var contentData = await Request().postRequest(Config().url+"api/trade-account/accountBalance", bodyData, token, context);
+    
+  //   print(contentData);
+  //   setState(() {
+     
+  //   });
+  // }
 
   getAPIInfo(bodyData) async {
-    print(bodyData);
-    print('----------');
     final prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
-    var contentData = await Request().postRequest(Config().url+"api/trade-account/accountBalance", bodyData, token, context);
-    
-    print(contentData);
-    setState(() {
-     
-    });
-  }
-
-  getRobotList() async {
-    var contentData = await Request().getRequest(Config().url + "api/trade-robot/robotList", context);
-    print(contentData);
+    var contentData = await Request().postRequest(Config().url+"api/trade-account/accountInfo", bodyData, token, context);
     if(contentData != null){
-      if (contentData['code'] == 0) {
+      if (contentData['code'] != 0) {
           setState(() {
-            robotList = contentData['data'];
-            print(robotList);
+          checkApiBinding = contentData['data'];
+          print(contentData['data']);
           });
+          
       }
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -312,6 +318,7 @@ class _StartUpState extends State<StartUp> {
                                 child: GestureDetector(
                                 onTap: ()async{
                                   setState(() {
+                                    load = !load;
                                     _sendToServer();
                                   });
                                 }, 
@@ -326,10 +333,10 @@ class _StartUpState extends State<StartUp> {
                                       ),
                                       height: MediaQuery.of(context).size.height / 15,
                                       alignment: Alignment.center,
-                                      child: Text(
+                                      child: load?Text(
                                         MyLocalizations.of(context).getData('submit'),
                                         style: TextStyle(color: Colors.black),
-                                      )),
+                                      ):CircularProgressIndicator(backgroundColor: Colors.black, strokeWidth: 2,)),
                                 ),
                               ),),
                                 SizedBox(height: 30.0),
@@ -352,7 +359,7 @@ class _StartUpState extends State<StartUp> {
     return new Container(
       child: TextFormField(
         controller: firstOrderController,
-        validator: validateInput,
+        validator: validateFirst,
         autofocus: false,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
@@ -517,7 +524,7 @@ class _StartUpState extends State<StartUp> {
           onChanged: _handleRadioValueChange,
         ),
         new Text(
-          'Circular Strategy',
+          MyLocalizations.of(context).getData('single_strategy'),
           style: new TextStyle(fontSize: 16.0,color: Colors.white),
         ),
         new Radio(
@@ -526,7 +533,7 @@ class _StartUpState extends State<StartUp> {
           onChanged: _handleRadioValueChange,
         ),
         new Text(
-          'Single Strategy',
+          MyLocalizations.of(context).getData('circular_strategy'),
           style: new TextStyle(
             fontSize: 16.0,color: Colors.white
           ),
@@ -542,6 +549,15 @@ class _StartUpState extends State<StartUp> {
     return null;
   }
 
+  String validateFirst(String value) {
+    if (value.isEmpty) {
+      return MyLocalizations.of(context).getData('value_fill_in');
+    } else if (double.parse(value) < 10) {
+      return MyLocalizations.of(context).getData('minimum_10');
+    }
+    return null;
+  }
+
   postData(bodyData) async {
     final prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
@@ -550,7 +566,7 @@ class _StartUpState extends State<StartUp> {
     
     print(contentData);
     if (contentData['code'] == 0) {
-           AwesomeDialog(
+         AwesomeDialog(
             context: context,
             animType: AnimType.LEFTSLIDE,
             headerAnimationLoop: false,
@@ -559,12 +575,19 @@ class _StartUpState extends State<StartUp> {
             title: MyLocalizations.of(context).getData('success'),
             desc:MyLocalizations.of(context).getData('operation_success'),
             onDissmissCallback: () {
-              Navigator.pop(context);
+              
+              Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => TopViewing(
+                      widget.url, widget.onChangeLanguage)));
             })
           ..show();
-    } else {
-     
-    }
+    }else{
+        setState(() {
+          load = true;
+        });
+      }
     setState(() {
      
     });
@@ -575,20 +598,35 @@ class _StartUpState extends State<StartUp> {
       _key.currentState.save();
       var tmap = new Map<String, dynamic>();
       if (mounted)
-        setState(() {
-          tmap['platform'] = widget.type;
-          tmap['market_id'] = widget.marketId.toString();
-          tmap['first_order_value'] = firstOrderController.text.toString();
-          tmap['max_order_count'] = maxOrderController.text.toString();
-          tmap['stop_profit_rate'] = stopProfitRateController.text.toString();
-          tmap['stop_profit_callback_rate'] = stopProfitCallbackController.text.toString();
-          tmap['cover_rate'] = coverRateController.text.toString();
-          tmap['cover_callback_rate'] = coverCallBackRateController.text.toString();
-          tmap['recycle_status'] = _radioValue.toString();
-          print(tmap['platform']);
-          print(tmap['market_id']);
-        });
-         postData(tmap);
+        if(checkApiBinding == false){
+          AwesomeDialog(
+            context: context,
+            dialogType: DialogType.ERROR,
+            animType: AnimType.RIGHSLIDE,
+            headerAnimationLoop: false,
+            title: MyLocalizations.of(context).getData('error'),
+            desc: MyLocalizations.of(context).getData('no_bind_api'),
+            btnOkOnPress: () {},
+            btnOkText: MyLocalizations.of(context).getData('close'),
+            btnOkIcon: Icons.cancel,
+            btnOkColor: Colors.red)
+          ..show();
+        }else{
+          setState(() {
+            tmap['platform'] = widget.type;
+            tmap['market_id'] = widget.marketId.toString();
+            tmap['first_order_value'] = firstOrderController.text.toString();
+            tmap['max_order_count'] = maxOrderController.text.toString();
+            tmap['stop_profit_rate'] = stopProfitRateController.text.toString();
+            tmap['stop_profit_callback_rate'] = stopProfitCallbackController.text.toString();
+            tmap['cover_rate'] = coverRateController.text.toString();
+            tmap['cover_callback_rate'] = coverCallBackRateController.text.toString();
+            tmap['recycle_status'] = _radioValue.toString();
+            print(tmap['platform']);
+            print(tmap['market_id']);
+          });
+          postData(tmap);
+        }
     } else {
       setState(() {
         _validate = true;

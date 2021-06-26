@@ -45,7 +45,7 @@ class _ServicesState extends State<Services>
       oneSec,
       (Timer timer) async {
         // if (contentData['status']) {
-            var checkApi= await initializeData();
+            var checkApi= await getRobotList();
             if (this.mounted) {
               setState(() {
                 count++;
@@ -58,67 +58,72 @@ class _ServicesState extends State<Services>
           }
       },
     );
-
   }
 
-  initializeData() async {
-      var contentData = await Request().getRequest(Config().url + "api/market/all", context);
-      print(contentData);
+  // initializeData() async {
+  //     var contentData = await Request().getRequest(Config().url + "api/market/all", context);
+  //     print(contentData);
       
-      try {
-        if(contentData != null){
-        if (contentData['code'] == 0) {
-          if (this.mounted) {
-                setState(() {
-              coin = contentData['data']['list'][0]['ticker_list']['list'].toList();
+  //     try {
+  //       if(contentData != null){
+  //       if (contentData['code'] == 0) {
+  //         if (this.mounted) {
+  //               setState(() {
+  //             coin = contentData['data']['list'][0]['ticker_list']['list'].toList();
             
-              btc = coin.singleWhere((element) =>
-                element['coin'] == 'BTC', orElse: () {
-                  return null;
-              });
+  //             btc = coin.singleWhere((element) =>
+  //               element['coin'] == 'BTC', orElse: () {
+  //                 return null;
+  //             });
 
-              eth = coin.singleWhere((element) =>
-                element['coin'] == 'ETH', orElse: () {
-                  return null;
-              });
+  //             eth = coin.singleWhere((element) =>
+  //               element['coin'] == 'ETH', orElse: () {
+  //                 return null;
+  //             });
 
-              ltc = coin.singleWhere((element) =>
-                element['coin'] == 'LTC', orElse: () {
-                  return null;
-              });
+  //             ltc = coin.singleWhere((element) =>
+  //               element['coin'] == 'LTC', orElse: () {
+  //                 return null;
+  //             });
 
-            });
+  //           });
+  //         }
+  //       }
+  //       } 
+  //       return true;
+  //     } catch (e) {
+       
+  //       return false;
+        
+  //     }
+     
+  // }
+  
+  getRobotList() async {
+    var contentData = await Request().getRequest(Config().url + "api/trade-robot/robotList", context);
+    try {
+        if(contentData != null){
+          if (contentData['code'] == 0) {
+              if (this.mounted) {
+                setState(() {
+                robotList = contentData['data'];
+                if(robotList.isEmpty){
+                    
+                }else{
+                  revenue = double.parse(robotList[0]['revenue']);
+                  
+                }
+              });
+              }
+              
           }
         }
-        } 
         return true;
       } catch (e) {
        
         return false;
         
       }
-     
-  }
-  
-  getRobotList() async {
-    var contentData = await Request().getRequest(Config().url + "api/trade-robot/robotList", context);
-    print(contentData);
-    if(contentData != null){
-      if (contentData['code'] == 0) {
-          if (this.mounted) {
-            setState(() {
-             robotList = contentData['data'];
-             if(robotList.isEmpty){
-                
-             }else{
-               revenue = double.parse(robotList[0]['revenue']);
-              print(robotList);
-             }
-          });
-          }
-          
-      }
-    }
   }
 
   
@@ -129,8 +134,7 @@ class _ServicesState extends State<Services>
     super.initState();
     _tabController = new TabController(length: 2, vsync: this);
     // initializeData();
-    // startLoop();
-    getRobotList();
+    startLoop();
   }
 
   @override
@@ -201,7 +205,7 @@ class _ServicesState extends State<Services>
                                     ),
                                  ),
                                 SizedBox(height:5),
-                                Text(MyLocalizations.of(context).getData('api_binding'))
+                                Text(MyLocalizations.of(context).getData('api_binding'),style: TextStyle(fontSize: 12),)
                               ],
                             ),
                           ),
@@ -234,7 +238,7 @@ class _ServicesState extends State<Services>
                                     ),
                                  ),
                                  SizedBox(height:5),
-                                Text(MyLocalizations.of(context).getData('pin_manage'))
+                                Text(MyLocalizations.of(context).getData('pin_manage'),style: TextStyle(fontSize: 12))
                               ],
                             ),
                           ),
@@ -268,7 +272,7 @@ class _ServicesState extends State<Services>
                                     ),
                                  ),
                                 SizedBox(height:5),
-                                Text(MyLocalizations.of(context).getData('robot_package'))
+                                Text(MyLocalizations.of(context).getData('robot_package'),style: TextStyle(fontSize: 12))
                               ],
                             ),
                           ),
@@ -301,7 +305,7 @@ class _ServicesState extends State<Services>
                                     ),
                                  ),
                                 SizedBox(height:5),
-                                Text(MyLocalizations.of(context).getData('invite_friend'))
+                                Text(MyLocalizations.of(context).getData('invite_friend'),style: TextStyle(fontSize: 12))
                               ],
                             ),
                           ),
@@ -736,14 +740,18 @@ class _ServicesState extends State<Services>
                                     Container(
                                       child: Text(robotList[index]['market_name'],style: TextStyle(color: Colors.white),),
                                     ),
+                                    SizedBox(height: 10,),
                                     Container(
-                                      child: Text(double.parse(robotList[index]['revenue']).toStringAsFixed(3) + '%',style: TextStyle(color: Colors.white),),
+                                      child: 
+                                      robotList[index]['revenue'][0] =='-'?
+                                      Text(double.parse(robotList[index]['revenue']).toStringAsFixed(5) + '%',style: TextStyle(color: Colors.redAccent),):
+                                      Text(double.parse(robotList[index]['revenue']).toStringAsFixed(5) + '%',style: TextStyle(color: Colors.greenAccent),),
                                     )
                                   ],
                                 ),
                               ),
                               Container(
-                            child: robotList[index]['is_clean'] == 1?Text('Robot Clean',style: TextStyle(color: Colors.white)):robotList[index]['status'] == 0?(Text('Robot Pause',style: TextStyle(color: Colors.white))):Text('Robot Running',style: TextStyle(color: Colors.white)),
+                            child: robotList[index]['is_clean'] == 1?Text(MyLocalizations.of(context).getData('robot_clean'),style: TextStyle(color: Colors.white)):robotList[index]['status'] == 0?(Text(MyLocalizations.of(context).getData('robot_pause'),style: TextStyle(color: Colors.white))):Text(MyLocalizations.of(context).getData('robot_running'),style: TextStyle(color: Colors.white)),
                               )
                             ],
                           ),
@@ -788,14 +796,18 @@ class _ServicesState extends State<Services>
                                     Container(
                                       child: Text(robotList[index]['market_name'],style: TextStyle(color: Colors.white),),
                                     ),
+                                    SizedBox(height: 10,),
                                     Container(
-                                      child: Text(double.parse(robotList[index]['revenue']).toStringAsFixed(3) + '%',style: TextStyle(color: Colors.white),),
+                                      child: 
+                                      robotList[index]['revenue'][0] =='-'?
+                                      Text(double.parse(robotList[index]['revenue']).toStringAsFixed(5) + '%',style: TextStyle(color: Colors.redAccent),):
+                                      Text(double.parse(robotList[index]['revenue']).toStringAsFixed(5) + '%',style: TextStyle(color: Colors.greenAccent),),
                                     )
                                   ],
                                 ),
                               ),
                               Container(
-                            child: robotList[index]['is_clean'] == 1?Text('Robot Clean',style: TextStyle(color: Colors.white)):robotList[index]['status'] == 0?(Text('Robot Pause',style: TextStyle(color: Colors.white))):Text('Robot Running',style: TextStyle(color: Colors.white)),
+                            child: robotList[index]['is_clean'] == 1?Text(MyLocalizations.of(context).getData('robot_clean'),style: TextStyle(color: Colors.white)):robotList[index]['status'] == 0?(Text(MyLocalizations.of(context).getData('robot_pause'),style: TextStyle(color: Colors.white))):Text(MyLocalizations.of(context).getData('robot_running'),style: TextStyle(color: Colors.white)),
                               )
                             ],
                           ),

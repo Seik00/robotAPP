@@ -47,13 +47,11 @@ class _TradeState extends State<Trade> {
   void initState() {
     super.initState();
     startLoop();
-    print(widget.type);
   }
 
   @override
   void dispose() {
     _timer.cancel();
-    // startLoop();
     super.dispose();
   }
 
@@ -91,16 +89,14 @@ class _TradeState extends State<Trade> {
       // print(body);
       var uri = Uri.https(Config().url2, 'api/trade-robot/robotInfo', body);
    
-      
-      // print('--------------');
-      // print(contentData);
-      // print('---------------');
+     
       print(count);
       try {
         var response = await http.get(uri, headers: {
           'Authorization': 'Bearer $token'
         }).timeout(new Duration(seconds: 10));
         var contentData = json.decode(response.body);
+        print(contentData);
         if(contentData != null){
           if (contentData['code'] == 0) {
             if (this.mounted) {
@@ -111,6 +107,7 @@ class _TradeState extends State<Trade> {
                   price = double.parse(robotList['price']);
                   if(robotList['values_str'].length!=0){
                     info2 = json.decode(robotList['values_str']);
+                    print(info2);
                   }
               }
             });
@@ -255,6 +252,7 @@ class _TradeState extends State<Trade> {
             title: MyLocalizations.of(context).getData('success'),
             desc:MyLocalizations.of(context).getData('operation_success'),
             onDissmissCallback: () {
+              _timer.cancel();
               Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -287,6 +285,7 @@ class _TradeState extends State<Trade> {
             title: MyLocalizations.of(context).getData('success'),
             desc:MyLocalizations.of(context).getData('operation_success'),
             onDissmissCallback: () {
+            _timer.cancel();
              Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -300,6 +299,197 @@ class _TradeState extends State<Trade> {
     setState(() {
      
     });
+  }
+
+   _sendToServer() {
+      var tmap = new Map<String, dynamic>();
+      if (mounted)
+        setState(() {
+          tmap['robot_id'] = widget.robotID.toString();
+          tmap['first_order_value'] = robotList['first_order_value'].toString();
+          tmap['max_order_count'] = robotList['max_order_count'].toString();
+          tmap['stop_profit_rate'] = robotList['stop_profit_rate'].toString();
+          tmap['stop_profit_callback_rate'] = robotList['stop_profit_callback_rate'].toString();
+          tmap['cover_rate'] = robotList['cover_rate'].toString();
+          tmap['cover_callback_rate'] = robotList['cover_callback_rate'].toString();
+          tmap['recycle_status'] = '0';
+        
+        });
+         postData(tmap);
+    
+  }
+
+  postData(bodyData) async {
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    print(bodyData);
+    var contentData = await Request().postRequest(Config().url+"api/trade-robot/edit", bodyData, token, context);
+    
+    print(contentData);
+    if (contentData['code'] == 0) {
+           AwesomeDialog(
+            context: context,
+            animType: AnimType.LEFTSLIDE,
+            headerAnimationLoop: false,
+            dialogType: DialogType.SUCCES,
+            autoHide: Duration(seconds: 2),
+            title: MyLocalizations.of(context).getData('success'),
+            desc:MyLocalizations.of(context).getData('operation_success'),
+            onDissmissCallback: () {
+              _timer.cancel();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => TopViewing(
+                        widget.url, widget.onChangeLanguage)));
+              })
+          ..show();
+    } else {
+     
+    }
+    setState(() {
+     
+    });
+  }
+
+  Future<void> delete() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: AlertDialog(
+            backgroundColor: Colors.blue[100],
+            title: Center(
+              child: Icon(
+              Icons.delete, 
+              color: Colors.white,
+              size: 60,
+            ),),
+            content: Container(
+              child: Wrap(
+                children: <Widget>[
+                  Container(
+                    alignment: Alignment.center,
+                    child: Text('Clean Robot'),
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              Row(
+                children: [
+                  TextButton(
+                    child: Text('Cancel',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                    onPressed: () {
+                      Navigator.pop(context, true);
+                    },
+                  ),
+                  TextButton(
+                    child: Text('Clean',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                    onPressed: () {
+                      setState(() {
+                        var tmap = new Map<String, dynamic>();
+                        tmap['robot_id'] = widget.robotID.toString();
+                        print(tmap);
+                        deleteRobot(tmap);
+                      });
+                     
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  deleteRobot(bodyData) async {
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    print(bodyData);
+    var contentData = await Request().postRequest(Config().url+"api/trade-robot/clean", bodyData, token, context);
+    
+    print(contentData);
+    if (contentData['code'] == 0) {
+           AwesomeDialog(
+            context: context,
+            animType: AnimType.LEFTSLIDE,
+            headerAnimationLoop: false,
+            dialogType: DialogType.SUCCES,
+            autoHide: Duration(seconds: 2),
+            title: MyLocalizations.of(context).getData('success'),
+            desc:MyLocalizations.of(context).getData('operation_success'),
+            onDissmissCallback: () {
+            _timer.cancel();
+             Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => TopViewing(
+                      widget.url, widget.onChangeLanguage)));
+            })
+          ..show();
+    } else {
+     
+    }
+    setState(() {
+     
+    });
+  }
+
+  Future<void> singleStrategy() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: AlertDialog(
+            backgroundColor: Colors.blue[100],
+            title: Center(
+              child: Icon(
+              Icons.looks_one, 
+              color: Colors.white,
+              size: 60,
+            ),),
+            content: Container(
+              child: Wrap(
+                children: <Widget>[
+                  Container(
+                    alignment: Alignment.center,
+                    child: Text('Single Strategy'),
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              Row(
+                children: [
+                  TextButton(
+                    child: Text('Cancel',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                    onPressed: () {
+                      Navigator.pop(context, true);
+                    },
+                  ),
+                  TextButton(
+                    child: Text('Confirm',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                    onPressed: () {
+                      setState(() {
+                        _sendToServer();
+                      });
+                     
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -344,18 +534,19 @@ class _TradeState extends State<Trade> {
                               ),
                               onPressed: () => Navigator.pop(context, true)),
                           ),
+                         
                            GestureDetector(
                              onTap: (){
                                 _timer.cancel();
                                 Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => TransactionRecord(widget.url)),
+                                MaterialPageRoute(builder: (context) => TransactionRecord(widget.url,widget.robotID)),
                               ).then((value) => startLoop());
                              },
                              child: Container(
                               padding: EdgeInsets.only(right:10),
                               child: 
-                              Text(MyLocalizations.of(context).getData('transaction'),style: TextStyle(color: Colors.white,fontSize: 16),)),
+                              Text(MyLocalizations.of(context).getData('log'),style: TextStyle(color: Colors.white,fontSize: 16),)),
                            ),
                           
                         ],
@@ -419,8 +610,8 @@ class _TradeState extends State<Trade> {
                                     Container(
                                       child: Container(
                                         child: Text(
-                                          info2 == null  || info2 == '' ?'':
-                                          info2['deal_money'].toStringAsFixed(3),
+                                          info2 == null  || info2 == '' ?'0.00':
+                                          info2['deal_money'].toStringAsFixed(5),
                                           style: TextStyle(color: Colors.white,fontSize: 14),
                                         ),
                                       ),
@@ -444,8 +635,8 @@ class _TradeState extends State<Trade> {
                                     Container(
                                       child: Container(
                                         child: Text(
-                                          info2 == null  || info2 == '' ?'':
-                                          info2['base_price'].toStringAsFixed(3),
+                                          info2 == null  || info2 == '' ?'0.00':
+                                          info2['base_price'].toStringAsFixed(5),
                                           style: TextStyle(color: Colors.white,fontSize: 14),
                                         ),
                                       ),
@@ -469,7 +660,7 @@ class _TradeState extends State<Trade> {
                                     Container(
                                       child: Container(
                                         child: Text(
-                                          info2 == null  || info2 == '' ?'':
+                                          info2 == null  || info2 == '' ?'0':
                                            info2['order_count'].toString(),
                                           style: TextStyle(color: Colors.white,fontSize: 14),
                                         ),
@@ -501,8 +692,8 @@ class _TradeState extends State<Trade> {
                                     Container(
                                       child: Container(
                                         child: Text(
-                                          info2 == null  || info2 == '' ?'':
-                                          info2['deal_amount'].toStringAsFixed(3),
+                                          info2 == null  || info2 == '' ?'0.00':
+                                          info2['deal_amount'].toStringAsFixed(5),
                                           style: TextStyle(color: Colors.white,fontSize: 14),
                                         ),
                                       ),
@@ -526,7 +717,7 @@ class _TradeState extends State<Trade> {
                                     Container(
                                       child: Container(
                                         child: Text(
-                                          price == null ?'':
+                                          price == null ?'0.00':
                                           price.toStringAsFixed(8),
                                           style: TextStyle(color: Colors.white,fontSize: 14),
                                         ),
@@ -551,8 +742,8 @@ class _TradeState extends State<Trade> {
                                     Container(
                                       child: Container(
                                         child: Text(
-                                          info2 == null  || info2 == '' ?'':
-                                          revenue.toStringAsFixed(3) + '%',
+                                          info2 == null  || info2 == '' ?'0.00':
+                                          revenue.toStringAsFixed(5) + '%',
                                           style: TextStyle(color: Colors.white,fontSize: 14),
                                         ),
                                       ),
@@ -588,16 +779,36 @@ class _TradeState extends State<Trade> {
                             child: Column(
                               // Replace with a Row for horizontal icon + text
                               children: <Widget>[
-                                Container(
-                                   decoration: new BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(color: Colors.white,width: 3, )
-                                  ),
-                                  child: Image(
-                                    image: AssetImage(
-                                        "lib/assets/img/trade_one_shot.png"),
-                                    height: 60,
-                                    width: 60,
+                                GestureDetector(
+                                  onTap: (){
+                                    if(robotList['is_clean']==0)
+                                    info2==null? Container():
+                                    singleStrategy();
+                                    if(robotList['is_clean']==1)
+                                    AwesomeDialog(
+                                      context: context,
+                                      dialogType: DialogType.ERROR,
+                                      animType: AnimType.RIGHSLIDE,
+                                      headerAnimationLoop: false,
+                                      title: MyLocalizations.of(context).getData('error'),
+                                      desc: MyLocalizations.of(context).getData('robot_clean'),
+                                      btnOkOnPress: () {},
+                                      btnOkText: MyLocalizations.of(context).getData('close'),
+                                      btnOkIcon: Icons.cancel,
+                                      btnOkColor: Colors.red)
+                                    ..show();
+                                  },
+                                  child: Container(
+                                     decoration: new BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(color: Colors.white,width: 3, )
+                                    ),
+                                    child: Image(
+                                      image: AssetImage(
+                                          "lib/assets/img/trade_one_shot.png"),
+                                      height: 60,
+                                      width: 60,
+                                    ),
                                   ),
                                 ),
                                 SizedBox(height: 5,),
@@ -616,18 +827,38 @@ class _TradeState extends State<Trade> {
                             child: Column(
                               // Replace with a Row for horizontal icon + text
                               children: <Widget>[
-                                  Container(
-                                   decoration: new BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(color: Colors.white,width: 3, )
+                                  GestureDetector(
+                                    onTap: (){
+                                      if(robotList['is_clean']==0)
+                                      info2==null? Container():
+                                      delete();
+                                        if(robotList['is_clean']==1)
+                                        AwesomeDialog(
+                                          context: context,
+                                          dialogType: DialogType.ERROR,
+                                          animType: AnimType.RIGHSLIDE,
+                                          headerAnimationLoop: false,
+                                          title: MyLocalizations.of(context).getData('error'),
+                                          desc: MyLocalizations.of(context).getData('robot_clean'),
+                                          btnOkOnPress: () {},
+                                          btnOkText: MyLocalizations.of(context).getData('close'),
+                                          btnOkIcon: Icons.cancel,
+                                          btnOkColor: Colors.red)
+                                        ..show();
+                                    },
+                                    child: Container(
+                                     decoration: new BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(color: Colors.white,width: 3, )
+                                    ),
+                                    child: Image(
+                                      image: AssetImage(
+                                          "lib/assets/img/trade_clearance sale.png"),
+                                      height: 60,
+                                      width: 60,
+                                    ),
                                   ),
-                                  child: Image(
-                                    image: AssetImage(
-                                        "lib/assets/img/trade_clearance sale.png"),
-                                    height: 60,
-                                    width: 60,
                                   ),
-                                ),
                                 SizedBox(height: 5,),
                                 Text(MyLocalizations.of(context).getData('clearance_sale'),style: TextStyle(color:Colors.white),)
                               ],
@@ -638,7 +869,18 @@ class _TradeState extends State<Trade> {
                           child: Column(children: <Widget>[
                           FlatButton(
                             onPressed: () => {
-                              
+                              AwesomeDialog(
+                                context: context,
+                                dialogType: DialogType.WARNING,
+                                animType: AnimType.RIGHSLIDE,
+                                headerAnimationLoop: false,
+                                title: MyLocalizations.of(context).getData('coming_soon'),
+                                desc: MyLocalizations.of(context).getData('please_be_patient'),
+                                btnOkOnPress: () {},
+                                btnOkText: MyLocalizations.of(context).getData('close'),
+                                btnOkIcon: Icons.cancel,
+                                btnOkColor: Colors.orangeAccent)
+                              ..show()
                             },
                             padding: EdgeInsets.all(10.0),
                             child: Column(
@@ -988,9 +1230,10 @@ class _TradeState extends State<Trade> {
             Expanded(
               child: RaisedButton(
                 onPressed: isLoading?null:() {
+                  _timer.cancel();
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => robotList==null ||robotList.isEmpty? StartUp(widget.url,widget.type,widget.marketId): TradeDetails(widget.url,widget.onChangeLanguage,robotList['id'],robotList['first_order_value'],robotList['max_order_count'],robotList['stop_profit_rate'],robotList['stop_profit_callback_rate'],robotList['cover_rate'],robotList['cover_callback_rate'],robotList['recycle_status'],robotList['status'])),).then((value) => initializeData()
+                    MaterialPageRoute(builder: (context) => robotList==null ||robotList.isEmpty? StartUp(widget.url,widget.onChangeLanguage,widget.type,widget.marketId): TradeDetails(widget.url,widget.onChangeLanguage,robotList['id'],robotList['first_order_value'],robotList['max_order_count'],robotList['stop_profit_rate'],robotList['stop_profit_callback_rate'],robotList['cover_rate'],robotList['cover_callback_rate'],robotList['recycle_status'],robotList['status'],robotList['is_clean'])),).then((value) => startLoop()
                   );
                 },
                 color: Colors.yellowAccent,
@@ -1014,10 +1257,24 @@ class _TradeState extends State<Trade> {
                     btnOkIcon: Icons.cancel,
                     btnOkColor: Colors.red)
                   ..show();
-                  if(robotList['status']==0)
+                  if(robotList['status']==0 && robotList['is_clean']==0)
                   play();
-                  if(robotList['status']==1)
+                  if(robotList['status']==1 && robotList['is_clean']==0)
                   pause();
+
+                  if(robotList['is_clean']==1)
+                  AwesomeDialog(
+                    context: context,
+                    dialogType: DialogType.ERROR,
+                    animType: AnimType.RIGHSLIDE,
+                    headerAnimationLoop: false,
+                    title: MyLocalizations.of(context).getData('error'),
+                    desc: MyLocalizations.of(context).getData('robot_clean'),
+                    btnOkOnPress: () {},
+                    btnOkText: MyLocalizations.of(context).getData('close'),
+                    btnOkIcon: Icons.cancel,
+                    btnOkColor: Colors.red)
+                  ..show();
                 },
                 color: Colors.yellowAccent,
                 textColor: Colors.black,

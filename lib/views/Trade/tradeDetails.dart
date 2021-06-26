@@ -22,8 +22,9 @@ class TradeDetails extends StatefulWidget {
    final coverCallbackRate;
    final recycleStatus;
    final status;
+   final is_clean;
 
-  TradeDetails(this.url,this.onChangeLanguage,this.robotId,this.firstOrderValue,this.maxOrderCount,this.stopProfitRate,this.stopProfitCallbackRate,this.coverRate,this.coverCallbackRate,this.recycleStatus,this.status);
+  TradeDetails(this.url,this.onChangeLanguage,this.robotId,this.firstOrderValue,this.maxOrderCount,this.stopProfitRate,this.stopProfitCallbackRate,this.coverRate,this.coverCallbackRate,this.recycleStatus,this.status,this.is_clean);
   @override
   _TradeDetailsState createState() => _TradeDetailsState();
 }
@@ -63,6 +64,7 @@ class _TradeDetailsState extends State<TradeDetails> {
   void initState() {
     super.initState();
     getRobotInfo();
+    print(widget.is_clean);
   }
 
   getRobotInfo(){
@@ -287,19 +289,7 @@ class _TradeDetailsState extends State<TradeDetails> {
                                alignment: Alignment.centerLeft,
                               child: Text(MyLocalizations.of(context).getData('trade_details'),style: TextStyle(color: Colors.white,fontSize: 28),))),
                          
-                          Container(
-                            margin: EdgeInsets.only(right:10),
-                            child: GestureDetector(
-                              onTap: (){
-                                delete();
-                              },
-                              child: Icon(
-                                Icons.delete,
-                                color: Colors.white,
-                                size: 30,
-                              ),
-                            ),
-                          )
+                        
                           
                         ],
                       ),
@@ -573,7 +563,7 @@ class _TradeDetailsState extends State<TradeDetails> {
           onChanged: _handleRadioValueChange,
         ),
         new Text(
-          MyLocalizations.of(context).getData('circular_strategy'),
+          MyLocalizations.of(context).getData('single_strategy'),
           style: new TextStyle(fontSize: 16.0,color: Colors.white),
         ),
         new Radio(
@@ -582,7 +572,7 @@ class _TradeDetailsState extends State<TradeDetails> {
           onChanged: _handleRadioValueChange,
         ),
         new Text(
-          MyLocalizations.of(context).getData('single_strategy'),
+          MyLocalizations.of(context).getData('circular_strategy'),
           style: new TextStyle(
             fontSize: 16.0,color: Colors.white
           ),
@@ -631,18 +621,32 @@ class _TradeDetailsState extends State<TradeDetails> {
       _key.currentState.save();
       var tmap = new Map<String, dynamic>();
       if (mounted)
-        setState(() {
-          tmap['robot_id'] = widget.robotId.toString();
-          tmap['first_order_value'] = firstOrderValueController.text.toString();
-          tmap['max_order_count'] = maxOrderCountController.text.toString();
-          tmap['stop_profit_rate'] = stopProfitRateController.text.toString();
-          tmap['stop_profit_callback_rate'] = stopProfitCallbackRateController.text.toString();
-          tmap['cover_rate'] = coverRateController.text.toString();
-          tmap['cover_callback_rate'] = coverCallbackRateController.text.toString();
-          tmap['recycle_status'] = _radioValue.toString();
-        
-        });
+        if(widget.is_clean ==1){
+          AwesomeDialog(
+            context: context,
+            dialogType: DialogType.ERROR,
+            animType: AnimType.RIGHSLIDE,
+            headerAnimationLoop: false,
+            title: MyLocalizations.of(context).getData('error'),
+            desc: MyLocalizations.of(context).getData('robot_clean'),
+            btnOkOnPress: () {},
+            btnOkText: MyLocalizations.of(context).getData('close'),
+            btnOkIcon: Icons.cancel,
+            btnOkColor: Colors.red)
+          ..show();
+        }else{
+          setState(() {
+            tmap['robot_id'] = widget.robotId.toString();
+            tmap['first_order_value'] = firstOrderValueController.text.toString();
+            tmap['max_order_count'] = maxOrderCountController.text.toString();
+            tmap['stop_profit_rate'] = stopProfitRateController.text.toString();
+            tmap['stop_profit_callback_rate'] = stopProfitCallbackRateController.text.toString();
+            tmap['cover_rate'] = coverRateController.text.toString();
+            tmap['cover_callback_rate'] = coverCallbackRateController.text.toString();
+            tmap['recycle_status'] = _radioValue.toString();
+          });
          postData(tmap);
+        }
     } else {
       setState(() {
         _validate = true;
