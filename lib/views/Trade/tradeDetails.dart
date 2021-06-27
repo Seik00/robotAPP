@@ -475,19 +475,7 @@ class _TradeDetailsState extends State<TradeDetails> {
             btnOkIcon: Icons.cancel,
             btnOkColor: Colors.red)
           ..show();
-          }else if(widget.is_clean==0 && widget.showMsg == '卖出成功' && widget.valuesStr == '' )
-          AwesomeDialog(
-            context: context,
-            dialogType: DialogType.ERROR,
-            animType: AnimType.RIGHSLIDE,
-            headerAnimationLoop: false,
-            title: MyLocalizations.of(context).getData('error'),
-            desc: MyLocalizations.of(context).getData('sold'),
-            btnOkOnPress: () {},
-            btnOkText: MyLocalizations.of(context).getData('close'),
-            btnOkIcon: Icons.cancel,
-            btnOkColor: Colors.red)
-          ..show();
+          }
           else{
           setState(() {
             tmap['robot_id'] = widget.robotId.toString();

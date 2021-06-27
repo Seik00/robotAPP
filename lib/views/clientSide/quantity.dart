@@ -121,6 +121,17 @@ class _QuantityState extends State<Quantity>
 
   }
 
+  infoStatus(data){
+    var jsonData = json.decode(data['robot_info']['values_str']);
+    return jsonData['status'].toString();
+  }
+
+  infoShowMsg(data){
+    var jsonData = json.decode(data['robot_info']['values_str']);
+    return jsonData['show_msg'].toString();
+  }
+
+
    initializeData() async {
       final prefs = await SharedPreferences.getInstance();
       var token = prefs.getString('token');
@@ -337,26 +348,13 @@ class _QuantityState extends State<Quantity>
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        // Container(
-                                        //   decoration: BoxDecoration(
-                                        //     shape: BoxShape.circle,
-                                        //   ),
-                                        //   margin: EdgeInsets.only(right: 20),
-                                        //   padding: EdgeInsets.all(10),
-                                        //   child:  Image(
-                                        //     image: NetworkImage(
-                                        //       dataList[index]['img_url']
-                                        //       ),
-                                        //     height: 20,
-                                        //     width: 20,
-                                        //   ),
-                                        // ),
                                         Row(
                                           children: [
                                             Container(
                                               child: Text(dataList[index]['market_name'],style: TextStyle(color: Colors.white),),),
                                             SizedBox(width:10),
                                             dataList[index]['robot_info']==null?Container():
+                                            dataList[index]['robot_info']['status'] == 0 && dataList[index]['robot_info']['show_msg'] == '卖出成功' && dataList[index]['robot_info']['values_str'] == ''?
                                             Container(
                                               padding: EdgeInsets.all(5),
                                               decoration: BoxDecoration(
@@ -364,9 +362,21 @@ class _QuantityState extends State<Quantity>
                                                 borderRadius: BorderRadius.circular(3),
                                               ),
                                               child: 
+                                             
                                               Text(
-                                                dataList[index]['is_clean']==0 && dataList['index']['show_msg'] == '卖出成功' && dataList[index]['values_str'] == ''?
-                                                MyLocalizations.of(context).getData('sold'):
+                                                MyLocalizations.of(context).getData('sold')
+                                                ,style: TextStyle(color: Colors.black,fontSize: 12),
+                                              ),
+                                            ):
+                                            Container(
+                                              padding: EdgeInsets.all(5),
+                                              decoration: BoxDecoration(
+                                                color: Colors.yellowAccent,
+                                                borderRadius: BorderRadius.circular(3),
+                                              ),
+                                              child: 
+                                             
+                                              Text(
                                                 dataList[index]['robot_info']['recycle_status']==0?
                                                 MyLocalizations.of(context).getData('single'):
                                                 MyLocalizations.of(context).getData('cycle')
@@ -414,27 +424,49 @@ class _QuantityState extends State<Quantity>
                                       ],
                                     ),
                                     SizedBox(height: 10,),
-                                    // Row(
-                                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    //   children: [
-                                    //     Row(
-                                    //       children: [
-                                    //         Container(child: Text(MyLocalizations.of(context).getData('quantity')+ ' :',style: TextStyle(color: Colors.grey))), 
-                                    //         SizedBox(width: 5),
-                                    //         Container(child: 
-                                    //         Text(dataList[index]['robot_info']!=null?dealAmount(dataList[index]):'0.00',
-                                    //         style: TextStyle(color: Colors.grey))),
-                                    //       ],
-                                    //     ),
-                                    //     Row(
-                                    //       children: [
-                                    //         Container(child: Text(MyLocalizations.of(context).getData('amount')+ ' :',style: TextStyle(color: Colors.grey))),
-                                    //          SizedBox(width: 5),
-                                    //         Text(dataList[index]['robot_info']!=null?dealMoney(dataList[index])+' USDT':'0.00',style: TextStyle(color: Colors.grey))
-                                    //       ],
-                                    //     ),
-                                    //   ],
-                                    // ),
+                                    dataList[index]['robot_info'] ==null?
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Container(child: Text(MyLocalizations.of(context).getData('quantity')+ ' :',style: TextStyle(color: Colors.grey))), 
+                                            SizedBox(width: 5),
+                                            Container(child: 
+                                            Text('0.00',
+                                            style: TextStyle(color: Colors.grey))),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Container(child: Text(MyLocalizations.of(context).getData('amount')+ ' :',style: TextStyle(color: Colors.grey))),
+                                             SizedBox(width: 5),
+                                            Text('0.00',style: TextStyle(color: Colors.grey))
+                                          ],
+                                        ),
+                                      ],
+                                    ):
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Container(child: Text(MyLocalizations.of(context).getData('quantity')+ ' :',style: TextStyle(color: Colors.grey))), 
+                                            SizedBox(width: 5),
+                                            Container(child: 
+                                            Text( dataList[index]['robot_info']['values_str']!=''?dealAmount(dataList[index]):'0.00',
+                                            style: TextStyle(color: Colors.grey))),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Container(child: Text(MyLocalizations.of(context).getData('amount')+ ' :',style: TextStyle(color: Colors.grey))),
+                                             SizedBox(width: 5),
+                                            Text(dataList[index]['robot_info']['values_str']!=''?dealMoney(dataList[index])+' USDT':'0.00',style: TextStyle(color: Colors.grey))
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ],
                                 ),
                               ),
@@ -497,26 +529,13 @@ class _QuantityState extends State<Quantity>
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        // Container(
-                                        //   decoration: BoxDecoration(
-                                        //     shape: BoxShape.circle,
-                                        //   ),
-                                        //   margin: EdgeInsets.only(right: 20),
-                                        //   padding: EdgeInsets.all(10),
-                                        //   child:  Image(
-                                        //     image: NetworkImage(
-                                        //       dataList[index]['img_url']
-                                        //       ),
-                                        //     height: 20,
-                                        //     width: 20,
-                                        //   ),
-                                        // ),
                                        Row(
                                           children: [
                                             Container(
                                               child: Text(dataList2[index]['market_name'],style: TextStyle(color: Colors.white),),),
                                             SizedBox(width:10),
                                             dataList2[index]['robot_info']==null?Container():
+                                            dataList2[index]['robot_info']['status'] == 0 && dataList2[index]['robot_info']['show_msg'] == '卖出成功' && dataList2[index]['robot_info']['values_str'] == ''?
                                             Container(
                                               padding: EdgeInsets.all(5),
                                               decoration: BoxDecoration(
@@ -524,11 +543,27 @@ class _QuantityState extends State<Quantity>
                                                 borderRadius: BorderRadius.circular(3),
                                               ),
                                               child: 
+                                             
                                               Text(
-                                              dataList2[index]['robot_info']['recycle_status']==0?
-                                              MyLocalizations.of(context).getData('single'):
-                                              MyLocalizations.of(context).getData('cycle')
-                                              ,style: TextStyle(color: Colors.black,fontSize: 12),),),
+                                                MyLocalizations.of(context).getData('sold')
+                                                ,style: TextStyle(color: Colors.black,fontSize: 12),
+                                              ),
+                                            ):
+                                            Container(
+                                              padding: EdgeInsets.all(5),
+                                              decoration: BoxDecoration(
+                                                color: Colors.yellowAccent,
+                                                borderRadius: BorderRadius.circular(3),
+                                              ),
+                                              child: 
+                                             
+                                              Text(
+                                                dataList2[index]['robot_info']['recycle_status']==0?
+                                                MyLocalizations.of(context).getData('single'):
+                                                MyLocalizations.of(context).getData('cycle')
+                                                ,style: TextStyle(color: Colors.black,fontSize: 12),
+                                              ),
+                                            ),
                                           ],
                                         ),
                                         Container(
@@ -570,6 +605,7 @@ class _QuantityState extends State<Quantity>
                                       ],
                                     ),
                                     SizedBox(height: 10,),
+                                    dataList2[index]['robot_info'] ==null?
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
@@ -578,7 +614,7 @@ class _QuantityState extends State<Quantity>
                                             Container(child: Text(MyLocalizations.of(context).getData('quantity')+ ' :',style: TextStyle(color: Colors.grey))), 
                                             SizedBox(width: 5),
                                             Container(child: 
-                                            Text(dataList2[index]['robot_info']!=null?dealAmount(dataList2[index]):'0.00',
+                                            Text('0.00',
                                             style: TextStyle(color: Colors.grey))),
                                           ],
                                         ),
@@ -586,7 +622,28 @@ class _QuantityState extends State<Quantity>
                                           children: [
                                             Container(child: Text(MyLocalizations.of(context).getData('amount')+ ' :',style: TextStyle(color: Colors.grey))),
                                              SizedBox(width: 5),
-                                            Text(dataList2[index]['robot_info']!=null?dealMoney(dataList2[index])+' USDT':'0.00',style: TextStyle(color: Colors.grey))
+                                            Text('0.00',style: TextStyle(color: Colors.grey))
+                                          ],
+                                        ),
+                                      ],
+                                    ):
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Container(child: Text(MyLocalizations.of(context).getData('quantity')+ ' :',style: TextStyle(color: Colors.grey))), 
+                                            SizedBox(width: 5),
+                                            Container(child: 
+                                            Text( dataList2[index]['robot_info']['values_str']!=''?dealAmount(dataList2[index]):'0.00',
+                                            style: TextStyle(color: Colors.grey))),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Container(child: Text(MyLocalizations.of(context).getData('amount')+ ' :',style: TextStyle(color: Colors.grey))),
+                                             SizedBox(width: 5),
+                                            Text(dataList2[index]['robot_info']['values_str']!=''?dealMoney(dataList2[index])+' USDT':'0.00',style: TextStyle(color: Colors.grey))
                                           ],
                                         ),
                                       ],

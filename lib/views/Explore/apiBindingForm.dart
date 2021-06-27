@@ -49,7 +49,11 @@ class _ApiBindingFormState extends State<ApiBindingForm> {
     
     print(contentData);
     if(contentData != null){
-      isShow = contentData['data'];
+       setState(() {
+         isShow = contentData['data'];
+       });
+      
+
       if (contentData['code'] == 0) {
           if(contentData['data']==null){
           }else{
@@ -148,7 +152,7 @@ class _ApiBindingFormState extends State<ApiBindingForm> {
                             _inputPasspharse(),
                             SizedBox(height: 30.0),
 
-                            isShow == null?
+                            isShow == false || isShow == null?
                             Container(
                             child: GestureDetector(
                             onTap: ()async{
@@ -214,12 +218,11 @@ class _ApiBindingFormState extends State<ApiBindingForm> {
  
   _inputAPIKey() {
     return new Container(
-      child: isShow != null?
-      TextFormField(
+      child: isShow == false || isShow == null?
+       TextFormField(
         controller: apiKeyController,
         validator: validateInput,
         autofocus: false,
-        enabled: false, 
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
         contentPadding: const EdgeInsets.all(18.0),
@@ -239,31 +242,6 @@ class _ApiBindingFormState extends State<ApiBindingForm> {
         controller: apiKeyController,
         validator: validateInput,
         autofocus: false,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        decoration: new InputDecoration(
-        contentPadding: const EdgeInsets.all(18.0),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
-          borderSide: BorderSide(color: Colors.grey, width: 1),
-        ),
-        filled: true,
-        fillColor: Colors.white,
-      ),
-        keyboardType: TextInputType.text,
-        onSaved: (str) {
-          print(str);
-        },
-      ),
-    );
-  }
-
-  _inputSecretKey() {
-    return new Container(
-      child: isShow != null?
-      TextFormField(
-        controller: apiKeyController,
-        validator: validateInput,
-        autofocus: false,
         enabled: false, 
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
@@ -279,7 +257,15 @@ class _ApiBindingFormState extends State<ApiBindingForm> {
         onSaved: (str) {
           print(str);
         },
-      ):TextFormField(
+      )
+     
+    );
+  }
+
+  _inputSecretKey() {
+    return new Container(
+      child: isShow == false || isShow == null?
+      TextFormField(
         controller: secretKeyController,
         validator: validateInput,
         autofocus: false,
@@ -297,13 +283,7 @@ class _ApiBindingFormState extends State<ApiBindingForm> {
         onSaved: (str) {
           print(str);
         },
-      ),
-    );
-  }
-
-  _inputPasspharse() {
-    return new Container(
-      child: isShow == 0?
+      ):
       TextFormField(
         controller: apiKeyController,
         validator: validateInput,
@@ -323,7 +303,14 @@ class _ApiBindingFormState extends State<ApiBindingForm> {
         onSaved: (str) {
           print(str);
         },
-      ):TextFormField(
+      )
+    );
+  }
+
+  _inputPasspharse() {
+    return new Container(
+      child: isShow == false || isShow == null?
+      TextFormField(
         controller: passpharseController,
         validator: validateInput,
         autofocus: false,
@@ -341,7 +328,27 @@ class _ApiBindingFormState extends State<ApiBindingForm> {
         onSaved: (str) {
           print(str);
         },
+      ):
+      TextFormField(
+        controller: apiKeyController,
+        validator: validateInput,
+        autofocus: false,
+        enabled: false, 
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        decoration: new InputDecoration(
+        contentPadding: const EdgeInsets.all(18.0),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(25),
+          borderSide: BorderSide(color: Colors.grey, width: 1),
+        ),
+        filled: true,
+        fillColor: Colors.white,
       ),
+        keyboardType: TextInputType.text,
+        onSaved: (str) {
+          print(str);
+        },
+      )
     );
   }
   
