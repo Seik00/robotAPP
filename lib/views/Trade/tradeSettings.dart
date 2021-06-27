@@ -93,7 +93,7 @@ class _TradeSettingsState extends State<TradeSettings> {
                             onTap: (){
                                 Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => TradeDetails(widget.url,widget.onChangeLanguage,robotList[0]['id'],robotList[0]['first_order_value'],robotList[0]['max_order_count'],robotList[0]['stop_profit_rate'],robotList[0]['stop_profit_callback_rate'],robotList[0]['cover_rate'],robotList[0]['cover_callback_rate'],robotList[0]['recycle_status'],robotList[0]['status'],robotList[0]['is_clean'])),
+                                MaterialPageRoute(builder: (context) => TradeDetails(widget.url,widget.onChangeLanguage,robotList[0]['id'],robotList[0]['first_order_value'],robotList[0]['max_order_count'],robotList[0]['stop_profit_rate'],robotList[0]['stop_profit_callback_rate'],robotList[0]['cover_rate'],robotList[0]['cover_callback_rate'],robotList[0]['recycle_status'],robotList[0]['status'],robotList[0]['is_clean'],robotList[0]['show_msg'],robotList[0]['values_str'])),
                               ).then((value) => getRobotList());
                             },
                             child: Container(

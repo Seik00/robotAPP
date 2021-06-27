@@ -181,11 +181,12 @@ class _ServicesState extends State<Services>
                           child: Column(children: <Widget>[
                           FlatButton(
                             onPressed: () => {
+                               _timer.cancel(),
                                Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => ApiBinding(widget.url)),
-                              )
+                              ).then((value) => startLoop())
                             },
                             padding: EdgeInsets.all(10.0),
                             child: Column(
@@ -214,11 +215,12 @@ class _ServicesState extends State<Services>
                           child: Column(children: <Widget>[
                           FlatButton(
                             onPressed: () => {
+                              _timer.cancel(),
                                Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => PinCenter(widget.url)),
-                              )
+                              ).then((value) => startLoop())
                             },
                             padding: EdgeInsets.all(10.0),
                             child: Column(
@@ -248,11 +250,12 @@ class _ServicesState extends State<Services>
                             children: <Widget>[
                           FlatButton(
                             onPressed: () => {
+                              _timer.cancel(),
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => RobotPackage(widget.url)),
-                              )
+                              ).then((value) => startLoop())
                             },
                             padding: EdgeInsets.all(10.0),
                             child: Column(
@@ -281,11 +284,12 @@ class _ServicesState extends State<Services>
                           child: Column(children: <Widget>[
                           FlatButton(
                             onPressed: () => {
+                              _timer.cancel(),
                                Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Invitation(widget.url,widget.onChangeLanguage)),
-                              )
+                              ).then((value) => startLoop())
                             },
                             padding: EdgeInsets.all(10.0),
                             child: Column(
@@ -719,10 +723,11 @@ class _ServicesState extends State<Services>
                       // ).then((value) => getRobotList());;
                       // },
                       onTap: (){
+                      _timer.cancel();
                        Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => Trade(widget.url,widget.onChangeLanguage,robotList[index]['platform'],robotList[index]['market_id'],robotList[index]['market_name'],robotList[index]['id'])),
-                      );
+                      ).then((value) => startLoop());
                       },
                       child: Container(
                           padding: EdgeInsets.all(10),
@@ -751,7 +756,10 @@ class _ServicesState extends State<Services>
                                 ),
                               ),
                               Container(
-                            child: robotList[index]['is_clean'] == 1?Text(MyLocalizations.of(context).getData('robot_clean'),style: TextStyle(color: Colors.white)):robotList[index]['status'] == 0?(Text(MyLocalizations.of(context).getData('robot_pause'),style: TextStyle(color: Colors.white))):Text(MyLocalizations.of(context).getData('robot_running'),style: TextStyle(color: Colors.white)),
+                            child: robotList[index]['is_clean'] == 1?
+                            Text(MyLocalizations.of(context).getData('robot_clean'),style: TextStyle(color: Colors.white)):
+                            robotList[index]['status'] == 0 && robotList[index]['show_msg'] == '卖出成功' && robotList[index]['values_str'] == ''?(Text(MyLocalizations.of(context).getData('sold'),style: TextStyle(color: Colors.white))):
+                            robotList[index]['status'] == 0?(Text(MyLocalizations.of(context).getData('robot_pause'),style: TextStyle(color: Colors.white))):Text(MyLocalizations.of(context).getData('robot_running'),style: TextStyle(color: Colors.white)),
                               )
                             ],
                           ),
@@ -775,10 +783,11 @@ class _ServicesState extends State<Services>
                       // ).then((value) => getRobotList());;
                       // },
                       onTap: (){
+                      _timer.cancel();
                        Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => Trade(widget.url,widget.onChangeLanguage,robotList[index]['platform'],robotList[index]['market_id'],robotList[index]['market_name'],robotList[index]['id'])),
-                      );
+                      ).then((value) => startLoop());
                       },
                       child: Container(
                           padding: EdgeInsets.all(10),

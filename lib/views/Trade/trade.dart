@@ -797,6 +797,19 @@ class _TradeState extends State<Trade> {
                                       btnOkIcon: Icons.cancel,
                                       btnOkColor: Colors.red)
                                     ..show();
+                                    if(robotList['is_clean']==0 && robotList['show_msg'] == '卖出成功' && robotList['values_str'] == '' )
+                                    AwesomeDialog(
+                                      context: context,
+                                      dialogType: DialogType.ERROR,
+                                      animType: AnimType.RIGHSLIDE,
+                                      headerAnimationLoop: false,
+                                      title: MyLocalizations.of(context).getData('error'),
+                                      desc: MyLocalizations.of(context).getData('sold'),
+                                      btnOkOnPress: () {},
+                                      btnOkText: MyLocalizations.of(context).getData('close'),
+                                      btnOkIcon: Icons.cancel,
+                                      btnOkColor: Colors.red)
+                                    ..show();
                                   },
                                   child: Container(
                                      decoration: new BoxDecoration(
@@ -840,6 +853,19 @@ class _TradeState extends State<Trade> {
                                           headerAnimationLoop: false,
                                           title: MyLocalizations.of(context).getData('error'),
                                           desc: MyLocalizations.of(context).getData('robot_clean'),
+                                          btnOkOnPress: () {},
+                                          btnOkText: MyLocalizations.of(context).getData('close'),
+                                          btnOkIcon: Icons.cancel,
+                                          btnOkColor: Colors.red)
+                                        ..show();
+                                        if(robotList['is_clean']==0 && robotList['show_msg'] == '卖出成功' && robotList['values_str'] == '' )
+                                        AwesomeDialog(
+                                          context: context,
+                                          dialogType: DialogType.ERROR,
+                                          animType: AnimType.RIGHSLIDE,
+                                          headerAnimationLoop: false,
+                                          title: MyLocalizations.of(context).getData('error'),
+                                          desc: MyLocalizations.of(context).getData('sold'),
                                           btnOkOnPress: () {},
                                           btnOkText: MyLocalizations.of(context).getData('close'),
                                           btnOkIcon: Icons.cancel,
@@ -923,48 +949,48 @@ class _TradeState extends State<Trade> {
                       ],
                     ),
                   ),
-                   Center(
-                    child: InkWell(
-                      onTap: () {
-                      },
-                      child: Container(
-                        decoration: new BoxDecoration(
-                          color: Color(0xff595c64),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        margin: EdgeInsets.all(10),
-                        padding: EdgeInsets.all(20),
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                    child: Text(
-                                      MyLocalizations.of(context).getData('first_purchase_date'),
-                                      style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: <Widget>[
-                                  Container(
-                                      child: (Icon(
-                                          Icons.chevron_right_outlined,color: Colors.white,))),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                  //  Center(
+                  //   child: InkWell(
+                  //     onTap: () {
+                  //     },
+                  //     child: Container(
+                  //       decoration: new BoxDecoration(
+                  //         color: Color(0xff595c64),
+                  //         borderRadius: BorderRadius.circular(10),
+                  //       ),
+                  //       margin: EdgeInsets.all(10),
+                  //       padding: EdgeInsets.all(20),
+                  //       child: Row(
+                  //         children: <Widget>[
+                  //           Expanded(
+                  //             child: Column(
+                  //               crossAxisAlignment:
+                  //                   CrossAxisAlignment.start,
+                  //               children: <Widget>[
+                  //                 Container(
+                  //                   child: Text(
+                  //                     MyLocalizations.of(context).getData('first_purchase_date'),
+                  //                     style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
+                  //                   ),
+                  //                 ),
+                  //               ],
+                  //             ),
+                  //           ),
+                  //           Expanded(
+                  //             child: Column(
+                  //               crossAxisAlignment: CrossAxisAlignment.end,
+                  //               children: <Widget>[
+                  //                 Container(
+                  //                     child: (Icon(
+                  //                         Icons.chevron_right_outlined,color: Colors.white,))),
+                  //               ],
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   Container(
                   margin: EdgeInsets.all(10),
                   child: GridView.count(
@@ -1233,7 +1259,7 @@ class _TradeState extends State<Trade> {
                   _timer.cancel();
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => robotList==null ||robotList.isEmpty? StartUp(widget.url,widget.onChangeLanguage,widget.type,widget.marketId): TradeDetails(widget.url,widget.onChangeLanguage,robotList['id'],robotList['first_order_value'],robotList['max_order_count'],robotList['stop_profit_rate'],robotList['stop_profit_callback_rate'],robotList['cover_rate'],robotList['cover_callback_rate'],robotList['recycle_status'],robotList['status'],robotList['is_clean'])),).then((value) => startLoop()
+                    MaterialPageRoute(builder: (context) => robotList==null ||robotList.isEmpty? StartUp(widget.url,widget.onChangeLanguage,widget.type,widget.marketId): TradeDetails(widget.url,widget.onChangeLanguage,robotList['id'],robotList['first_order_value'],robotList['max_order_count'],robotList['stop_profit_rate'],robotList['stop_profit_callback_rate'],robotList['cover_rate'],robotList['cover_callback_rate'],robotList['recycle_status'],robotList['status'],robotList['is_clean'],robotList['show_msg'],robotList['values_str'])),).then((value) => startLoop()
                   );
                 },
                 color: Colors.yellowAccent,
@@ -1257,12 +1283,25 @@ class _TradeState extends State<Trade> {
                     btnOkIcon: Icons.cancel,
                     btnOkColor: Colors.red)
                   ..show();
-                  if(robotList['status']==0 && robotList['is_clean']==0)
+                  else if(robotList['is_clean']==0 && robotList['show_msg'] == '卖出成功' && robotList['values_str'] == '' )
+                  AwesomeDialog(
+                    context: context,
+                    dialogType: DialogType.ERROR,
+                    animType: AnimType.RIGHSLIDE,
+                    headerAnimationLoop: false,
+                    title: MyLocalizations.of(context).getData('error'),
+                    desc: MyLocalizations.of(context).getData('sold'),
+                    btnOkOnPress: () {},
+                    btnOkText: MyLocalizations.of(context).getData('close'),
+                    btnOkIcon: Icons.cancel,
+                    btnOkColor: Colors.red)
+                  ..show();
+                  else if(robotList['status']==0 && robotList['is_clean']==0)
                   play();
-                  if(robotList['status']==1 && robotList['is_clean']==0)
+                  else if(robotList['status']==1 && robotList['is_clean']==0)
                   pause();
 
-                  if(robotList['is_clean']==1)
+                  else if(robotList['is_clean']==1)
                   AwesomeDialog(
                     context: context,
                     dialogType: DialogType.ERROR,

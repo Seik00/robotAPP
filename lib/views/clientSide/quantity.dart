@@ -111,7 +111,13 @@ class _QuantityState extends State<Quantity>
 
   dealAmount(data){
     var jsonData = json.decode(data['robot_info']['values_str']);
-    return jsonData['deal_amount'].toString();
+    return jsonData['deal_amount'].toStringAsFixed(5);
+
+  }
+
+  dealMoney(data){
+    var jsonData = json.decode(data['robot_info']['values_str']);
+    return jsonData['deal_money'].toStringAsFixed(5);
 
   }
 
@@ -138,7 +144,7 @@ class _QuantityState extends State<Quantity>
                 setState(() {
                   dataList = contentData['data'];
                   prefs.setString('marketList', json.encode(dataList));
-                  
+                  print(dataList);
                   //info = json.encode(coin[0]['robot_info']['values_str']);
                   
                   // for(int i= 0; i<dataList.length; i++){
@@ -359,6 +365,8 @@ class _QuantityState extends State<Quantity>
                                               ),
                                               child: 
                                               Text(
+                                                dataList[index]['is_clean']==0 && dataList['index']['show_msg'] == '卖出成功' && dataList[index]['values_str'] == ''?
+                                                MyLocalizations.of(context).getData('sold'):
                                                 dataList[index]['robot_info']['recycle_status']==0?
                                                 MyLocalizations.of(context).getData('single'):
                                                 MyLocalizations.of(context).getData('cycle')
@@ -389,15 +397,15 @@ class _QuantityState extends State<Quantity>
                                       children: [
                                         Row(
                                           children: [
-                                            Container(child: Text(MyLocalizations.of(context).getData('market_price'),style: TextStyle(color: Colors.grey))), 
-                                            SizedBox(width: 10),
+                                            Container(child: Text(MyLocalizations.of(context).getData('market_price')+ ' :',style: TextStyle(color: Colors.grey))), 
+                                            SizedBox(width: 5),
                                             Container(child: Text(dataList[index]['price'],style: TextStyle(color: Colors.grey))),
                                           ],
                                         ),
                                         Row(
                                           children: [
-                                            Container(child: Text(MyLocalizations.of(context).getData('floating'),style: TextStyle(color: Colors.grey))),
-                                             SizedBox(width: 10),
+                                            Container(child: Text(MyLocalizations.of(context).getData('floating')+ ' :',style: TextStyle(color: Colors.grey))),
+                                             SizedBox(width: 5),
                                             double.parse(dataList[index]['change']) > 0?
                                             Text(double.parse(dataList[index]['change']).toStringAsFixed(2)+'%',style: TextStyle(color: Colors.greenAccent)):
                                             Text(double.parse(dataList[index]['change']).toStringAsFixed(2)+'%',style: TextStyle(color: Colors.redAccent)),
@@ -405,29 +413,28 @@ class _QuantityState extends State<Quantity>
                                         ),
                                       ],
                                     ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Container(child: Text(MyLocalizations.of(context).getData('quantity'),style: TextStyle(color: Colors.grey))), 
-                                            SizedBox(width: 10),
-                                            Container(child: 
-                                            Text(dataList[index]['robot_info']!=null?dealAmount(dataList[index]):'',
-                                            style: TextStyle(color: Colors.grey))),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Container(child: Text(MyLocalizations.of(context).getData('floating'),style: TextStyle(color: Colors.grey))),
-                                             SizedBox(width: 10),
-                                            double.parse(dataList[index]['change']) > 0?
-                                            Text(double.parse(dataList[index]['change']).toStringAsFixed(2)+'%',style: TextStyle(color: Colors.greenAccent)):
-                                            Text(double.parse(dataList[index]['change']).toStringAsFixed(2)+'%',style: TextStyle(color: Colors.redAccent)),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
+                                    SizedBox(height: 10,),
+                                    // Row(
+                                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //   children: [
+                                    //     Row(
+                                    //       children: [
+                                    //         Container(child: Text(MyLocalizations.of(context).getData('quantity')+ ' :',style: TextStyle(color: Colors.grey))), 
+                                    //         SizedBox(width: 5),
+                                    //         Container(child: 
+                                    //         Text(dataList[index]['robot_info']!=null?dealAmount(dataList[index]):'0.00',
+                                    //         style: TextStyle(color: Colors.grey))),
+                                    //       ],
+                                    //     ),
+                                    //     Row(
+                                    //       children: [
+                                    //         Container(child: Text(MyLocalizations.of(context).getData('amount')+ ' :',style: TextStyle(color: Colors.grey))),
+                                    //          SizedBox(width: 5),
+                                    //         Text(dataList[index]['robot_info']!=null?dealMoney(dataList[index])+' USDT':'0.00',style: TextStyle(color: Colors.grey))
+                                    //       ],
+                                    //     ),
+                                    //   ],
+                                    // ),
                                   ],
                                 ),
                               ),
@@ -468,9 +475,14 @@ class _QuantityState extends State<Quantity>
                         return GestureDetector(
                            onTap: (){
                               _timer.cancel();
+                              dataList2[index]['robot_info'] == null?
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => Trade(widget.url,widget.onChangeLanguage,type2,dataList2[index]['id'],dataList2[index]['market_name'],dataList[index]['market_name'])),
+                                MaterialPageRoute(builder: (context) => Trade(widget.url,widget.onChangeLanguage,type,dataList2[index]['id'],dataList2[index]['market_name'],dataList2[index]['market_name'])),
+                              ).then((value) => startLoop()):
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => Trade(widget.url,widget.onChangeLanguage,type2,dataList2[index]['id'],dataList2[index]['market_name'],dataList2[index]['robot_info']['id'])),
                               ).then((value) => startLoop2());
                           },
                           child: Container(
@@ -541,18 +553,40 @@ class _QuantityState extends State<Quantity>
                                       children: [
                                          Row(
                                           children: [
-                                            Container(child: Text(MyLocalizations.of(context).getData('market_price'),style: TextStyle(color: Colors.grey))), 
-                                            SizedBox(width: 10),
+                                            Container(child: Text(MyLocalizations.of(context).getData('market_price')+' :',style: TextStyle(color: Colors.grey))), 
+                                            SizedBox(width: 5),
                                             Container(child: Text(dataList2[index]['price'],style: TextStyle(color: Colors.grey))),
                                           ],
                                         ),
                                         Row(
                                           children: [
-                                            Container(child: Text(MyLocalizations.of(context).getData('floating'),style: TextStyle(color: Colors.grey))),
-                                              SizedBox(width: 10),
+                                            Container(child: Text(MyLocalizations.of(context).getData('floating')+ ' :',style: TextStyle(color: Colors.grey))),
+                                              SizedBox(width: 5),
                                             double.parse(dataList2[index]['change']) > 0?
                                             Text(double.parse(dataList2[index]['change']).toStringAsFixed(2)+'%',style: TextStyle(color: Colors.greenAccent)):
                                             Text(double.parse(dataList2[index]['change']).toStringAsFixed(2)+'%',style: TextStyle(color: Colors.redAccent)),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 10,),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Container(child: Text(MyLocalizations.of(context).getData('quantity')+ ' :',style: TextStyle(color: Colors.grey))), 
+                                            SizedBox(width: 5),
+                                            Container(child: 
+                                            Text(dataList2[index]['robot_info']!=null?dealAmount(dataList2[index]):'0.00',
+                                            style: TextStyle(color: Colors.grey))),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Container(child: Text(MyLocalizations.of(context).getData('amount')+ ' :',style: TextStyle(color: Colors.grey))),
+                                             SizedBox(width: 5),
+                                            Text(dataList2[index]['robot_info']!=null?dealMoney(dataList2[index])+' USDT':'0.00',style: TextStyle(color: Colors.grey))
                                           ],
                                         ),
                                       ],

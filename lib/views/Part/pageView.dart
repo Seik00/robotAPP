@@ -62,7 +62,7 @@ class _TopViewingState extends State<TopViewing>
   void initState() {
     super.initState();
     getRequest();
-    //lookUp();
+    lookUp();
   }
  
 

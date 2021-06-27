@@ -23,8 +23,10 @@ class TradeDetails extends StatefulWidget {
    final recycleStatus;
    final status;
    final is_clean;
+   final showMsg;
+   final valuesStr;
 
-  TradeDetails(this.url,this.onChangeLanguage,this.robotId,this.firstOrderValue,this.maxOrderCount,this.stopProfitRate,this.stopProfitCallbackRate,this.coverRate,this.coverCallbackRate,this.recycleStatus,this.status,this.is_clean);
+  TradeDetails(this.url,this.onChangeLanguage,this.robotId,this.firstOrderValue,this.maxOrderCount,this.stopProfitRate,this.stopProfitCallbackRate,this.coverRate,this.coverCallbackRate,this.recycleStatus,this.status,this.is_clean,this.showMsg,this.valuesStr);
   @override
   _TradeDetailsState createState() => _TradeDetailsState();
 }
@@ -75,171 +77,6 @@ class _TradeDetailsState extends State<TradeDetails> {
     coverRateController.text = widget.coverRate.toString();
     coverCallbackRateController.text = widget.coverCallbackRate.toString();
     _radioValue = widget.recycleStatus;
-  }
- 
-  Future<void> pause() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return WillPopScope(
-          onWillPop: () async => false,
-          child: AlertDialog(
-            backgroundColor: Colors.blue[100],
-            title: Center(
-              child: Icon(
-              Icons.pause, 
-              color: Colors.white,
-              size: 60,
-            ),),
-            content: Container(
-              child: Wrap(
-                children: <Widget>[
-                  Container(
-                    alignment: Alignment.center,
-                    child: Text('Pause Robot'),
-                  ),
-                ],
-              ),
-            ),
-            actions: [
-              Row(
-                children: [
-                  TextButton(
-                    child: Text('Cancel',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
-                    onPressed: () {
-                      Navigator.pop(context, true);
-                    },
-                  ),
-                  TextButton(
-                    child: Text('Pause',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
-                    onPressed: () {
-                      setState(() {
-                        var tmap = new Map<String, dynamic>();
-                        tmap['robot_id'] = widget.robotId.toString();
-                        print(tmap);
-                        pauseRobot(tmap);
-                      });
-                     
-                    },
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Future<void> play() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return WillPopScope(
-          onWillPop: () async => false,
-          child: AlertDialog(
-            backgroundColor: Colors.blue[100],
-            title: Center(
-              child: Icon(
-              Icons.play_arrow, 
-              color: Colors.white,
-              size: 60,
-            ),),
-            content: Container(
-              child: Wrap(
-                children: <Widget>[
-                  Container(
-                    alignment: Alignment.center,
-                    child: Text('Play Robot'),
-                  ),
-                ],
-              ),
-            ),
-            actions: [
-              Row(
-                children: [
-                  TextButton(
-                    child: Text('Cancel',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
-                    onPressed: () {
-                      Navigator.pop(context, true);
-                    },
-                  ),
-                  TextButton(
-                    child: Text('Play',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
-                    onPressed: () {
-                      setState(() {
-                        var tmap = new Map<String, dynamic>();
-                        tmap['robot_id'] = widget.robotId.toString();
-                        print(tmap);
-                        playRobot(tmap);
-                      });
-                     
-                    },
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Future<void> delete() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return WillPopScope(
-          onWillPop: () async => false,
-          child: AlertDialog(
-            backgroundColor: Colors.blue[100],
-            title: Center(
-              child: Icon(
-              Icons.delete, 
-              color: Colors.white,
-              size: 60,
-            ),),
-            content: Container(
-              child: Wrap(
-                children: <Widget>[
-                  Container(
-                    alignment: Alignment.center,
-                    child: Text('Clean Robot'),
-                  ),
-                ],
-              ),
-            ),
-            actions: [
-              Row(
-                children: [
-                  TextButton(
-                    child: Text('Cancel',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
-                    onPressed: () {
-                      Navigator.pop(context, true);
-                    },
-                  ),
-                  TextButton(
-                    child: Text('Clean',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
-                    onPressed: () {
-                      setState(() {
-                        var tmap = new Map<String, dynamic>();
-                        tmap['robot_id'] = widget.robotId.toString();
-                        print(tmap);
-                        deleteRobot(tmap);
-                      });
-                     
-                    },
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
   }
 
   @override
@@ -605,8 +442,12 @@ class _TradeDetailsState extends State<TradeDetails> {
             title: MyLocalizations.of(context).getData('success'),
             desc:MyLocalizations.of(context).getData('operation_success'),
             onDissmissCallback: () {
-              Navigator.pop(context);
-            })
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => TopViewing(
+                        widget.url, widget.onChangeLanguage)));
+              })
           ..show();
     } else {
      
@@ -634,7 +475,20 @@ class _TradeDetailsState extends State<TradeDetails> {
             btnOkIcon: Icons.cancel,
             btnOkColor: Colors.red)
           ..show();
-        }else{
+          }else if(widget.is_clean==0 && widget.showMsg == '卖出成功' && widget.valuesStr == '' )
+          AwesomeDialog(
+            context: context,
+            dialogType: DialogType.ERROR,
+            animType: AnimType.RIGHSLIDE,
+            headerAnimationLoop: false,
+            title: MyLocalizations.of(context).getData('error'),
+            desc: MyLocalizations.of(context).getData('sold'),
+            btnOkOnPress: () {},
+            btnOkText: MyLocalizations.of(context).getData('close'),
+            btnOkIcon: Icons.cancel,
+            btnOkColor: Colors.red)
+          ..show();
+          else{
           setState(() {
             tmap['robot_id'] = widget.robotId.toString();
             tmap['first_order_value'] = firstOrderValueController.text.toString();
@@ -653,98 +507,5 @@ class _TradeDetailsState extends State<TradeDetails> {
       });
     }
   }
-
-  pauseRobot(bodyData) async {
-    final prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString('token');
-    print(bodyData);
-    var contentData = await Request().postRequest(Config().url+"api/trade-robot/disable", bodyData, token, context);
-    
-    print(contentData);
-    if (contentData['code'] == 0) {
-           AwesomeDialog(
-            context: context,
-            animType: AnimType.LEFTSLIDE,
-            headerAnimationLoop: false,
-            dialogType: DialogType.SUCCES,
-            autoHide: Duration(seconds: 2),
-            title: MyLocalizations.of(context).getData('success'),
-            desc:MyLocalizations.of(context).getData('operation_success'),
-            onDissmissCallback: () {
-             Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => TopViewing(
-                      widget.url, widget.onChangeLanguage)));
-            })
-          ..show();
-    } else {
-     
-    }
-    setState(() {
-     
-    });
-  }
-  playRobot(bodyData) async {
-    final prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString('token');
-    print(bodyData);
-    var contentData = await Request().postRequest(Config().url+"api/trade-robot/enable", bodyData, token, context);
-    
-    print(contentData);
-    if (contentData['code'] == 0) {
-           AwesomeDialog(
-            context: context,
-            animType: AnimType.LEFTSLIDE,
-            headerAnimationLoop: false,
-            dialogType: DialogType.SUCCES,
-            autoHide: Duration(seconds: 2),
-            title: MyLocalizations.of(context).getData('success'),
-            desc:MyLocalizations.of(context).getData('operation_success'),
-            onDissmissCallback: () {
-              Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => TopViewing(
-                      widget.url, widget.onChangeLanguage)));
-            })
-          ..show();
-    } else {
-     
-    }
-    setState(() {
-     
-    });
-  }
-  deleteRobot(bodyData) async {
-    final prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString('token');
-    print(bodyData);
-    var contentData = await Request().postRequest(Config().url+"api/trade-robot/clean", bodyData, token, context);
-    
-    print(contentData);
-    if (contentData['code'] == 0) {
-           AwesomeDialog(
-            context: context,
-            animType: AnimType.LEFTSLIDE,
-            headerAnimationLoop: false,
-            dialogType: DialogType.SUCCES,
-            autoHide: Duration(seconds: 2),
-            title: MyLocalizations.of(context).getData('success'),
-            desc:MyLocalizations.of(context).getData('operation_success'),
-            onDissmissCallback: () {
-             Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => TopViewing(
-                      widget.url, widget.onChangeLanguage)));
-            })
-          ..show();
-    } else {
-     
-    }
-    setState(() {
-     
-    });
-  }
+ 
 }
