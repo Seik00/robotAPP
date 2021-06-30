@@ -289,7 +289,7 @@ class _ServicesState extends State<Services>
                                Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Revenue(widget.url,widget.onChangeLanguage)),
+                                    builder: (context) => Invitation(widget.url,widget.onChangeLanguage)),
                               ).then((value) => startLoop())
                             },
                             padding: EdgeInsets.all(10.0),
@@ -310,11 +310,45 @@ class _ServicesState extends State<Services>
                                     ),
                                  ),
                                 SizedBox(height:5),
-                                Text(MyLocalizations.of(context).getData('revenue'),style: TextStyle(fontSize: 12))
+                                Text(MyLocalizations.of(context).getData('invite_friend'),style: TextStyle(fontSize: 12))
                               ],
                             ),
                           ),
                         ])),
+                        // Expanded(
+                        //   child: Column(children: <Widget>[
+                        //   FlatButton(
+                        //     onPressed: () => {
+                        //       _timer.cancel(),
+                        //        Navigator.push(
+                        //         context,
+                        //         MaterialPageRoute(
+                        //             builder: (context) => Revenue(widget.url,widget.onChangeLanguage)),
+                        //       ).then((value) => startLoop())
+                        //     },
+                        //     padding: EdgeInsets.all(10.0),
+                        //     child: Column(
+                        //       // Replace with a Row for horizontal icon + text
+                        //       children: <Widget>[
+                        //         Container(
+                        //             padding: EdgeInsets.all(10),
+                        //             decoration: BoxDecoration(
+                        //             color: Color(0xff212630),
+                        //             borderRadius: BorderRadius.circular(25),
+                        //             border: Border.all(color:Colors.white54)),
+                        //            child: Image(
+                        //               image: AssetImage(
+                        //                   "lib/assets/img/api_binding.png"),
+                        //               height: 30,
+                        //               width: 30,
+                        //             ),
+                        //          ),
+                        //         SizedBox(height:5),
+                        //         Text(MyLocalizations.of(context).getData('revenue'),style: TextStyle(fontSize: 12))
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ])),
                       ]),
                 )
               ),
