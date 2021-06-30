@@ -103,7 +103,7 @@ class _BonusRecordState extends State<BonusRecord> {
                       gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: [Color(0xff7CAAD5), Color(0xff8263CE)])
+                      colors: [Color(0xfff9f21a), Color(0xfff9f21a)])
                   ),
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height / 8,
@@ -112,25 +112,33 @@ class _BonusRecordState extends State<BonusRecord> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      if(widget.type == 'static_bonus')
+                      if(widget.type == 'sponsor_bonus')
                       Container(
                         padding: EdgeInsets.only(bottom:5),
                         child: Text(
-                          MyLocalizations.of(context).getData('static_bonus_balance'),
-                          style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 16),
+                          MyLocalizations.of(context).getData('sponsor_bonus_balance'),
+                          style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),
+                        ),
+                      )
+                      else if(widget.type == 'dynamic_bonus')
+                      Container(
+                        padding: EdgeInsets.only(bottom:5),
+                        child: Text(
+                          MyLocalizations.of(context).getData('dynamic_bonus_balance'),
+                          style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),
                         ),
                       )
                       else
                       Container(
                         padding: EdgeInsets.only(bottom:5),
                         child: Text(
-                          MyLocalizations.of(context).getData('sponsor_bonus_balance'),
-                          style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 16),
+                          MyLocalizations.of(context).getData('special_bonus_balance'),
+                          style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),
                       )),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                        Text('USD',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.white),),
+                        Text('USD',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.black),),
                         Padding(padding: EdgeInsets.only(left: 10.0)),
                         total == null
                         ? Container(
@@ -142,7 +150,7 @@ class _BonusRecordState extends State<BonusRecord> {
                         : Container(
                             child: Text(
                               total.toString(),
-                              style: TextStyle(fontSize: 25,color: Colors.white,fontWeight: FontWeight.bold),
+                              style: TextStyle(fontSize: 25,color: Colors.black,fontWeight: FontWeight.bold),
                               overflow: TextOverflow.ellipsis,
                             ),
                           )
@@ -182,7 +190,7 @@ class _BonusRecordState extends State<BonusRecord> {
                               ),
                               child: new DecoratedBox(
                                 decoration: BoxDecoration(
-                                  color: Color(0xff5a5472),
+                                  color: Color(0xff595c64),
                                 ),
                                 child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

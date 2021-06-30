@@ -34,6 +34,8 @@ class _SettingsState extends State<Settings>
   var currentLanguage;
   var username;
   var email;
+  var packageName;
+  var packageNameEn;
   var language;
   var pattern;
   var package;
@@ -42,11 +44,12 @@ class _SettingsState extends State<Settings>
   var mobileNumber;
   var robotList =[];
 
-  getLanguage() async{
-    final prefs = await SharedPreferences.getInstance();
-    currentLanguage = prefs.getString('language');
-    pattern = prefs.getString('pattern');
-  }
+   getLanguage() async{
+      final prefs = await SharedPreferences.getInstance();
+      language = prefs.getString('language');
+      print(language);
+    }
+
 
    getRequest() async {
     var contentData = await Request().getRequest(Config().url + "api/member/get-member-info", context);
@@ -56,6 +59,8 @@ class _SettingsState extends State<Settings>
           print(contentData);
           username = contentData['username'];
           email = contentData['email'];
+          packageName = contentData['package']['package_name'];
+          packageNameEn = contentData['package']['package_name_en'];
         });
       }
     }
@@ -126,7 +131,10 @@ class _SettingsState extends State<Settings>
                                       child: Text(email==null?'':email,style: TextStyle(color:Colors.white)),
                                     ),
                                     Container(
-                                      child: Text('Edit Profile',style: TextStyle(color:Colors.white)),
+                                      child: 
+                                      language == 'zh'?
+                                      Text(packageName == null?'':packageName,style: TextStyle(color:Color(0xfff9f21a),fontSize: 18)):
+                                      Text(packageNameEn == null?'':packageNameEn,style: TextStyle(color:Color(0xfff9f21a),fontSize: 18)),
                                     ),
                                     SizedBox(height:10),
                                   ],
@@ -134,64 +142,122 @@ class _SettingsState extends State<Settings>
                               ),
                               SizedBox(height: 10),
                               
-                              InkWell(
-                                // onTap: () {
-                                //   Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (context) => MyTeam(widget.url,widget.onChangeLanguage,refId)),
-                                //   );
-                                // },
-                                child: Container(
-                                  decoration: new BoxDecoration(
-                                    color: Color(0xff595c64),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  margin: EdgeInsets.all(10),
-                                  child: Row(
-                                    children: <Widget>[
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                        ),
-                                        margin: EdgeInsets.only(right: 20),
-                                        padding: EdgeInsets.all(10),
-                                        child: Image(
-                                          image: AssetImage(
-                                              "lib/assets/img/me_team.png"),
-                                          height: 30,
-                                          width: 40,
-                                        )
-                                      ),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Container(
-                                              child: Text(
-                                                MyLocalizations.of(context)
-                                                    .getData('my_team'),
-                                                style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.end,
-                                          children: <Widget>[
-                                            Container(
-                                                child: (Icon(
-                                                    Icons.chevron_right_outlined,color: Colors.white,))),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                              // InkWell(
+                              //   onTap: () {
+                              //     Navigator.push(
+                              //       context,
+                              //       MaterialPageRoute(
+                              //           builder: (context) => MyTeam(widget.url,widget.onChangeLanguage,refId)),
+                              //     );
+                              //   },
+                              //   child: Container(
+                              //     decoration: new BoxDecoration(
+                              //       color: Color(0xff595c64),
+                              //       borderRadius: BorderRadius.circular(10),
+                              //     ),
+                              //     margin: EdgeInsets.all(10),
+                              //     child: Row(
+                              //       children: <Widget>[
+                              //         Container(
+                              //           decoration: BoxDecoration(
+                              //             shape: BoxShape.circle,
+                              //           ),
+                              //           margin: EdgeInsets.only(right: 20),
+                              //           padding: EdgeInsets.all(10),
+                              //           child: Image(
+                              //             image: AssetImage(
+                              //                 "lib/assets/img/me_team.png"),
+                              //             height: 30,
+                              //             width: 40,
+                              //           )
+                              //         ),
+                              //         Expanded(
+                              //           child: Column(
+                              //             crossAxisAlignment:
+                              //                 CrossAxisAlignment.start,
+                              //             children: <Widget>[
+                              //               Container(
+                              //                 child: Text(
+                              //                   MyLocalizations.of(context)
+                              //                       .getData('my_team'),
+                              //                   style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
+                              //                 ),
+                              //               ),
+                              //             ],
+                              //           ),
+                              //         ),
+                              //         Expanded(
+                              //           child: Column(
+                              //             crossAxisAlignment: CrossAxisAlignment.end,
+                              //             children: <Widget>[
+                              //               Container(
+                              //                   child: (Icon(
+                              //                       Icons.chevron_right_outlined,color: Colors.white,))),
+                              //             ],
+                              //           ),
+                              //         ),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
+                              // InkWell(
+                              //   onTap: () {
+                              //     Navigator.push(
+                              //       context,
+                              //       MaterialPageRoute(
+                              //           builder: (context) => Invitation(widget.url,widget.onChangeLanguage)),
+                              //     );
+                              //   },
+                              //   child: Container(
+                              //     decoration: new BoxDecoration(
+                              //       color: Color(0xff595c64),
+                              //       borderRadius: BorderRadius.circular(10),
+                              //     ),
+                              //     margin: EdgeInsets.only(left:10,right:10,bottom: 10),
+                              //     child: Row(
+                              //       children: <Widget>[
+                              //         Container(
+                              //           decoration: BoxDecoration(
+                              //             shape: BoxShape.circle,
+                              //           ),
+                              //           margin: EdgeInsets.only(right: 20),
+                              //           padding: EdgeInsets.all(10),
+                              //           child: Image(
+                              //             image: AssetImage(
+                              //                 "lib/assets/img/register.png"),
+                              //             height: 30,
+                              //             width: 40,
+                              //           )
+                              //         ),
+                              //         Expanded(
+                              //           child: Column(
+                              //             crossAxisAlignment:
+                              //                 CrossAxisAlignment.start,
+                              //             children: <Widget>[
+                              //               Container(
+                              //                 child: Text(
+                              //                   MyLocalizations.of(context)
+                              //                       .getData('invite_friend'),
+                              //                   style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
+                              //                 ),
+                              //               ),
+                              //             ],
+                              //           ),
+                              //         ),
+                              //         Expanded(
+                              //           child: Column(
+                              //             crossAxisAlignment: CrossAxisAlignment.end,
+                              //             children: <Widget>[
+                              //               Container(
+                              //                   child: (Icon(
+                              //                       Icons.chevron_right_outlined,color: Colors.white,))),
+                              //             ],
+                              //           ),
+                              //         ),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
                               InkWell(
                                 onTap: () {
                                   Navigator.push(
@@ -429,7 +495,9 @@ class _SettingsState extends State<Settings>
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => SecurityCenter(widget.url,widget.onChangeLanguage)),
-                                  );
+                                  ).then((value) {
+                                    getRequest();getLanguage();
+                                  });
                                 },
                                 child: Container(
                                   decoration: new BoxDecoration(

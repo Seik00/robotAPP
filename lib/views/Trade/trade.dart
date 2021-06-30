@@ -47,6 +47,7 @@ class _TradeState extends State<Trade> {
   void initState() {
     super.initState();
     startLoop();
+    print(widget.type);
   }
 
   @override
@@ -105,9 +106,16 @@ class _TradeState extends State<Trade> {
               if(robotList!=null){
                   revenue = double.parse(robotList['revenue']);
                   price = double.parse(robotList['price']);
-                  if(robotList['values_str'].length!=0){
+
+                  if(robotList['values_str']==null){
+                     setState(() {
+                      isLoading = false;
+                    });
+                  }
+                  else if(robotList['values_str'].length!=0){
                     info2 = json.decode(robotList['values_str']);
                     print(info2);
+                    
                   }
               }
             });
@@ -944,8 +952,9 @@ class _TradeState extends State<Trade> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(MyLocalizations.of(context).getData('message'),style:TextStyle(color: Colors.white)),
-                        Text(robotList==null?'':robotList['show_msg'],style:TextStyle(color: Colors.grey)),
+                        Text(MyLocalizations.of(context).getData('message'),style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 15)),
+                        SizedBox(height: 10,),
+                        Text(robotList==null?'':robotList['show_msg'],style:TextStyle(color: Colors.white)),
                       ],
                     ),
                   ),

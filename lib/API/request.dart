@@ -185,6 +185,18 @@ class Request {
           btnOkIcon: Icons.cancel,
           btnOkColor: Colors.red)
           ..show();
+        }else if(contentData['message'] =='NO_PIN'){
+          AwesomeDialog(
+          context: context,
+          dialogType: DialogType.ERROR,
+          animType: AnimType.RIGHSLIDE,
+          headerAnimationLoop: false,
+          title: MyLocalizations.of(context).getData('error'),
+          desc: MyLocalizations.of(context).getData('no_pin'),
+          btnOkOnPress: () {},
+          btnOkIcon: Icons.cancel,
+          btnOkColor: Colors.red)
+          ..show();
         }else if(contentData['message'] =='ROBOT_EXIST'){
           AwesomeDialog(
           context: context,

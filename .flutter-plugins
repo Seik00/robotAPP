@@ -1,4 +1,5 @@
 # This is a generated file; do not edit or check into version control.
+device_info=C:\\Users\\Edward\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\device_info-2.0.2\\
 firebase_core=C:\\Users\\Edward\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_core-0.5.3\\
 firebase_core_web=C:\\Users\\Edward\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_core_web-0.2.1+1\\
 firebase_messaging=C:\\Users\\Edward\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_messaging-7.0.3\\
@@ -9,6 +10,7 @@ image_picker=C:\\Users\\Edward\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\i
 package_info=C:\\Users\\Edward\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\package_info-0.4.3+4\\
 path_provider_linux=C:\\Users\\Edward\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\path_provider_linux-0.0.1+2\\
 path_provider_windows=C:\\Users\\Edward\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\path_provider_windows-0.0.4+3\\
+platform_device_id=C:\\Users\\Edward\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\platform_device_id-0.2.1\\
 shared_preferences=C:\\Users\\Edward\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\shared_preferences-0.5.12+4\\
 shared_preferences_linux=C:\\Users\\Edward\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\shared_preferences_linux-0.0.2+4\\
 shared_preferences_macos=C:\\Users\\Edward\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\shared_preferences_macos-0.0.1+11\\

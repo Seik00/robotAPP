@@ -285,7 +285,7 @@ class _ApiBindingFormState extends State<ApiBindingForm> {
         },
       ):
       TextFormField(
-        controller: apiKeyController,
+        controller: secretKeyController,
         validator: validateInput,
         autofocus: false,
         enabled: false, 
@@ -330,7 +330,7 @@ class _ApiBindingFormState extends State<ApiBindingForm> {
         },
       ):
       TextFormField(
-        controller: apiKeyController,
+        controller: passpharseController,
         validator: validateInput,
         autofocus: false,
         enabled: false, 

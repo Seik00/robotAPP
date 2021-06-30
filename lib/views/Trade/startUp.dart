@@ -145,7 +145,7 @@ class _StartUpState extends State<StartUp> {
                             child: 
                             Container(
                                alignment: Alignment.centerLeft,
-                              child: Text('Robot Setup',style: TextStyle(color: Colors.white,fontSize: 28),))),
+                              child: Text(MyLocalizations.of(context).getData('robot_setup'),style: TextStyle(color: Colors.white,fontSize: 28),))),
                           
                         ],
                       ),
@@ -160,7 +160,7 @@ class _StartUpState extends State<StartUp> {
                       children: [
                         Expanded(
                           child: RaisedButton(
-                          child: new Text('Radical',style: TextStyle(fontSize: 12),),
+                          child: new Text(MyLocalizations.of(context).getData('radical'),style: TextStyle(fontSize: 12),),
                           textColor: Colors.grey,
                           // 2
                           color: _hasBeenPressed ? Colors.yellowAccent : Colors.black,
@@ -183,7 +183,7 @@ class _StartUpState extends State<StartUp> {
                         ),
                       Expanded(
                         child: RaisedButton(
-                          child: new Text('Conserve',style: TextStyle(fontSize: 12)),
+                          child: new Text(MyLocalizations.of(context).getData('conserve'),style: TextStyle(fontSize: 12)),
                           textColor: Colors.grey,
                           // 2
                           color: _hasBeenPressed2 ? Colors.yellowAccent : Colors.black,
@@ -206,7 +206,7 @@ class _StartUpState extends State<StartUp> {
                       ),
                         Expanded(
                           child: RaisedButton(
-                          child: new Text('Stable',style: TextStyle(fontSize: 12)),
+                          child: new Text(MyLocalizations.of(context).getData('stable'),style: TextStyle(fontSize: 12)),
                           textColor: Colors.grey,
                           // 2
                           color: _hasBeenPressed3 ? Colors.yellowAccent : Colors.black,
@@ -229,7 +229,7 @@ class _StartUpState extends State<StartUp> {
                         ),
                         Expanded(
                           child: RaisedButton(
-                          child: new Text('Customize',style: TextStyle(fontSize: 12)),
+                          child: new Text(MyLocalizations.of(context).getData('customize'),style: TextStyle(fontSize: 12)),
                           textColor: Colors.grey,
                           // 2
                           color: _hasBeenPressed4 ? Colors.yellowAccent : Colors.black,
@@ -265,49 +265,49 @@ class _StartUpState extends State<StartUp> {
                                 SizedBox(height: 30.0),
                                 
                                 Container(
-                                  child: Text('First Order Amount (USDT)',style: TextStyle(color:Colors.white),),
+                                  child: Text(MyLocalizations.of(context).getData('first_buy_in_amount'),style: TextStyle(color:Colors.white),),
                                 ),
                                 SizedBox(height: 5),
                                 firstOrder(),
                                 SizedBox(height: 30.0),
 
                                 Container(
-                                  child: Text('Number of call margin',style: TextStyle(color:Colors.white),),
+                                  child: Text(MyLocalizations.of(context).getData('numbers_of_cover_up'),style: TextStyle(color:Colors.white),),
                                 ),
                                 SizedBox(height: 5),
                                 maxOrder(),
                                 SizedBox(height: 30.0),
 
                                 Container(
-                                  child: Text('Take Profit Rate',style: TextStyle(color:Colors.white),),
+                                  child: Text(MyLocalizations.of(context).getData('take_profit_ratio'),style: TextStyle(color:Colors.white),),
                                 ),
                                 SizedBox(height: 5),
                                 stopProfitRate(),
                                 SizedBox(height: 30.0),
 
                                 Container(
-                                  child: Text('Earnings callback',style: TextStyle(color:Colors.white),),
+                                  child: Text(MyLocalizations.of(context).getData('earnings_callback'),style: TextStyle(color:Colors.white),),
                                 ),
                                 SizedBox(height: 5),
                                 stopProfitCallback(),
                                 SizedBox(height: 30.0),
 
                                 Container(
-                                  child: Text('Margin call drop',style: TextStyle(color:Colors.white),),
+                                  child: Text(MyLocalizations.of(context).getData('margin_call_drop'),style: TextStyle(color:Colors.white),),
                                 ),
                                 SizedBox(height: 5),
                                 coverRate(),
                                 SizedBox(height: 30.0),
 
                                 Container(
-                                  child: Text('Buy in callback',style: TextStyle(color:Colors.white),),
+                                  child: Text(MyLocalizations.of(context).getData('buy_in_callback'),style: TextStyle(color:Colors.white),),
                                 ),
                                 SizedBox(height: 5),
                                 coverCallBackRate(),
                                 SizedBox(height: 30.0),
 
                                 Container(
-                                  child: Text('Strategy Type',style: TextStyle(color:Colors.white),),
+                                  child: Text(MyLocalizations.of(context).getData('strategy_type'),style: TextStyle(color:Colors.white),),
                                 ),
                                 SizedBox(height: 5),
                                 recycleStatus(),
@@ -388,7 +388,7 @@ class _StartUpState extends State<StartUp> {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
         suffixIcon: IconButton(
-          icon: Text('Time'),
+          icon: Text(MyLocalizations.of(context).getData('times')),
         ),
         contentPadding: const EdgeInsets.all(18.0),
         border: OutlineInputBorder(

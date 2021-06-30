@@ -110,20 +110,33 @@ class _QuantityState extends State<Quantity>
   }
 
   dealAmount(data){
-    var jsonData = json.decode(data['robot_info']['values_str']);
-    return jsonData['deal_amount'].toStringAsFixed(5);
+     if(data['robot_info']['values_str'] !=null){
+        var jsonData = json.decode(data['robot_info']['values_str']);
+        return jsonData['deal_amount'].toStringAsFixed(5);
+     }else{
+       return '0.00';
+     }
+    
 
   }
 
   dealMoney(data){
-    var jsonData = json.decode(data['robot_info']['values_str']);
-    return jsonData['deal_money'].toStringAsFixed(5);
+    if(data['robot_info']['values_str'] !=null){
+      var jsonData = json.decode(data['robot_info']['values_str']);
+      return jsonData['deal_money'].toStringAsFixed(5);
+    }else{
+       return '0.00';
+     }
+    
 
   }
 
   infoStatus(data){
-    var jsonData = json.decode(data['robot_info']['values_str']);
-    return jsonData['status'].toString();
+    if(data['robot_info']['values_str'] !=null){
+       var jsonData = json.decode(data['robot_info']['values_str']);
+       return jsonData['status'].toString();
+    }
+   
   }
 
   infoShowMsg(data){
@@ -155,7 +168,7 @@ class _QuantityState extends State<Quantity>
                 setState(() {
                   dataList = contentData['data'];
                   prefs.setString('marketList', json.encode(dataList));
-                  print(dataList);
+                  
                   //info = json.encode(coin[0]['robot_info']['values_str']);
                   
                   // for(int i= 0; i<dataList.length; i++){
@@ -510,7 +523,7 @@ class _QuantityState extends State<Quantity>
                               dataList2[index]['robot_info'] == null?
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => Trade(widget.url,widget.onChangeLanguage,type,dataList2[index]['id'],dataList2[index]['market_name'],dataList2[index]['market_name'])),
+                                MaterialPageRoute(builder: (context) => Trade(widget.url,widget.onChangeLanguage,type2,dataList2[index]['id'],dataList2[index]['market_name'],dataList2[index]['market_name'])),
                               ).then((value) => startLoop()):
                               Navigator.push(
                                 context,

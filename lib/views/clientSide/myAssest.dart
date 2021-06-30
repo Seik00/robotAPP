@@ -121,8 +121,10 @@ class _MyAssestsState extends State<MyAssests>
                   onTap: (index) {
                     if(index == 0){
                       initializeData('point1');
+                      getRequest();
                     }else{
                       initializeData('point2');
+                      getRequest();
                     }
                   },
                   tabs: [
@@ -308,7 +310,7 @@ class _MyAssestsState extends State<MyAssests>
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              Text(dataList[index]['detail'],style: TextStyle(color: Colors.white,fontSize: 18),),
+                                              Text(dataList[index]['detail'],style: TextStyle(color: Colors.white,fontSize: 14),),
                                               SizedBox(height:5),
                                               dataList[index]['action'] =='-'?
                                               Text('-'+dataList[index]['found'],style: TextStyle(color: Colors.redAccent,fontSize: 20)):
@@ -417,7 +419,7 @@ class _MyAssestsState extends State<MyAssests>
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              Text(dataList[index]['detail'],style: TextStyle(color: Colors.white,fontSize: 18),),
+                                              Text(dataList[index]['detail'],style: TextStyle(color: Colors.white,fontSize: 14),),
                                               SizedBox(height:5),
                                               dataList[index]['action'] =='-'?
                                               Text('-'+dataList[index]['found'],style: TextStyle(color: Colors.redAccent,fontSize: 20)):

@@ -10,6 +10,7 @@ import 'package:robot/views/Explore/apiBinding.dart';
 import 'package:robot/views/Explore/buyPin.dart';
 import 'package:robot/views/Explore/invest.dart';
 import 'package:robot/views/Explore/pinCenter.dart';
+import 'package:robot/views/Explore/revenue.dart';
 import 'package:robot/views/Explore/robotPackage.dart';
 import 'package:robot/views/Explore/transferPin.dart';
 import 'package:robot/views/SystemSetting/invitation.dart';
@@ -288,7 +289,7 @@ class _ServicesState extends State<Services>
                                Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Invitation(widget.url,widget.onChangeLanguage)),
+                                    builder: (context) => Revenue(widget.url,widget.onChangeLanguage)),
                               ).then((value) => startLoop())
                             },
                             padding: EdgeInsets.all(10.0),
@@ -309,7 +310,7 @@ class _ServicesState extends State<Services>
                                     ),
                                  ),
                                 SizedBox(height:5),
-                                Text(MyLocalizations.of(context).getData('invite_friend'),style: TextStyle(fontSize: 12))
+                                Text(MyLocalizations.of(context).getData('revenue'),style: TextStyle(fontSize: 12))
                               ],
                             ),
                           ),
