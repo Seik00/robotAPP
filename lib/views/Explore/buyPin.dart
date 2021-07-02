@@ -121,20 +121,20 @@ class _BuyPinState extends State<BuyPin> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             
-                            SizedBox(height: 30.0),
+                             SizedBox(height: 20.0),
                             
                             Container(
                               child: Text('USDT '+ MyLocalizations.of(context).getData('balance'),style: TextStyle(color:Colors.white),),
                             ),
                              SizedBox(height: 5),
                             info(),
-                            SizedBox(height: 30.0),
+                             SizedBox(height: 20.0),
                             Container(
                               child: Text(MyLocalizations.of(context).getData('pin_amount'),style: TextStyle(color:Colors.white),),
                             ),
                              SizedBox(height: 5),
                             _inputAmount(),
-                            SizedBox(height: 30.0),
+                             SizedBox(height: 20.0),
 
 
                             Container(
@@ -161,7 +161,7 @@ class _BuyPinState extends State<BuyPin> {
                                   )),
                             ),
                           ),),
-                          SizedBox(height: 30.0),
+                           SizedBox(height: 20.0),
                           ],
                         )),
                   ),
@@ -184,7 +184,7 @@ class _BuyPinState extends State<BuyPin> {
         autofocus: false,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 1),
@@ -208,7 +208,7 @@ class _BuyPinState extends State<BuyPin> {
         autofocus: false,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 10),

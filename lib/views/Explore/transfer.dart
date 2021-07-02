@@ -154,20 +154,20 @@ bool visible = true;
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          SizedBox(height: 30.0),
+                           SizedBox(height: 20.0),
                           Container(
                             child: Text(MyLocalizations.of(context).getData('username'),style: TextStyle(color: Colors.white,fontSize: 16),),
                           ),
                           SizedBox(height: 5.0),
                           _inputUsername(),
-                          SizedBox(height: 30.0),
+                           SizedBox(height: 20.0),
 
                           Container(
                             child: Text(MyLocalizations.of(context).getData('amount'),style: TextStyle(color: Colors.white,fontSize: 16),),
                           ),
                           SizedBox(height: 5.0),
                           _inputAmount(),
-                          SizedBox(height: 30.0),
+                           SizedBox(height: 20.0),
 
                           Container(
                             child: Text(MyLocalizations.of(context).getData('sec_password'),style: TextStyle(color: Colors.white,fontSize: 16),),
@@ -225,10 +225,10 @@ bool visible = true;
         autofocus: false,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
-              contentPadding: const EdgeInsets.all(8.0),
+              contentPadding: const EdgeInsets.all(14.0),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0),
-                borderSide: BorderSide(color: Colors.grey, width: 1),
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(color: Colors.grey, width: 10),
               ),
               filled: true,
               fillColor: Colors.white,
@@ -249,10 +249,10 @@ bool visible = true;
         autofocus: false,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
-              contentPadding: const EdgeInsets.all(8.0),
+              contentPadding: const EdgeInsets.all(14.0),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.0),
-                borderSide: BorderSide(color: Colors.grey, width: 1),
+                borderSide: BorderSide(color: Colors.grey, width: 10),
               ),
               filled: true,
               fillColor: Colors.white,
@@ -274,10 +274,10 @@ bool visible = true;
         autofocus: false,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
-              contentPadding: const EdgeInsets.all(8.0),
+              contentPadding: const EdgeInsets.all(14.0),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.0),
-                borderSide: BorderSide(color: Colors.grey, width: 1),
+                borderSide: BorderSide(color: Colors.grey, width: 10),
               ),
               filled: true,
               fillColor: Colors.white,

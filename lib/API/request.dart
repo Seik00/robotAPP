@@ -233,6 +233,18 @@ class Request {
           btnOkIcon: Icons.cancel,
           btnOkColor: Colors.red)
           ..show();
+        }else if(contentData['message'] =='INCORRECT_API'){
+          AwesomeDialog(
+          context: context,
+          dialogType: DialogType.ERROR,
+          animType: AnimType.RIGHSLIDE,
+          headerAnimationLoop: false,
+          title: MyLocalizations.of(context).getData('error'),
+          desc: MyLocalizations.of(context).getData('incorrect_api'),
+          btnOkOnPress: () {},
+          btnOkIcon: Icons.cancel,
+          btnOkColor: Colors.red)
+          ..show();
         }else if(contentData['message'] =='USER_QUIT'){
           AwesomeDialog(
           context: context,

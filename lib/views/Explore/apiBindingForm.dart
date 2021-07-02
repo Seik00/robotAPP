@@ -129,28 +129,28 @@ class _ApiBindingFormState extends State<ApiBindingForm> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             
-                            SizedBox(height: 30.0),
+                             SizedBox(height: 20.0),
                             
                             Container(
                               child: Text(MyLocalizations.of(context).getData('api_key'),style: TextStyle(color:Colors.white),),
                             ),
                              SizedBox(height: 5),
                             _inputAPIKey(),
-                            SizedBox(height: 30.0),
+                             SizedBox(height: 20.0),
 
                             Container(
                               child: Text(MyLocalizations.of(context).getData('secret_key'),style: TextStyle(color:Colors.white)),
                             ),
                              SizedBox(height: 5),
                             _inputSecretKey(),
-                            SizedBox(height: 30.0),
+                             SizedBox(height: 20.0),
 
                             Container(
                               child: Text(MyLocalizations.of(context).getData('passphrase'),style: TextStyle(color:Colors.white)),
                             ),
                              SizedBox(height: 5),
                             _inputPasspharse(),
-                            SizedBox(height: 30.0),
+                             SizedBox(height: 20.0),
 
                             isShow == false || isShow == null?
                             Container(
@@ -225,9 +225,9 @@ class _ApiBindingFormState extends State<ApiBindingForm> {
         autofocus: false,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         filled: true,
@@ -245,9 +245,9 @@ class _ApiBindingFormState extends State<ApiBindingForm> {
         enabled: false, 
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         filled: true,
@@ -271,9 +271,9 @@ class _ApiBindingFormState extends State<ApiBindingForm> {
         autofocus: false,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         filled: true,
@@ -291,9 +291,9 @@ class _ApiBindingFormState extends State<ApiBindingForm> {
         enabled: false, 
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         filled: true,
@@ -316,9 +316,9 @@ class _ApiBindingFormState extends State<ApiBindingForm> {
         autofocus: false,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         filled: true,
@@ -336,9 +336,9 @@ class _ApiBindingFormState extends State<ApiBindingForm> {
         enabled: false, 
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         filled: true,

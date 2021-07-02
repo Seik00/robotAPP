@@ -37,11 +37,7 @@ class _SettingsState extends State<Settings>
   var packageName;
   var packageNameEn;
   var language;
-  var pattern;
   var package;
-  var refId;
-  var otp;
-  var mobileNumber;
   var robotList =[];
 
    getLanguage() async{
@@ -142,122 +138,122 @@ class _SettingsState extends State<Settings>
                               ),
                               SizedBox(height: 10),
                               
-                              // InkWell(
-                              //   onTap: () {
-                              //     Navigator.push(
-                              //       context,
-                              //       MaterialPageRoute(
-                              //           builder: (context) => MyTeam(widget.url,widget.onChangeLanguage,refId)),
-                              //     );
-                              //   },
-                              //   child: Container(
-                              //     decoration: new BoxDecoration(
-                              //       color: Color(0xff595c64),
-                              //       borderRadius: BorderRadius.circular(10),
-                              //     ),
-                              //     margin: EdgeInsets.all(10),
-                              //     child: Row(
-                              //       children: <Widget>[
-                              //         Container(
-                              //           decoration: BoxDecoration(
-                              //             shape: BoxShape.circle,
-                              //           ),
-                              //           margin: EdgeInsets.only(right: 20),
-                              //           padding: EdgeInsets.all(10),
-                              //           child: Image(
-                              //             image: AssetImage(
-                              //                 "lib/assets/img/me_team.png"),
-                              //             height: 30,
-                              //             width: 40,
-                              //           )
-                              //         ),
-                              //         Expanded(
-                              //           child: Column(
-                              //             crossAxisAlignment:
-                              //                 CrossAxisAlignment.start,
-                              //             children: <Widget>[
-                              //               Container(
-                              //                 child: Text(
-                              //                   MyLocalizations.of(context)
-                              //                       .getData('my_team'),
-                              //                   style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
-                              //                 ),
-                              //               ),
-                              //             ],
-                              //           ),
-                              //         ),
-                              //         Expanded(
-                              //           child: Column(
-                              //             crossAxisAlignment: CrossAxisAlignment.end,
-                              //             children: <Widget>[
-                              //               Container(
-                              //                   child: (Icon(
-                              //                       Icons.chevron_right_outlined,color: Colors.white,))),
-                              //             ],
-                              //           ),
-                              //         ),
-                              //       ],
-                              //     ),
-                              //   ),
-                              // ),
-                              // InkWell(
-                              //   onTap: () {
-                              //     Navigator.push(
-                              //       context,
-                              //       MaterialPageRoute(
-                              //           builder: (context) => Invitation(widget.url,widget.onChangeLanguage)),
-                              //     );
-                              //   },
-                              //   child: Container(
-                              //     decoration: new BoxDecoration(
-                              //       color: Color(0xff595c64),
-                              //       borderRadius: BorderRadius.circular(10),
-                              //     ),
-                              //     margin: EdgeInsets.only(left:10,right:10,bottom: 10),
-                              //     child: Row(
-                              //       children: <Widget>[
-                              //         Container(
-                              //           decoration: BoxDecoration(
-                              //             shape: BoxShape.circle,
-                              //           ),
-                              //           margin: EdgeInsets.only(right: 20),
-                              //           padding: EdgeInsets.all(10),
-                              //           child: Image(
-                              //             image: AssetImage(
-                              //                 "lib/assets/img/register.png"),
-                              //             height: 30,
-                              //             width: 40,
-                              //           )
-                              //         ),
-                              //         Expanded(
-                              //           child: Column(
-                              //             crossAxisAlignment:
-                              //                 CrossAxisAlignment.start,
-                              //             children: <Widget>[
-                              //               Container(
-                              //                 child: Text(
-                              //                   MyLocalizations.of(context)
-                              //                       .getData('invite_friend'),
-                              //                   style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
-                              //                 ),
-                              //               ),
-                              //             ],
-                              //           ),
-                              //         ),
-                              //         Expanded(
-                              //           child: Column(
-                              //             crossAxisAlignment: CrossAxisAlignment.end,
-                              //             children: <Widget>[
-                              //               Container(
-                              //                   child: (Icon(
-                              //                       Icons.chevron_right_outlined,color: Colors.white,))),
-                              //             ],
-                              //           ),
-                              //         ),
-                              //       ],
-                              //     ),
-                              //   ),
-                              // ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MyTeam(widget.url,widget.onChangeLanguage)),
+                                  );
+                                },
+                                child: Container(
+                                  decoration: new BoxDecoration(
+                                    color: Color(0xff595c64),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  margin: EdgeInsets.all(10),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                        ),
+                                        margin: EdgeInsets.only(right: 20),
+                                        padding: EdgeInsets.all(10),
+                                        child: Image(
+                                          image: AssetImage(
+                                              "lib/assets/img/me_team.png"),
+                                          height: 30,
+                                          width: 40,
+                                        )
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Container(
+                                              child: Text(
+                                                MyLocalizations.of(context)
+                                                    .getData('my_team'),
+                                                style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          children: <Widget>[
+                                            Container(
+                                                child: (Icon(
+                                                    Icons.chevron_right_outlined,color: Colors.white,))),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Invitation(widget.url,widget.onChangeLanguage)),
+                                  );
+                                },
+                                child: Container(
+                                  decoration: new BoxDecoration(
+                                    color: Color(0xff595c64),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  margin: EdgeInsets.only(left:10,right:10,bottom: 10),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                        ),
+                                        margin: EdgeInsets.only(right: 20),
+                                        padding: EdgeInsets.all(10),
+                                        child: Image(
+                                          image: AssetImage(
+                                              "lib/assets/img/register.png"),
+                                          height: 30,
+                                          width: 40,
+                                        )
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Container(
+                                              child: Text(
+                                                MyLocalizations.of(context)
+                                                    .getData('invite_friend'),
+                                                style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          children: <Widget>[
+                                            Container(
+                                                child: (Icon(
+                                                    Icons.chevron_right_outlined,color: Colors.white,))),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                               InkWell(
                                 onTap: () {
                                   Navigator.push(

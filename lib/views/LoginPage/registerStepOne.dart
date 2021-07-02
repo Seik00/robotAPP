@@ -138,7 +138,7 @@ class _RegisterStepOneState extends State<RegisterStepOne>
                                     color: Colors.white),
                               ),
                             ),
-                            SizedBox(height: 30.0),
+                              SizedBox(height: 20.0),
                            
                             countryList == null?Container():
                             _inputBankCountry(),
@@ -146,22 +146,22 @@ class _RegisterStepOneState extends State<RegisterStepOne>
                            
                             
                             _inputUsername(),
-                            SizedBox(height: 30.0),
+                              SizedBox(height: 20.0),
                             
                             _inputMobile(),
-                            SizedBox(height: 30.0),
+                              SizedBox(height: 20.0),
 
                              _inputEmail(),
-                            SizedBox(height: 30.0),
+                              SizedBox(height: 20.0),
 
                              _inputPassword(),
-                            SizedBox(height: 30.0),
+                              SizedBox(height: 20.0),
 
                              _inputConfirmPassword(),
-                            SizedBox(height: 30.0),
+                              SizedBox(height: 20.0),
 
                              _inputRefID(),
-                            SizedBox(height: 30.0),
+                              SizedBox(height: 20.0),
 
                             Container(
                             child: GestureDetector(
@@ -187,7 +187,7 @@ class _RegisterStepOneState extends State<RegisterStepOne>
                                   )),
                             ),
                           ),),
-                            SizedBox(height: 30.0),
+                              SizedBox(height: 20.0),
                             // Container(
                             //   margin: EdgeInsets.only(bottom: 25),
                             //   child: Row(
@@ -234,7 +234,7 @@ class _RegisterStepOneState extends State<RegisterStepOne>
                   color: Colors.grey,
                   width: 1,
                 ),
-                borderRadius: BorderRadius.circular(25),
+                borderRadius: BorderRadius.circular(10),
               ),
              
               child: CountryPicker(
@@ -268,9 +268,9 @@ class _RegisterStepOneState extends State<RegisterStepOne>
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
         hintText: MyLocalizations.of(context).getData('username'),
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         filled: true,
@@ -298,9 +298,9 @@ class _RegisterStepOneState extends State<RegisterStepOne>
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: new InputDecoration(
                 hintText: MyLocalizations.of(context).getData('phone'),
-                contentPadding: const EdgeInsets.only(top:18.0,bottom: 18,left: 70,right: 8),
+                contentPadding: const EdgeInsets.only(top:14.0,bottom: 14,left: 70,right: 8),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25),
+                  borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide(color: Colors.grey, width: 1),
                 ),
                 filled: true,
@@ -343,9 +343,9 @@ class _RegisterStepOneState extends State<RegisterStepOne>
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
         hintText: MyLocalizations.of(context).getData('email'),
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         filled: true,
@@ -369,9 +369,9 @@ class _RegisterStepOneState extends State<RegisterStepOne>
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
         hintText: MyLocalizations.of(context).getData('password'),
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         filled: true,
@@ -395,9 +395,9 @@ class _RegisterStepOneState extends State<RegisterStepOne>
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
         hintText: MyLocalizations.of(context).getData('confirm_password'),
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         filled: true,
@@ -419,9 +419,9 @@ class _RegisterStepOneState extends State<RegisterStepOne>
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
         hintText: MyLocalizations.of(context).getData('ref_id'),
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         filled: true,

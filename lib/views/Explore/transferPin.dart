@@ -40,7 +40,7 @@ class _TransferPinState extends State<TransferPin> {
     print(contentData);
     if(contentData != null){
       setState(() {
-        pinController.text = contentData['pin'].toString();
+        pinController.text = contentData['total_pin'].toString();
         print(pinController.text);
       });
     }
@@ -113,28 +113,28 @@ class _TransferPinState extends State<TransferPin> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             
-                            SizedBox(height: 30.0),
+                             SizedBox(height: 20.0),
                             
                             Container(
                               child: Text(MyLocalizations.of(context).getData('pin_of_holdings'),style: TextStyle(color:Colors.white),),
                             ),
                             SizedBox(height: 5),
                             pin(),
-                            SizedBox(height: 30.0),
+                             SizedBox(height: 20.0),
 
                             Container(
                               child: Text(MyLocalizations.of(context).getData('username'),style: TextStyle(color:Colors.white),),
                             ),
                              SizedBox(height: 5),
                             _inputUsername(),
-                            SizedBox(height: 30.0),
+                             SizedBox(height: 20.0),
 
                             Container(
                               child: Text(MyLocalizations.of(context).getData('pin_amount'),style: TextStyle(color:Colors.white),),
                             ),
                              SizedBox(height: 5),
                             _inputAmount(),
-                            SizedBox(height: 30.0),
+                             SizedBox(height: 20.0),
 
 
                             Container(
@@ -161,7 +161,7 @@ class _TransferPinState extends State<TransferPin> {
                                   )),
                             ),
                           ),),
-                          SizedBox(height: 30.0),
+                           SizedBox(height: 20.0),
                           ],
                         )),
                   ),
@@ -184,7 +184,7 @@ class _TransferPinState extends State<TransferPin> {
         autofocus: false,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 1),
@@ -208,7 +208,7 @@ class _TransferPinState extends State<TransferPin> {
         autofocus: false,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 1),
@@ -232,7 +232,7 @@ class _TransferPinState extends State<TransferPin> {
         autofocus: false,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 10),

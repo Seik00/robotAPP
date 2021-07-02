@@ -8,7 +8,6 @@ import 'package:robot/API/request.dart';
 import 'package:robot/vendor/i18n/localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:skeleton_text/skeleton_text.dart';
 
 class BonusRecord extends StatefulWidget {
   final url;

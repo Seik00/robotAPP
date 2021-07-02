@@ -6,17 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:robot/API/config.dart';
 import 'package:robot/API/request.dart';
 import 'package:robot/vendor/i18n/localizations.dart';
-import 'package:robot/views/Explore/apiBinding.dart';
-import 'package:robot/views/Explore/buyPin.dart';
 import 'package:robot/views/Explore/changeWallet.dart';
-import 'package:robot/views/Explore/deposit.dart';
-import 'package:robot/views/Explore/invest.dart';
-import 'package:robot/views/Explore/transfer.dart';
-import 'package:robot/views/Explore/transferPin.dart';
-import 'package:robot/views/Explore/withdraw.dart';
-import 'package:robot/views/SystemSetting/invitation.dart';
-import 'package:robot/views/Trade/trade.dart';
-import 'package:robot/views/Trade/tradeDetails.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 class MyAssests extends StatefulWidget {
@@ -34,6 +24,7 @@ class _MyAssestsState extends State<MyAssests>
   var dataList = [];
   var usdt;
   var gas;
+  var gasPingyi;
   var walletType = 'point1';
   
   getRequest() async {
@@ -44,6 +35,7 @@ class _MyAssestsState extends State<MyAssests>
           print(contentData);
           usdt = contentData['point1'];
           gas = contentData['point2'];
+          gasPingyi = contentData['point3'];
         });
       }
     }
@@ -76,7 +68,7 @@ class _MyAssestsState extends State<MyAssests>
   @override
   void initState() {
     super.initState();
-    _tabController = new TabController(length: 2, vsync: this);
+    _tabController = new TabController(length: 3, vsync: this);
     getRequest();
     initializeData(walletType);
   }
@@ -122,8 +114,11 @@ class _MyAssestsState extends State<MyAssests>
                     if(index == 0){
                       initializeData('point1');
                       getRequest();
-                    }else{
+                    }else if (index == 1){
                       initializeData('point2');
+                      getRequest();
+                    }else{
+                      initializeData('point3');
                       getRequest();
                     }
                   },
@@ -133,6 +128,9 @@ class _MyAssestsState extends State<MyAssests>
                     ),
                     Tab(
                       text: 'GAS',
+                    ),
+                    Tab(
+                      text: MyLocalizations.of(context).getData('gas_pingyi'),
                     )
                   ],
                   controller: _tabController,
@@ -389,6 +387,115 @@ class _MyAssestsState extends State<MyAssests>
                                SizedBox(height: 5,),
                                gas==null?Text(''):
                                Text(gas==''?'':'≈ ' + gas +' USD',style: TextStyle(color:Colors.white,fontSize: 14)),
+                              ],
+                            ),
+                            ),
+                            Container(
+                              child: dataList == null || dataList.isEmpty ? 
+                              Container(
+                                padding: EdgeInsets.only(top:20),
+                                child: Center(
+                                  child: Text(MyLocalizations.of(context).getData('no_record'),style: TextStyle(color:Colors.white),),
+                                ),
+                              ):ListView.builder(
+                                primary: false,
+                                shrinkWrap: true,
+                                itemCount: dataList.length,
+                                itemBuilder: (BuildContext ctxt, int index) {
+                                return Container(
+                                  padding: EdgeInsets.all(10),
+                                  margin: EdgeInsets.all(10),
+                                  decoration: new BoxDecoration(
+                                  color: Color(0xff595c64),
+                                  borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                      child: ExpansionTile(
+                                        title: Container(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(dataList[index]['detail'],style: TextStyle(color: Colors.white,fontSize: 14),),
+                                              SizedBox(height:5),
+                                              dataList[index]['action'] =='-'?
+                                              Text('-'+dataList[index]['found'],style: TextStyle(color: Colors.redAccent,fontSize: 20)):
+                                              Text('+'+dataList[index]['found'],style: TextStyle(color: Colors.greenAccent,fontSize: 20)),
+                                              SizedBox(height:5),
+                                            ],
+                                          ),
+                                        ),
+                                        children: <Widget>[
+                                          Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              SizedBox(height:10),
+                                              Container(
+                                                alignment: Alignment.bottomLeft,
+                                                padding: EdgeInsets.only(left:15),
+                                                child: Row(
+                                                  children: [
+                                                    Text(MyLocalizations.of(context).getData('order_time'),style: TextStyle(color: Colors.white70)),
+                                                    Text(dataList[index]['created_at'],style: TextStyle(color: Colors.white70)),
+                                                  ],
+                                                )),
+                                              SizedBox(height:5),
+                                              Container(
+                                                alignment: Alignment.bottomLeft,
+                                                padding: EdgeInsets.only(left:15),
+                                                child: Row(
+                                                  children: [
+                                                    Text(MyLocalizations.of(context).getData('previous_balance')+ ' : ',style: TextStyle(color: Colors.white70)),
+                                                    Text(dataList[index]['previous'].toString()+ ' USDT',style: TextStyle(color: Colors.white70)),
+                                                  ],
+                                                )),
+                                              SizedBox(height:5),
+                                              Container(
+                                                alignment: Alignment.bottomLeft,
+                                                padding: EdgeInsets.only(left:15),
+                                                child: Row(
+                                                  children: [
+                                                    Text(MyLocalizations.of(context).getData('current_balance')+ ' : ',style: TextStyle(color: Colors.white70)),
+                                                    Text(dataList[index]['current'].toString()+ ' USDT',style: TextStyle(color: Colors.white70)),
+                                                  ],
+                                                )),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                    ],
+                                  ),
+                                );
+                                }),
+                            )
+                          ],
+                        ),
+                      ),
+                        ),
+                      Container(
+                        child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Container(
+                            width: MediaQuery.of(context).size.width,
+                            decoration: new BoxDecoration(
+                              color: Color(0xff595c64),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            margin: EdgeInsets.only(top:20,bottom:10,left: 10,right: 10),
+                            padding:EdgeInsets.all(20),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                               Text(MyLocalizations.of(context).getData('total_assets_converted_USDT'),style: TextStyle(color:Colors.white,fontSize: 16),),
+                               SizedBox(height: 10,),
+                               Text(gasPingyi==null?'':gasPingyi,style: TextStyle(color:Colors.white,fontSize: 26)),
+                               SizedBox(height: 5,),
+                               gas==null?Text(''):
+                               Text(gasPingyi==''?'':'≈ ' + gasPingyi +' USD',style: TextStyle(color:Colors.white,fontSize: 14)),
                               ],
                             ),
                             ),

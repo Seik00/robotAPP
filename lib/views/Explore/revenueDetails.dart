@@ -1,19 +1,22 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:robot/API/config.dart';
 import 'package:robot/API/request.dart';
-import 'package:robot/views/Explore/revenueDetails.dart';
 import '../../vendor/i18n/localizations.dart' show MyLocalizations;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
-class Revenue extends StatefulWidget {
+class RevenueDetails extends StatefulWidget {
    final url;
-   final type;
+   final date;
 
-  Revenue(this.url,this.type);
+  RevenueDetails(this.url,this.date);
   @override
-  _RevenueState createState() => _RevenueState();
+  _RevenueDetailsState createState() => _RevenueDetailsState();
 }
 
-class _RevenueState extends State<Revenue> {
+class _RevenueDetailsState extends State<RevenueDetails> {
   
   var dataList;
   var todayRevenue;
@@ -22,6 +25,7 @@ class _RevenueState extends State<Revenue> {
   @override
   void initState() {
     super.initState();
+    initializeData();
     revenue();
   }
 
@@ -30,14 +34,35 @@ class _RevenueState extends State<Revenue> {
     if(contentData != null){
       if (mounted) {
         setState(() {
-          dataList = contentData['data']['data']['data'];
           todayRevenue = contentData['data']['today_revenue'];
           totalRevenue = contentData['data']['total_revenue'];
-          print(todayRevenue);
         });
       }
     }
   }
+
+  initializeData() async {
+      final prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString('token');
+
+      var body = {
+        'date': widget.date,
+      };
+      print(body);
+      var uri = Uri.https(Config().url2, 'api/trade-revenue/revenueDay', body);
+
+      var response = await http.get(uri, headers: {
+        'Authorization': 'Bearer $token'
+      }).timeout(new Duration(seconds: 10));
+      var contentData = json.decode(response.body);
+    
+      setState(() {
+        dataList = contentData['data']['data']['data'];
+        print(dataList);
+        print('--------');
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +109,7 @@ class _RevenueState extends State<Revenue> {
                             child: 
                             Container(
                                alignment: Alignment.centerLeft,
-                              child: Text(MyLocalizations.of(context).getData('revenue'),style: TextStyle(color: Colors.white,fontSize: 20),))),
+                              child: Text(widget.date,style: TextStyle(color: Colors.white,fontSize: 20),))),
                           
                         ],
                       ),
@@ -181,72 +206,126 @@ class _RevenueState extends State<Revenue> {
                     itemBuilder: (BuildContext ctxt, int index) {
                     return Container(
                       child: 
-                      GestureDetector(
-                        onTap: (){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => RevenueDetails(widget.url,dataList[index]['date'])),
-                        );
-                        },
-                        child:  Container(
-                          padding: EdgeInsets.all(10),
-                          decoration: new BoxDecoration(
-                            color: Color(0xff595c64),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          margin: EdgeInsets.only(left:10,right:10,bottom: 10),
-                          child: Row(
-                            children: <Widget>[
-                              Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                ),
-                                margin: EdgeInsets.only(right: 20),
-                                padding: EdgeInsets.all(10),
-                                child: Column(
-                                  children: [
-                                    Text(dataList[index]['date'].substring(5, 10),style: TextStyle(color: Colors.white,fontSize: 18)),
-                                    Text(dataList[index]['date'].substring(0, 4),style: TextStyle(color: Colors.white54)),
-                                  ],
-                                )
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment:CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Container(
-                                      child: dataList[index]['revenue'].substring(0)=='-'?
-                                      Text(
-                                        double.parse(dataList[index]['revenue']).toStringAsFixed(5)+' USDT',
-                                        style: TextStyle(color: Colors.redAccent,fontSize: 18,fontWeight: FontWeight.bold),
-                                      ):
-                                      Text(
-                                        double.parse(dataList[index]['revenue']).toStringAsFixed(5)+' USDT',
-                                        style: TextStyle(color: Colors.greenAccent,fontSize: 18,fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    Container(child: 
-                                    dataList[index]['revenue'].substring(0)=='-'?
-                                    Text(MyLocalizations.of(context).getData('loss'),style: TextStyle(color:Colors.white54)):
-                                    Text(MyLocalizations.of(context).getData('earn'),style: TextStyle(color:Colors.white54)),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: <Widget>[
-                                    Container(
-                                        child: (Icon(
-                                            Icons.chevron_right_outlined,color: Colors.white,))),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        decoration: new BoxDecoration(
+                          color: Color(0xff595c64),
+                          borderRadius: BorderRadius.circular(10),
                         ),
+                        margin: EdgeInsets.only(left:10,right:10,bottom: 10),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: <Widget>[
+                                dataList[index]['platform'] =='binance'?
+                                Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white
+                                  ),
+                                  margin: EdgeInsets.only(right: 10),
+                                  padding: EdgeInsets.all(5),
+                                  child: Image(
+                                    image: AssetImage(
+                                        "lib/assets/img/BNB.png"),
+                                    height: 20,
+                                    width: 20,
+                                  )
+                                ):
+                                Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white
+                                  ),
+                                  margin: EdgeInsets.only(right: 10),
+                                  padding: EdgeInsets.all(5),
+                                  child: Image(
+                                    image: AssetImage(
+                                        "lib/assets/img/HT.png"),
+                                    height: 20,
+                                    width: 20,
+                                  )
+                                ),
+                                Flexible(
+                                  child: Container(
+                                    padding: EdgeInsets.all(10),
+                                    child: Text(dataList[index]['pid'],style: TextStyle(color: Colors.white,fontSize: 12))
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Divider(
+                              color: Colors.grey[400],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(
+                                  child: Text(MyLocalizations.of(context).getData('exchange'),style: TextStyle(color: Colors.white,fontSize: 14))
+                                ),
+                                Container(
+                                  padding: EdgeInsets.all(10),
+                                  child: Column(
+                                    children: [
+                                      Text(dataList[index]['platform'],style: TextStyle(color: Colors.white,fontSize: 14)),
+                                    ],
+                                  )
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(
+                                  child: Text(MyLocalizations.of(context).getData('sell_currency'),style: TextStyle(color: Colors.white,fontSize: 14))
+                                ),
+                                Container(
+                                  padding: EdgeInsets.all(10),
+                                  child: Column(
+                                    children: [
+                                      Text(dataList[index]['market'],style: TextStyle(color: Colors.white,fontSize: 14)),
+                                    ],
+                                  )
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(
+                                  child: Text(MyLocalizations.of(context).getData('sell_time'),style: TextStyle(color: Colors.white,fontSize: 14))
+                                ),
+                                Container(
+                                  padding: EdgeInsets.all(10),
+                                  child: Column(
+                                    children: [
+                                      Text(dataList[index]['ctime'],style: TextStyle(color: Colors.white,fontSize: 14)),
+                                    ],
+                                  )
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(
+                                  child: Text(MyLocalizations.of(context).getData('profit_amount'),style: TextStyle(color: Colors.white,fontSize: 14))
+                                ),
+                                Container(
+                                  padding: EdgeInsets.all(10),
+                                  child: Column(
+                                    children: [
+                                      dataList[index]['revenue'].substring(0)=='-'?
+                                      Text(dataList[index]['revenue'],style: TextStyle(color: Colors.redAccent,fontSize: 14)):
+                                      Text(dataList[index]['revenue'],style: TextStyle(color: Colors.greenAccent,fontSize: 14)),
+                                    ],
+                                  )
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
+                      ),
                       );
                       }),
                   ),

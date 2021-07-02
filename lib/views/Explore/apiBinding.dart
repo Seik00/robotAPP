@@ -96,7 +96,7 @@ class _ApiBindingState extends State<ApiBinding> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         margin: EdgeInsets.only(top:20,bottom:10,left: 10,right: 10),
-                        padding: EdgeInsets.all(20),
+                        padding: EdgeInsets.all(10),
                         child: Row(
                           children: <Widget>[
                             Container(
@@ -108,8 +108,8 @@ class _ApiBindingState extends State<ApiBinding> {
                               child: Image(
                                 image: AssetImage(
                                     "lib/assets/img/BNB.png"),
-                                height: 60,
-                                width: 60,
+                                height: 40,
+                                width: 40,
                               )
                             ),
                             Expanded(
@@ -156,7 +156,7 @@ class _ApiBindingState extends State<ApiBinding> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         margin: EdgeInsets.all(10),
-                        padding: EdgeInsets.all(20),
+                        padding: EdgeInsets.all(10),
                         child: Row(
                           children: <Widget>[
                             Container(
@@ -168,8 +168,8 @@ class _ApiBindingState extends State<ApiBinding> {
                               child: Image(
                                 image: AssetImage(
                                     "lib/assets/img/HT.png"),
-                                height: 60,
-                                width: 60,
+                                height: 40,
+                                width: 40,
                               )
                             ),
                             Expanded(

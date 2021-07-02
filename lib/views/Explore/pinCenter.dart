@@ -98,7 +98,7 @@ class _PinCenterState extends State<PinCenter> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         margin: EdgeInsets.only(top:20,bottom:10,left: 10,right: 10),
-                        padding: EdgeInsets.all(20),
+                        padding: EdgeInsets.all(10),
                         child: Row(
                           children: <Widget>[
                             Container(
@@ -109,7 +109,7 @@ class _PinCenterState extends State<PinCenter> {
                               padding: EdgeInsets.all(10),
                               child: Icon(
                                 Icons.shopping_cart,
-                                size: 40,
+                                size: 30,
                                 color: Color(0xfffbf615),
                               ),
                             ),
@@ -157,7 +157,7 @@ class _PinCenterState extends State<PinCenter> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         margin: EdgeInsets.all(10),
-                        padding: EdgeInsets.all(20),
+                        padding: EdgeInsets.all(10),
                         child: Row(
                           children: <Widget>[
                             Container(
@@ -168,7 +168,7 @@ class _PinCenterState extends State<PinCenter> {
                               padding: EdgeInsets.all(10),
                               child: Icon(
                                 Icons.subdirectory_arrow_right,
-                                size: 40,
+                                size: 30,
                                 color: Color(0xfffbf615),
                               ),
                             ),

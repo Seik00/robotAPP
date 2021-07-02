@@ -42,10 +42,14 @@ class _TradeDetailsState extends State<TradeDetails> {
   TextEditingController coverRateController = TextEditingController();
   TextEditingController coverCallbackRateController = TextEditingController();
   TextEditingController recycleStatusController = TextEditingController();
+  TextEditingController pointTwoController = TextEditingController();
+  TextEditingController pointThreeController = TextEditingController();
   
   bool _validate = false;
   var body;
   int _radioValue = 0;
+  int _value = 1;
+  var finalValue;
 
   void _handleRadioValueChange(int value) {
     setState(() {
@@ -66,7 +70,7 @@ class _TradeDetailsState extends State<TradeDetails> {
   void initState() {
     super.initState();
     getRobotInfo();
-    print(widget.is_clean);
+    getRequest();
   }
 
   getRobotInfo(){
@@ -77,6 +81,19 @@ class _TradeDetailsState extends State<TradeDetails> {
     coverRateController.text = widget.coverRate.toString();
     coverCallbackRateController.text = widget.coverCallbackRate.toString();
     _radioValue = widget.recycleStatus;
+  }
+
+  getRequest() async {
+    var contentData = await Request().getRequest(Config().url + "api/member/get-member-info", context);
+    if(contentData != null){
+      if (mounted) {
+        setState(() {
+          print(contentData);
+          pointTwoController.text = contentData['point2'];
+          pointThreeController.text = contentData['point3'];
+        });
+      }
+    }
   }
 
   @override
@@ -100,7 +117,7 @@ class _TradeDetailsState extends State<TradeDetails> {
               child: Column(
                 children: <Widget>[
                   Container(
-                    height: 100,
+                    height: 50,
                     decoration: BoxDecoration(
                     color: Colors.grey.withOpacity(0.5),
                   ),
@@ -124,10 +141,7 @@ class _TradeDetailsState extends State<TradeDetails> {
                             child: 
                             Container(
                                alignment: Alignment.centerLeft,
-                              child: Text(MyLocalizations.of(context).getData('trade_details'),style: TextStyle(color: Colors.white,fontSize: 28),))),
-                         
-                        
-                          
+                              child: Text(MyLocalizations.of(context).getData('trade_details'),style: TextStyle(color: Colors.white,fontSize: 20),))),     
                         ],
                       ),
                     ],
@@ -142,56 +156,101 @@ class _TradeDetailsState extends State<TradeDetails> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             
-                            SizedBox(height: 30.0),
+                            SizedBox(height: 20.0),
 
+                            Container(
+                              child: Text('GAS',style: TextStyle(color: Colors.white),),
+                            ),
+                            SizedBox(height: 5),
+                            _inputPointTwo(),
+                            SizedBox(height: 20.0),
+                               
+                            Container(
+                              child: Text(MyLocalizations.of(context).getData('gas_pingyi'),style: TextStyle(color: Colors.white),),
+                            ),
+                            SizedBox(height: 5),
+                            _inputPointThree(),
+                            SizedBox(height: 20.0),
+
+                            Container(
+                              child: Text(MyLocalizations.of(context).getData('gas_type'),style: TextStyle(color: Colors.white),),
+                            ),
+                            SizedBox(height: 5),
+                            Container(
+                                padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: Colors.white,
+                                border: Border.all()),
+                                child: DropdownButton(
+                                  isExpanded: true,
+                                  value: _value,
+                                  items: [
+                                    DropdownMenuItem(
+                                      child: Text('GAS'),
+                                      value: 1,
+                                    ),
+                                    DropdownMenuItem(
+                                      child: Text(MyLocalizations.of(context).getData('gas_pingyi')),
+                                      value: 2,
+                                    ),
+                                  ],
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _value = value;
+                                    });
+                                  }),
+                            ),
+                            SizedBox(height: 20.0),
                             Container(
                               child: Text(MyLocalizations.of(context).getData('first_buy_in_amount'),style: TextStyle(color: Colors.white),),
                             ),
                             SizedBox(height: 5),
                             _inputfirstOrderValue(),
-                            SizedBox(height: 30.0),
+                            SizedBox(height: 20.0),
 
                             Container(
                               child: Text(MyLocalizations.of(context).getData('numbers_of_cover_up'),style: TextStyle(color: Colors.white)),
                             ),
                             SizedBox(height: 5),
                             _inputmaxOrderCount(),
-                            SizedBox(height: 30.0),
+                            SizedBox(height: 20.0),
                             
                             Container(
                               child: Text(MyLocalizations.of(context).getData('take_profit_ratio'),style: TextStyle(color: Colors.white)),
                             ),
                             SizedBox(height: 5),
                             _inputstopProfitRate(),
-                            SizedBox(height: 30.0),
+                            SizedBox(height: 20.0),
 
                             Container(
                               child: Text(MyLocalizations.of(context).getData('earnings_callback'),style: TextStyle(color: Colors.white)),
                             ),
                             SizedBox(height: 5),
                             _inputstopProfitCallback(),
-                            SizedBox(height: 30.0),
+                            SizedBox(height: 20.0),
 
                             Container(
                               child: Text(MyLocalizations.of(context).getData('margin_call_drop'),style: TextStyle(color: Colors.white)),
                             ),
                             SizedBox(height: 5),
                             _inputcoverRate(),
-                            SizedBox(height: 30.0),
+                            SizedBox(height: 20.0),
 
                             Container(
                               child: Text(MyLocalizations.of(context).getData('buy_in_callback'),style: TextStyle(color: Colors.white)),
                             ),
                             SizedBox(height: 5),
                             _inputcoverCallbackRate(),
-                            SizedBox(height: 30.0),
+                            SizedBox(height: 20.0),
 
                             Container(
                               child: Text(MyLocalizations.of(context).getData('strategy_type'),style: TextStyle(color: Colors.white)),
                             ),
                             SizedBox(height: 5),
                             recycleStatus(),
-                            SizedBox(height: 30.0),
+                            SizedBox(height: 20.0),
 
                             Container(
                             child: GestureDetector(
@@ -217,7 +276,7 @@ class _TradeDetailsState extends State<TradeDetails> {
                                   )),
                             ),
                           ),),
-                            SizedBox(height: 30.0),
+                            SizedBox(height: 20.0),
                           ],
                         )),
                   ),
@@ -230,7 +289,57 @@ class _TradeDetailsState extends State<TradeDetails> {
       ),
     );
   }
- 
+  
+  _inputPointTwo() {
+    return new Container(
+      child: TextFormField(
+        controller: pointTwoController,
+        validator: validateInput,
+        enabled: false,
+        autofocus: false,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        decoration: new InputDecoration(
+        contentPadding: const EdgeInsets.all(14.0),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.grey, width: 1),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+      ),
+        keyboardType: TextInputType.text,
+        onSaved: (str) {
+          print(str);
+        },
+      ),
+    );
+  }
+
+  _inputPointThree() {
+    return new Container(
+      child: TextFormField(
+        controller: pointThreeController,
+        validator: validateInput,
+        enabled: false,
+        autofocus: false,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        decoration: new InputDecoration(
+        contentPadding: const EdgeInsets.all(14.0),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.grey, width: 1),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+      ),
+        keyboardType: TextInputType.text,
+        onSaved: (str) {
+          print(str);
+        },
+      ),
+    );
+  }
+
   _inputfirstOrderValue() {
     return new Container(
       child: TextFormField(
@@ -239,9 +348,9 @@ class _TradeDetailsState extends State<TradeDetails> {
         autofocus: false,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         filled: true,
@@ -266,9 +375,9 @@ class _TradeDetailsState extends State<TradeDetails> {
         suffixIcon: IconButton(
           icon: Text('Time'),
         ),
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         filled: true,
@@ -293,9 +402,9 @@ class _TradeDetailsState extends State<TradeDetails> {
         suffixIcon: IconButton(
           icon: Text('%'),
         ),
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         filled: true,
@@ -320,9 +429,9 @@ class _TradeDetailsState extends State<TradeDetails> {
         suffixIcon: IconButton(
           icon: Text('%'),
         ),
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         filled: true,
@@ -347,9 +456,9 @@ class _TradeDetailsState extends State<TradeDetails> {
         suffixIcon: IconButton(
           icon: Text('%'),
         ),
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         filled: true,
@@ -374,9 +483,9 @@ class _TradeDetailsState extends State<TradeDetails> {
         suffixIcon: IconButton(
           icon: Text('%'),
         ),
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         filled: true,
@@ -478,6 +587,13 @@ class _TradeDetailsState extends State<TradeDetails> {
           }
           else{
           setState(() {
+            if(_value == 1){
+              finalValue = 'point2';
+            }
+            else if(_value == 2){
+              finalValue = 'point3';
+            }
+            tmap['gas_type'] = finalValue;
             tmap['robot_id'] = widget.robotId.toString();
             tmap['first_order_value'] = firstOrderValueController.text.toString();
             tmap['max_order_count'] = maxOrderCountController.text.toString();

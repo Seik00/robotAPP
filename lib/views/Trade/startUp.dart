@@ -32,10 +32,11 @@ class _StartUpState extends State<StartUp> {
   TextEditingController coverRateController = TextEditingController();
   TextEditingController coverCallBackRateController = TextEditingController();
   TextEditingController recycleStatusController = TextEditingController();
+  TextEditingController pointTwoController = TextEditingController();
+  TextEditingController pointThreeController = TextEditingController();
   
   bool _validate = false;
   var body;
- 
   int _radioValue = 0;
   bool _hasBeenPressed = false;
   bool _hasBeenPressed2 = false;
@@ -44,6 +45,8 @@ class _StartUpState extends State<StartUp> {
   var robotList = [];
   bool checkApiBinding = true;
   var load = true;
+  int _value = 1;
+  var finalValue;
 
   void _handleRadioValueChange(int value) {
     setState(() {
@@ -69,6 +72,7 @@ class _StartUpState extends State<StartUp> {
       'platform': widget.type,
     };
     getAPIInfo(body);
+    getRequest();
   }
 
   // getAPIInfo(bodyData) async {
@@ -99,6 +103,18 @@ class _StartUpState extends State<StartUp> {
     }
   }
 
+  getRequest() async {
+    var contentData = await Request().getRequest(Config().url + "api/member/get-member-info", context);
+    if(contentData != null){
+      if (mounted) {
+        setState(() {
+          print(contentData);
+          pointTwoController.text = contentData['point2'];
+          pointThreeController.text = contentData['point3'];
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +137,7 @@ class _StartUpState extends State<StartUp> {
               child: Column(
                 children: <Widget>[
                   Container(
-                    height: 100,
+                    height: 50,
                     decoration: BoxDecoration(
                     color: Colors.grey.withOpacity(0.5),
                   ),
@@ -145,7 +161,7 @@ class _StartUpState extends State<StartUp> {
                             child: 
                             Container(
                                alignment: Alignment.centerLeft,
-                              child: Text(MyLocalizations.of(context).getData('robot_setup'),style: TextStyle(color: Colors.white,fontSize: 28),))),
+                              child: Text(MyLocalizations.of(context).getData('robot_setup'),style: TextStyle(color: Colors.white,fontSize: 20),))),
                           
                         ],
                       ),
@@ -262,56 +278,101 @@ class _StartUpState extends State<StartUp> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                
-                                SizedBox(height: 30.0),
+                                SizedBox(height: 20.0),
                                 
+                                Container(
+                                  child: Text('GAS',style: TextStyle(color: Colors.white),),
+                                ),
+                                SizedBox(height: 5),
+                                _inputPointTwo(),
+                                SizedBox(height: 20.0),
+                                  
+                                Container(
+                                  child: Text(MyLocalizations.of(context).getData('gas_pingyi'),style: TextStyle(color: Colors.white),),
+                                ),
+                                SizedBox(height: 5),
+                                _inputPointThree(),
+                                SizedBox(height: 20.0),
+
+                                Container(
+                                  child: Text(MyLocalizations.of(context).getData('gas_type'),style: TextStyle(color: Colors.white),),
+                                ),
+                                SizedBox(height: 5),
+                                Container(
+                                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: Colors.white,
+                                    border: Border.all()),
+                                    child: DropdownButton(
+                                      isExpanded: true,
+                                      value: _value,
+                                      items: [
+                                        DropdownMenuItem(
+                                          child: Text('GAS'),
+                                          value: 1,
+                                        ),
+                                        DropdownMenuItem(
+                                          child: Text(MyLocalizations.of(context).getData('gas_pingyi')),
+                                          value: 2,
+                                        ),
+                                      ],
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _value = value;
+                                        });
+                                      }),
+                                ),
+                                SizedBox(height: 20.0),
                                 Container(
                                   child: Text(MyLocalizations.of(context).getData('first_buy_in_amount'),style: TextStyle(color:Colors.white),),
                                 ),
                                 SizedBox(height: 5),
                                 firstOrder(),
-                                SizedBox(height: 30.0),
+                                SizedBox(height: 20.0),
 
                                 Container(
                                   child: Text(MyLocalizations.of(context).getData('numbers_of_cover_up'),style: TextStyle(color:Colors.white),),
                                 ),
                                 SizedBox(height: 5),
                                 maxOrder(),
-                                SizedBox(height: 30.0),
+                                SizedBox(height: 20.0),
 
                                 Container(
                                   child: Text(MyLocalizations.of(context).getData('take_profit_ratio'),style: TextStyle(color:Colors.white),),
                                 ),
                                 SizedBox(height: 5),
                                 stopProfitRate(),
-                                SizedBox(height: 30.0),
+                                SizedBox(height: 20.0),
 
                                 Container(
                                   child: Text(MyLocalizations.of(context).getData('earnings_callback'),style: TextStyle(color:Colors.white),),
                                 ),
                                 SizedBox(height: 5),
                                 stopProfitCallback(),
-                                SizedBox(height: 30.0),
+                                SizedBox(height: 20.0),
 
                                 Container(
                                   child: Text(MyLocalizations.of(context).getData('margin_call_drop'),style: TextStyle(color:Colors.white),),
                                 ),
                                 SizedBox(height: 5),
                                 coverRate(),
-                                SizedBox(height: 30.0),
+                                SizedBox(height: 20.0),
 
                                 Container(
                                   child: Text(MyLocalizations.of(context).getData('buy_in_callback'),style: TextStyle(color:Colors.white),),
                                 ),
                                 SizedBox(height: 5),
                                 coverCallBackRate(),
-                                SizedBox(height: 30.0),
+                                SizedBox(height: 20.0),
 
                                 Container(
                                   child: Text(MyLocalizations.of(context).getData('strategy_type'),style: TextStyle(color:Colors.white),),
                                 ),
                                 SizedBox(height: 5),
                                 recycleStatus(),
-                                SizedBox(height: 30.0),
+                                SizedBox(height: 20.0),
 
 
                                 Container(
@@ -339,7 +400,7 @@ class _StartUpState extends State<StartUp> {
                                       ):CircularProgressIndicator(backgroundColor: Colors.black, strokeWidth: 2,)),
                                 ),
                               ),),
-                                SizedBox(height: 30.0),
+                                SizedBox(height: 20.0),
                               ],
                             )),
                       ),
@@ -354,7 +415,57 @@ class _StartUpState extends State<StartUp> {
       ),
     );
   }
- 
+  
+  _inputPointTwo() {
+    return new Container(
+      child: TextFormField(
+        controller: pointTwoController,
+        validator: validateInput,
+        enabled: false,
+        autofocus: false,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        decoration: new InputDecoration(
+        contentPadding: const EdgeInsets.all(14.0),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.grey, width: 1),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+      ),
+        keyboardType: TextInputType.text,
+        onSaved: (str) {
+          print(str);
+        },
+      ),
+    );
+  }
+
+  _inputPointThree() {
+    return new Container(
+      child: TextFormField(
+        controller: pointThreeController,
+        validator: validateInput,
+        enabled: false,
+        autofocus: false,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        decoration: new InputDecoration(
+        contentPadding: const EdgeInsets.all(14.0),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.grey, width: 1),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+      ),
+        keyboardType: TextInputType.text,
+        onSaved: (str) {
+          print(str);
+        },
+      ),
+    );
+  }
+
   firstOrder() {
     return new Container(
       child: TextFormField(
@@ -363,9 +474,9 @@ class _StartUpState extends State<StartUp> {
         autofocus: false,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         filled: true,
@@ -390,9 +501,9 @@ class _StartUpState extends State<StartUp> {
         suffixIcon: IconButton(
           icon: Text(MyLocalizations.of(context).getData('times')),
         ),
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         filled: true,
@@ -417,9 +528,9 @@ class _StartUpState extends State<StartUp> {
           suffixIcon: IconButton(
           icon: Text('%'),
         ),
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         filled: true,
@@ -444,9 +555,9 @@ class _StartUpState extends State<StartUp> {
           suffixIcon: IconButton(
           icon: Text('%'),
         ),
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         filled: true,
@@ -471,9 +582,9 @@ class _StartUpState extends State<StartUp> {
           suffixIcon: IconButton(
           icon: Text('%'),
         ),
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         filled: true,
@@ -498,9 +609,9 @@ class _StartUpState extends State<StartUp> {
           suffixIcon: IconButton(
           icon: Text('%'),
         ),
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         filled: true,
@@ -613,6 +724,13 @@ class _StartUpState extends State<StartUp> {
           ..show();
         }else{
           setState(() {
+            if(_value == 1){
+              finalValue = 'point2';
+            }
+            else if(_value == 2){
+              finalValue = 'point3';
+            }
+            tmap['gas_type'] = finalValue;
             tmap['platform'] = widget.type;
             tmap['market_id'] = widget.marketId.toString();
             tmap['first_order_value'] = firstOrderController.text.toString();
