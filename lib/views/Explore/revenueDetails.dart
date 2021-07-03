@@ -46,7 +46,7 @@ class _RevenueDetailsState extends State<RevenueDetails> {
       var token = prefs.getString('token');
 
       var body = {
-        'date': widget.date,
+        'date': widget.date.toString(),
       };
       print(body);
       var uri = Uri.https(Config().url2, 'api/trade-revenue/revenueDay', body);
