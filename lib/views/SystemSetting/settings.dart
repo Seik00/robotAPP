@@ -6,6 +6,7 @@ import 'package:robot/vendor/i18n/localizations.dart';
 import 'package:robot/views/LoginPage/loginPage.dart';
 import 'package:robot/views/LoginPage/registerStepOne.dart';
 import 'package:robot/views/SystemSetting/BonusCenter.dart';
+import 'package:robot/views/SystemSetting/allTransactionRecord.dart';
 import 'package:robot/views/SystemSetting/customerService.dart';
 import 'package:robot/views/SystemSetting/invitation.dart';
 import 'package:robot/views/SystemSetting/myTeam.dart';
@@ -292,6 +293,64 @@ class _SettingsState extends State<Settings>
                                               child: Text(
                                                 MyLocalizations.of(context)
                                                     .getData('register'),
+                                                style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          children: <Widget>[
+                                            Container(
+                                                child: (Icon(
+                                                    Icons.chevron_right_outlined,color: Colors.white,))),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => AllTransactionRecord(widget.url,widget.onChangeLanguage)),
+                                  );
+                                },
+                                child: Container(
+                                  decoration: new BoxDecoration(
+                                    color: Color(0xff595c64),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  margin: EdgeInsets.only(left:10,right:10,bottom: 10),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                        ),
+                                        margin: EdgeInsets.only(right: 20),
+                                        padding: EdgeInsets.all(10),
+                                        child: Image(
+                                          image: AssetImage(
+                                              "lib/assets/img/me_settings.png"),
+                                          height: 30,
+                                          width: 40,
+                                        )
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Container(
+                                              child: Text(
+                                                MyLocalizations.of(context)
+                                                    .getData('transaction_details'),
                                                 style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
                                               ),
                                             ),

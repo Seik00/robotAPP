@@ -350,6 +350,10 @@
     "gas_pingyi": "GAS(平移)",
     "gas_type": "GAS Type",
     "incorrect_api": "Incorrect API Key",
+    "transaction_details": "Transaction Details",
+    "deal_price": "Average Buy In Price (USDT)",
+    "deal_amount": "Deal Amount : ",
+    "deal_money": "Filled Quantity : ",
 
     "not_enough_point_2": "Not Enough Gas",
     "robot_exist": "Robot Exist",

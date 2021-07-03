@@ -178,6 +178,10 @@ class _BonusCenterrState extends State<BonusCenter>
                             ),
                           ),
                         ),
+                        Divider(
+                          height: 1,
+                          color: Colors.grey[400],
+                        ),
                         InkWell(
                           onTap: () {
                             Navigator.push(
