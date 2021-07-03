@@ -46,7 +46,7 @@ class _MyAssestsState extends State<MyAssests>
       var token = prefs.getString('token');
 
       var body = {
-        'wallet': walletType,
+        'wallet': walletType.toString(),
       };
       var uri = Uri.https(Config().url2, 'api/record/wallet-record', body);
 

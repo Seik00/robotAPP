@@ -20,7 +20,6 @@ import 'package:robot/API/config.dart';
 import 'package:robot/API/request.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:platform_device_id/platform_device_id.dart';
 
 class TopViewing extends StatefulWidget {
   final url;
@@ -65,29 +64,26 @@ class _TopViewingState extends State<TopViewing>
   void initState() {
     super.initState();
     getRequest();
-    initPlatformState();
+    //initPlatformState();
     lookUp();
   }
  
-  Future<void> initPlatformState() async {
-    String deviceId;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      deviceId = await PlatformDeviceId.getDeviceId;
-    } on PlatformException {
-      deviceId = 'Failed to get deviceId.';
-    }
+  // Future<void> initPlatformState() async {
+  //   String deviceId;
+  //   try {
+  //     deviceId = await PlatformDeviceId.getDeviceId;
+  //   } on PlatformException {
+  //     deviceId = 'Failed to get deviceId.';
+  //   }
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
+   
+  //   if (!mounted) return;
 
-    setState(() {
-      _deviceId = deviceId;
-      print("deviceId->$_deviceId");
-    });
-  }
+  //   setState(() {
+  //     _deviceId = deviceId;
+  //     print("deviceId->$_deviceId");
+  //   });
+  // }
 
    lookUp() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
