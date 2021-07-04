@@ -284,26 +284,31 @@ class _QuantityState extends State<Quantity>
           backgroundColor: Color(0xff212630),
           appBar: AppBar(
             backgroundColor: Color(0xff474c56),
-            bottom: TabBar(
-                onTap: (index) {
-                  setState(() {
-                    _timer.cancel();
-                    count = 0;
-                  });
-                  if(index == 0){
-                    getAPIInfo(bodyUSDT = {'platform': 'binance',});
-                    startLoop();
-                    print(money['data']);
-                  }else if(index == 1){
-                    getAPIInfo(bodyUSDT = {'platform': 'huobi',});
-                    getLocalStorage2();
-                    print(money['data']);
-                  }
-                },
-              tabs: [
-                Tab(child: Text(MyLocalizations.of(context).getData('binance')),),
-                Tab(child: Text(MyLocalizations.of(context).getData('huobi')),),
-              ],
+            bottom: new PreferredSize(
+              preferredSize: new Size(0.0, 0.0),
+              child: new Container(
+                child: TabBar(
+                    onTap: (index) {
+                      setState(() {
+                        _timer.cancel();
+                        count = 0;
+                      });
+                      if(index == 0){
+                        getAPIInfo(bodyUSDT = {'platform': 'binance',});
+                        startLoop();
+                        print(money['data']);
+                      }else if(index == 1){
+                        getAPIInfo(bodyUSDT = {'platform': 'huobi',});
+                        getLocalStorage2();
+                        print(money['data']);
+                      }
+                    },
+                  tabs: [
+                    Tab(child: Text(MyLocalizations.of(context).getData('binance')),),
+                    Tab(child: Text(MyLocalizations.of(context).getData('huobi')),),
+                  ],
+                ),
+              ),
             ),
           ),
           body:TabBarView(

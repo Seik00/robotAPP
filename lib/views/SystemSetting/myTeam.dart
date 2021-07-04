@@ -128,13 +128,12 @@ class _MyTeamState extends State<MyTeam> {
                   margin: EdgeInsets.only(top:20),
                   child: Text(MyLocalizations.of(context).getData('quantitative_investment'),style: TextStyle(fontSize: 30,color: Colors.white,fontWeight: FontWeight.bold),),),
                 Container(
-                  margin: EdgeInsets.all(25),
-                  padding: EdgeInsets.all(10),
-                  height: 200,
+                  margin: EdgeInsets.all(10),
+                  height: 250,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage("lib/assets/img/assetsbg.png"),
-                      fit: BoxFit.fill,
+                      image: AssetImage("lib/assets/img/team_bg.png"),
+                      fit: BoxFit.fitHeight,
                     ),
                   ),
                 ),

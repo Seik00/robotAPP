@@ -354,6 +354,7 @@
     "deal_price": "成交均价",
     "deal_amount": "成交数量 : ",
     "deal_money": "成交金额 : ",
+    "prize_pool": "奖金池",
 
     "not_enough_point_2": "燃料不足",
     "robot_exist": "已创建机器人",

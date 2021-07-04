@@ -29,8 +29,6 @@ class _NewsListState extends State<NewsList> {
     language = prefs.getString('language');
     if(language=='zh'){
       language = 'cn';
-    }else if(language =='ms'){
-      language = 'vn';
     }
     print(language);
   }
@@ -65,7 +63,7 @@ class _NewsListState extends State<NewsList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Color(0xff212630),
       appBar: PreferredSize(
           child: AppBar(
             backgroundColor: Theme.of(context).backgroundColor,
@@ -74,14 +72,6 @@ class _NewsListState extends State<NewsList> {
           preferredSize: Size.fromHeight(0)),
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("lib/assets/img/background.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
           Container(
           child: SingleChildScrollView(
             child: Column(
@@ -149,7 +139,7 @@ class _NewsListState extends State<NewsList> {
                                       gradient: LinearGradient(
                                       begin: Alignment.topCenter,
                                       end: Alignment.bottomCenter,
-                                      colors: [Color(0xff9957ED), Color(0xff7835E5)])
+                                      colors: [Color(0xff595c64), Color(0xff595c64)])
                                   ),
                                   child: Column(
                                     children: [
@@ -167,8 +157,8 @@ class _NewsListState extends State<NewsList> {
                                                     dataList[index]['public_path'] ==null?
                                                     'https://philip.greatwallsolution.com/sae.png':
                                                     dataList[index]['public_path']),
-                                                  height: 80,
-                                                  width: 80,
+                                                  height: 60,
+                                                  width: 60,
                                                 )
                                               ),
                                               Expanded(

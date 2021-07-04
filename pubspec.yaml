@@ -27,7 +27,6 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  carousel_slider: ^2.3.1
   convex_bottom_bar: ^2.5.1
 dev_dependencies:
   flutter_test:
@@ -54,6 +53,7 @@ dev_dependencies:
   flutter_hms_gms_availability: ^1.0.0
   firebase_messaging:
   flutter_spinkit: "^4.1.2"
+  carousel_slider: ^4.0.0
 
 flutter:
   uses-material-design: true
@@ -66,7 +66,6 @@ flutter:
     - lib/system/language/th.json
     - lib/assets/img/
     - lib/assets/img/serviceDetails/
-    - lib/assets/img/profile/
 
 flutter_icons:
   android: true

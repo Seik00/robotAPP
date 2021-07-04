@@ -354,6 +354,7 @@
     "deal_price": "Average Buy In Price (USDT)",
     "deal_amount": "Deal Amount : ",
     "deal_money": "Filled Quantity : ",
+    "prize_pool": "Prize Pool",
 
     "not_enough_point_2": "Not Enough Gas",
     "robot_exist": "Robot Exist",

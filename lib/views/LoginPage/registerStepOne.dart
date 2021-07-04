@@ -298,7 +298,7 @@ class _RegisterStepOneState extends State<RegisterStepOne>
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: new InputDecoration(
                 hintText: MyLocalizations.of(context).getData('phone'),
-                contentPadding: const EdgeInsets.only(top:14.0,bottom: 14,left: 70,right: 8),
+                contentPadding: const EdgeInsets.only(top:16.0,bottom: 16,left: 70,right: 8),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide(color: Colors.grey, width: 1),
@@ -313,7 +313,7 @@ class _RegisterStepOneState extends State<RegisterStepOne>
               ),
             ),
             Container(
-              padding: EdgeInsets.only(top:3.0,left:8),
+              padding: EdgeInsets.only(top:2.0,left:8),
               width: 80,
               // color: Colors.red,
               child: TextField(

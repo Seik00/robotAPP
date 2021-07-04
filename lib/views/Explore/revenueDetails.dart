@@ -119,67 +119,70 @@ class _RevenueDetailsState extends State<RevenueDetails> {
                 Container(
                   margin: EdgeInsets.all(25),
                   padding: EdgeInsets.all(10),
-                  height: 200,
+                  height: 150,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage("lib/assets/img/assetsbg.png"),
+                      image: AssetImage("lib/assets/img/yellow_card.png"),
                       fit: BoxFit.fill,
                     ),
                   ),
                   child: Column(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                MyLocalizations.of(context).getData('today_revenue'), 
-                                style: TextStyle(
-                                  color:Colors.white, 
-                                  fontSize: 16, 
-                                  fontWeight: FontWeight.w500
-                                )
-                              ),
-                              SizedBox(height: 20),
-                              Text(
-                                todayRevenue==null?'0':double.parse(todayRevenue).toStringAsFixed(8), 
-                                style: TextStyle(
-                                  color:Colors.white,
-                                  fontSize: 15,  
-                                )
-                              ),
-                              todayRevenue == null?
-                              Text('≈ ' + '0' +' USD',style: TextStyle(color:Colors.white,fontSize: 14)):
-                              Text('≈ ' + double.parse(todayRevenue).toStringAsFixed(5) +' USD',style: TextStyle(color:Colors.white,fontSize: 14)),
-                            ],
-                          ),
-                           Column(
-                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                MyLocalizations.of(context).getData('cumulative_profit'), 
-                                style: TextStyle(
-                                  color:Colors.white, 
-                                  fontSize: 16, 
-                                  fontWeight: FontWeight.w500
-                                )
-                              ),
-                              SizedBox(height: 20),
-                              Text(
-                                totalRevenue==null?'0':double.parse(totalRevenue).toStringAsFixed(8), 
-                                style: TextStyle(
-                                  color:Colors.white,
-                                  fontSize: 15,  
-                                )
-                              ),
-                              totalRevenue==null?
-                              Text('≈ ' + '0' +' USD',style: TextStyle(color:Colors.white,fontSize: 14)):
-                              Text('≈ ' + double.parse(totalRevenue).toStringAsFixed(5) +' USD',style: TextStyle(color:Colors.white,fontSize: 14)),
-                            ],
-                          ),
-                        ],
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  MyLocalizations.of(context).getData('today_revenue'), 
+                                  style: TextStyle(
+                                    color:Colors.black, 
+                                    fontSize: 13, 
+                                    fontWeight: FontWeight.w500
+                                  )
+                                ),
+                                SizedBox(height: 20),
+                                Text(
+                                  todayRevenue==null?'0':double.parse(todayRevenue).toStringAsFixed(8), 
+                                  style: TextStyle(
+                                    color:Colors.black,
+                                    fontSize: 15,  
+                                  )
+                                ),
+                                todayRevenue == null?
+                                Text('≈ ' + '0' +' USD',style: TextStyle(color:Colors.black,fontSize: 15)):
+                                Text('≈ ' + double.parse(todayRevenue).toStringAsFixed(5) +' USD',style: TextStyle(color:Colors.black,fontSize: 12)),
+                              ],
+                            ),
+                             Column(
+                               crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  MyLocalizations.of(context).getData('cumulative_profit'), 
+                                  style: TextStyle(
+                                    color:Colors.black, 
+                                    fontSize: 13, 
+                                    fontWeight: FontWeight.w500
+                                  )
+                                ),
+                                SizedBox(height: 20),
+                                Text(
+                                  totalRevenue==null?'0':double.parse(totalRevenue).toStringAsFixed(8), 
+                                  style: TextStyle(
+                                    color:Colors.black,
+                                    fontSize: 15,  
+                                  )
+                                ),
+                                totalRevenue==null?
+                                Text('≈ ' + '0' +' USD',style: TextStyle(color:Colors.black,fontSize: 15)):
+                                Text('≈ ' + double.parse(totalRevenue).toStringAsFixed(5) +' USD',style: TextStyle(color:Colors.black,fontSize: 12)),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                       Spacer(),
                       Container(
@@ -188,8 +191,8 @@ class _RevenueDetailsState extends State<RevenueDetails> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              Text(MyLocalizations.of(context).getData('data_refresh_per_hour'),style: TextStyle(color:Colors.white,fontSize: 15)),
-                              Text(MyLocalizations.of(context).getData('every_day_count'),style: TextStyle(color:Colors.white,fontSize: 15)),
+                              Text(MyLocalizations.of(context).getData('data_refresh_per_hour'),style: TextStyle(color:Colors.black,fontSize: 12)),
+                              Text(MyLocalizations.of(context).getData('every_day_count'),style: TextStyle(color:Colors.black,fontSize: 12)),
                             ],
                           ),
                         )

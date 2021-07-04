@@ -82,12 +82,13 @@ class _BonusCenterrState extends State<BonusCenter>
                                 Container(
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
+                                    color: Color(0xff595c64),
                                   ),
                                   margin: EdgeInsets.only(right: 20),
                                   padding: EdgeInsets.all(10),
                                   child: Image(
                                     image: AssetImage(
-                                        "lib/assets/img/share_bonus.png"),
+                                        "lib/assets/img/team_bonus.png"),
                                     height: 30,
                                     width: 40,
                                   )
@@ -101,7 +102,7 @@ class _BonusCenterrState extends State<BonusCenter>
                                         child: Text(
                                           MyLocalizations.of(context)
                                               .getData('dynamic_bonus'),
-                                          style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
+                                          style: TextStyle(color: Colors.white,fontSize: 16),
                                         ),
                                       ),
                                     ],
@@ -139,12 +140,13 @@ class _BonusCenterrState extends State<BonusCenter>
                                 Container(
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
+                                     color: Color(0xff595c64),
                                   ),
                                   margin: EdgeInsets.only(right: 20),
                                   padding: EdgeInsets.all(10),
                                   child: Image(
                                     image: AssetImage(
-                                        "lib/assets/img/event_bonus.png"),
+                                        "lib/assets/img/sponsor_bonus.png"),
                                     height: 30,
                                     width: 40,
                                   )
@@ -158,7 +160,7 @@ class _BonusCenterrState extends State<BonusCenter>
                                         child: Text(
                                           MyLocalizations.of(context)
                                               .getData('sponsor_bonus'),
-                                          style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
+                                          style: TextStyle(color: Colors.white,fontSize: 16),
                                         ),
                                       ),
                                     ],
@@ -196,12 +198,13 @@ class _BonusCenterrState extends State<BonusCenter>
                                 Container(
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
+                                     color: Color(0xff595c64),
                                   ),
                                   margin: EdgeInsets.only(right: 20),
                                   padding: EdgeInsets.all(10),
                                   child: Image(
                                     image: AssetImage(
-                                        "lib/assets/img/share_bonus.png"),
+                                        "lib/assets/img/same_level_bonus.png"),
                                     height: 30,
                                     width: 40,
                                   )
@@ -215,7 +218,7 @@ class _BonusCenterrState extends State<BonusCenter>
                                         child: Text(
                                           MyLocalizations.of(context)
                                               .getData('special_bonus'),
-                                          style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
+                                          style: TextStyle(color: Colors.white,fontSize: 16),
                                         ),
                                       ),
                                     ],

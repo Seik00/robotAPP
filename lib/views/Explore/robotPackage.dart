@@ -99,6 +99,10 @@ class _RobotPackageState extends State<RobotPackage> {
       backgroundColor: Color(0xff212630),
       appBar: AppBar(
         backgroundColor: Color(0xff595c64),
+        leading: IconButton(
+          icon: Icon(Icons.keyboard_arrow_left, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ), 
         elevation: 0,
         title: Text(MyLocalizations.of(context).getData('robot_package'),style: TextStyle(color: Colors.white),),
         centerTitle: true,
@@ -148,7 +152,7 @@ class _RobotPackageState extends State<RobotPackage> {
                             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 25),
                             decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: AssetImage("lib/assets/img/assetsbg.png"),
+                                image: AssetImage("lib/assets/img/yellow_card.png"),
                                 fit: BoxFit.fill,
                               ),
                             ),
@@ -159,7 +163,7 @@ class _RobotPackageState extends State<RobotPackage> {
                                 Text(
                                   i['package_name'], 
                                   style: TextStyle(
-                                    color:Colors.white, 
+                                    color:Colors.black, 
                                     fontSize: 20, 
                                     fontWeight: FontWeight.w500
                                   )
@@ -168,7 +172,7 @@ class _RobotPackageState extends State<RobotPackage> {
                                 Text(
                                   i['price'] + ' USDT', 
                                   style: TextStyle(
-                                    color:Colors.white, 
+                                    color:Colors.black, 
                                   )
                                 ),
 
@@ -179,10 +183,10 @@ class _RobotPackageState extends State<RobotPackage> {
                                     Text(
                                       i['robot_times'].toString()+' ' + MyLocalizations.of(context).getData('times'), 
                                       style: TextStyle(
-                                        color:Colors.white, 
+                                        color:Colors.black, 
                                       )
                                     ),
-                                    Image.asset('lib/assets/img/assetsbg.png', height: 20, width: 30,),
+                                    // Image.asset('lib/assets/img/assetsbg.png', height: 20, width: 30,),
                                     
                                   ],
                                 ),
@@ -224,19 +228,23 @@ class _RobotPackageState extends State<RobotPackage> {
                     children: <Widget>[
                       Center(
                         child: Text(MyLocalizations.of(context).getData('package_details'),
-                        style: TextStyle(fontSize: 20, color: Colors.white,fontWeight: FontWeight.bold)),
+                        style: TextStyle(fontSize: 18, color: Colors.white)),
                       ),
                       SizedBox(height:30),
                       Row(
                         children: <Widget>[
                           Container(
-                              padding: EdgeInsets.only(right: 15),
-                              child: Image(
-                                image:
-                                    AssetImage("lib/assets/img/assetsbg.png"),
-                                height: 40,
-                                width: 40,
-                              )),
+                          decoration: BoxDecoration(
+                            color: Color(0xff212630),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color:Colors.white54)),
+                          child: Image(
+                            image:
+                                AssetImage("lib/assets/img/package_name.png"),
+                            height: 30,
+                            width: 30,
+                          )),
+                          SizedBox(width: 10,),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -245,9 +253,8 @@ class _RobotPackageState extends State<RobotPackage> {
                                   child: Text(
                                     MyLocalizations.of(context).getData('package_name'),
                                     style: TextStyle(
-                                        fontSize: 18, 
+                                        fontSize: 16, 
                                         color: Colors.white,
-                                        fontWeight: FontWeight.bold
                                       )
                                   ),
                                 ),
@@ -255,7 +262,7 @@ class _RobotPackageState extends State<RobotPackage> {
                                   child: Text(
                                     selectedName.toString(),
                                     style: TextStyle(
-                                      fontSize: 16, 
+                                      fontSize: 14, 
                                       color: Colors.white,
                                     )
                                   ),
@@ -269,13 +276,17 @@ class _RobotPackageState extends State<RobotPackage> {
                       Row(
                         children: <Widget>[
                           Container(
-                              padding: EdgeInsets.only(right: 15),
-                              child: Image(
-                                image:
-                                    AssetImage("lib/assets/img/assetsbg.png"),
-                                height: 40,
-                                width: 40,
-                              )),
+                          decoration: BoxDecoration(
+                            color: Color(0xff212630),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color:Colors.white54)),
+                          child: Image(
+                            image:
+                                AssetImage("lib/assets/img/package_price.png"),
+                            height: 30,
+                            width: 30,
+                          )),
+                          SizedBox(width: 10,),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -284,9 +295,8 @@ class _RobotPackageState extends State<RobotPackage> {
                                   child: Text(
                                     MyLocalizations.of(context).getData('package_price'),
                                     style: TextStyle(
-                                        fontSize: 18, 
+                                        fontSize: 16, 
                                         color: Colors.white,
-                                        fontWeight: FontWeight.bold
                                       )
                                   ),
                                 ),
@@ -294,7 +304,7 @@ class _RobotPackageState extends State<RobotPackage> {
                                   child: Text(
                                     selectedPrice.toString() + ' USDT',
                                     style: TextStyle(
-                                      fontSize: 16, 
+                                      fontSize: 14, 
                                       color: Colors.white,
                                     )
                                   ),
@@ -308,13 +318,17 @@ class _RobotPackageState extends State<RobotPackage> {
                       Row(
                         children: <Widget>[
                           Container(
-                              padding: EdgeInsets.only(right: 15),
-                              child: Image(
-                                image:
-                                    AssetImage("lib/assets/img/assetsbg.png"),
-                                height: 40,
-                                width: 40,
-                              )),
+                            decoration: BoxDecoration(
+                              color: Color(0xff212630),
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color:Colors.white54)),
+                            child: Image(
+                              image:
+                                  AssetImage("lib/assets/img/package_times.png"),
+                              height: 30,
+                              width: 30,
+                          )),
+                          SizedBox(width: 10,),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -323,9 +337,8 @@ class _RobotPackageState extends State<RobotPackage> {
                                   child: Text(
                                     MyLocalizations.of(context).getData('package_times'),
                                     style: TextStyle(
-                                        fontSize: 18, 
+                                        fontSize: 16, 
                                         color: Colors.white,
-                                        fontWeight: FontWeight.bold
                                       )
                                   ),
                                 ),
@@ -333,7 +346,7 @@ class _RobotPackageState extends State<RobotPackage> {
                                   child: Text(
                                     selectedTimes.toString(),
                                     style: TextStyle(
-                                      fontSize: 16, 
+                                      fontSize: 14, 
                                       color: Colors.white,
                                     )
                                   ),

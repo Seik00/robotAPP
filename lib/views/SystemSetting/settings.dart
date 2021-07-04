@@ -148,6 +148,7 @@ class _SettingsState extends State<Settings>
                                   );
                                 },
                                 child: Container(
+                                  padding: EdgeInsets.all(6),
                                   decoration: new BoxDecoration(
                                     color: Color(0xff595c64),
                                     borderRadius: BorderRadius.circular(10),
@@ -156,14 +157,15 @@ class _SettingsState extends State<Settings>
                                   child: Row(
                                     children: <Widget>[
                                       Container(
+                                        padding: EdgeInsets.all(5),
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
+                                          color: Color(0xff212630),
                                         ),
                                         margin: EdgeInsets.only(right: 20),
-                                        padding: EdgeInsets.all(10),
                                         child: Image(
                                           image: AssetImage(
-                                              "lib/assets/img/me_team.png"),
+                                              "lib/assets/img/my_team.png"),
                                           height: 30,
                                           width: 40,
                                         )
@@ -177,7 +179,7 @@ class _SettingsState extends State<Settings>
                                               child: Text(
                                                 MyLocalizations.of(context)
                                                     .getData('my_team'),
-                                                style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
+                                                style: TextStyle(color: Colors.white,fontSize: 16),
                                               ),
                                             ),
                                           ],
@@ -206,6 +208,7 @@ class _SettingsState extends State<Settings>
                                   );
                                 },
                                 child: Container(
+                                  padding: EdgeInsets.all(6),
                                   decoration: new BoxDecoration(
                                     color: Color(0xff595c64),
                                     borderRadius: BorderRadius.circular(10),
@@ -214,14 +217,15 @@ class _SettingsState extends State<Settings>
                                   child: Row(
                                     children: <Widget>[
                                       Container(
+                                        padding: EdgeInsets.all(5),
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
+                                          color: Color(0xff212630),
                                         ),
                                         margin: EdgeInsets.only(right: 20),
-                                        padding: EdgeInsets.all(10),
                                         child: Image(
                                           image: AssetImage(
-                                              "lib/assets/img/register.png"),
+                                              "lib/assets/img/inv_friend.png"),
                                           height: 30,
                                           width: 40,
                                         )
@@ -235,7 +239,7 @@ class _SettingsState extends State<Settings>
                                               child: Text(
                                                 MyLocalizations.of(context)
                                                     .getData('invite_friend'),
-                                                style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
+                                                style: TextStyle(color: Colors.white,fontSize: 16),
                                               ),
                                             ),
                                           ],
@@ -264,6 +268,7 @@ class _SettingsState extends State<Settings>
                                   );
                                 },
                                 child: Container(
+                                  padding: EdgeInsets.all(6),
                                   decoration: new BoxDecoration(
                                     color: Color(0xff595c64),
                                     borderRadius: BorderRadius.circular(10),
@@ -272,11 +277,12 @@ class _SettingsState extends State<Settings>
                                   child: Row(
                                     children: <Widget>[
                                       Container(
+                                        padding: EdgeInsets.all(5),
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
+                                          color: Color(0xff212630),
                                         ),
                                         margin: EdgeInsets.only(right: 20),
-                                        padding: EdgeInsets.all(10),
                                         child: Image(
                                           image: AssetImage(
                                               "lib/assets/img/register.png"),
@@ -293,7 +299,7 @@ class _SettingsState extends State<Settings>
                                               child: Text(
                                                 MyLocalizations.of(context)
                                                     .getData('register'),
-                                                style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
+                                                style: TextStyle(color: Colors.white,fontSize: 16),
                                               ),
                                             ),
                                           ],
@@ -322,6 +328,7 @@ class _SettingsState extends State<Settings>
                                   );
                                 },
                                 child: Container(
+                                  padding: EdgeInsets.all(6),
                                   decoration: new BoxDecoration(
                                     color: Color(0xff595c64),
                                     borderRadius: BorderRadius.circular(10),
@@ -330,14 +337,15 @@ class _SettingsState extends State<Settings>
                                   child: Row(
                                     children: <Widget>[
                                       Container(
+                                        padding: EdgeInsets.all(5),
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
+                                          color: Color(0xff212630),
                                         ),
                                         margin: EdgeInsets.only(right: 20),
-                                        padding: EdgeInsets.all(10),
                                         child: Image(
                                           image: AssetImage(
-                                              "lib/assets/img/me_settings.png"),
+                                              "lib/assets/img/transaction_details.png"),
                                           height: 30,
                                           width: 40,
                                         )
@@ -351,7 +359,7 @@ class _SettingsState extends State<Settings>
                                               child: Text(
                                                 MyLocalizations.of(context)
                                                     .getData('transaction_details'),
-                                                style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
+                                                style: TextStyle(color: Colors.white,fontSize: 16),
                                               ),
                                             ),
                                           ],
@@ -380,6 +388,7 @@ class _SettingsState extends State<Settings>
                                   );
                                 },
                                 child: Container(
+                                  padding: EdgeInsets.all(6),
                                   decoration: new BoxDecoration(
                                     color: Color(0xff595c64),
                                     borderRadius: BorderRadius.circular(10),
@@ -388,11 +397,12 @@ class _SettingsState extends State<Settings>
                                   child: Row(
                                     children: <Widget>[
                                       Container(
+                                        padding: EdgeInsets.all(5),
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
+                                          color: Color(0xff212630),
                                         ),
                                         margin: EdgeInsets.only(right: 20),
-                                        padding: EdgeInsets.all(10),
                                         child: Image(
                                           image: AssetImage(
                                               "lib/assets/img/bonus.png"),
@@ -409,7 +419,7 @@ class _SettingsState extends State<Settings>
                                               child: Text(
                                                 MyLocalizations.of(context)
                                                     .getData('bonus'),
-                                                style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
+                                                style: TextStyle(color: Colors.white,fontSize: 16),
                                               ),
                                             ),
                                           ],
@@ -495,6 +505,7 @@ class _SettingsState extends State<Settings>
                                   );
                                 },
                                 child: Container(
+                                  padding: EdgeInsets.all(6),
                                   decoration: new BoxDecoration(
                                     color: Color(0xff595c64),
                                     borderRadius: BorderRadius.circular(10),
@@ -503,11 +514,12 @@ class _SettingsState extends State<Settings>
                                   child: Row(
                                     children: <Widget>[
                                       Container(
+                                        padding: EdgeInsets.all(5),
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
+                                          color: Color(0xff212630),
                                         ),
                                         margin: EdgeInsets.only(right: 20),
-                                        padding: EdgeInsets.all(10),
                                         child: Image(
                                           image: AssetImage(
                                               "lib/assets/img/me_customer_service.png"),
@@ -524,7 +536,7 @@ class _SettingsState extends State<Settings>
                                               child: Text(
                                                 MyLocalizations.of(context)
                                                     .getData('contact_service'),
-                                                style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
+                                                style: TextStyle(color: Colors.white,fontSize: 16),
                                               ),
                                             ),
                                           ],
@@ -555,6 +567,7 @@ class _SettingsState extends State<Settings>
                                   });
                                 },
                                 child: Container(
+                                  padding: EdgeInsets.all(6),
                                   decoration: new BoxDecoration(
                                     color: Color(0xff595c64),
                                     borderRadius: BorderRadius.circular(10),
@@ -563,11 +576,12 @@ class _SettingsState extends State<Settings>
                                   child: Row(
                                     children: <Widget>[
                                       Container(
+                                        padding: EdgeInsets.all(5),
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
+                                          color: Color(0xff212630),
                                         ),
                                         margin: EdgeInsets.only(right: 20),
-                                        padding: EdgeInsets.all(10),
                                         child: Image(
                                           image: AssetImage(
                                               "lib/assets/img/me_settings.png"),
@@ -584,7 +598,7 @@ class _SettingsState extends State<Settings>
                                               child: Text(
                                                 MyLocalizations.of(context)
                                                     .getData('settings'),
-                                                style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
+                                                style: TextStyle(color: Colors.white,fontSize: 16),
                                               ),
                                             ),
                                           ],
@@ -645,22 +659,24 @@ class _SettingsState extends State<Settings>
                                       context: context, builder: (context) => action);
                                 },
                                 child: Container(
+                                  padding: EdgeInsets.all(6),
                                   decoration: new BoxDecoration(
                                     color: Color(0xff595c64),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
-                                  margin: EdgeInsets.only(left:10,right:10,bottom: 10),
+                                  margin: EdgeInsets.only(left:10,right:10,bottom: 30),
                                   child: Row(
                                     children: <Widget>[
                                       Container(
+                                        padding: EdgeInsets.all(5),
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
+                                          color: Color(0xff212630),
                                         ),
                                         margin: EdgeInsets.only(right: 20),
-                                        padding: EdgeInsets.all(10),
                                         child: Image(
                                           image: AssetImage(
-                                              "lib/assets/img/me_logout.png"),
+                                              "lib/assets/img/logout.png"),
                                           height: 30,
                                           width: 40,
                                         )
@@ -674,7 +690,7 @@ class _SettingsState extends State<Settings>
                                               child: Text(
                                                 MyLocalizations.of(context)
                                                     .getData('log_out'),
-                                                style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
+                                                style: TextStyle(color: Colors.white,fontSize: 16),
                                               ),
                                             ),
                                           ],

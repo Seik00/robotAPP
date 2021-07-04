@@ -91,9 +91,10 @@ class _MyAssestsState extends State<MyAssests>
               children: [
                 Container(
                   padding: EdgeInsets.all(10),
-                  child: Text(MyLocalizations.of(context).getData('wallet'),style: TextStyle(color: Colors.white),),
+                  child: Text(MyLocalizations.of(context).getData('wallet'),style: TextStyle(color: Colors.white,fontSize: 20),),
                 ),
                 Container(
+                  height: 40,
                   padding: EdgeInsets.all(4),
                   decoration: new BoxDecoration(
                     color:Colors.grey,
@@ -104,7 +105,7 @@ class _MyAssestsState extends State<MyAssests>
                   unselectedLabelColor: Colors.black,
                   labelColor: Colors.black,
                   unselectedLabelStyle: TextStyle(fontSize:13),
-                  labelStyle: TextStyle(fontSize:16),
+                  labelStyle: TextStyle(fontSize:14),
                   indicator: BoxDecoration(
                   gradient: LinearGradient(
                       colors: [Color(0xfff6fb15), Color(0xfffed323)]),
@@ -158,7 +159,7 @@ class _MyAssestsState extends State<MyAssests>
                               children: [
                                Text(MyLocalizations.of(context).getData('total_assets_converted_USDT'),style: TextStyle(color:Colors.white,fontSize: 16),),
                                SizedBox(height: 10,),
-                               Text(usdt==null?'':usdt,style: TextStyle(color:Colors.white,fontSize: 26)),
+                               Text(usdt==null?'':usdt,style: TextStyle(color:Colors.white,fontSize: 20)),
                                SizedBox(height: 5,),
                                usdt==null?Text(''):
                                Text('≈ ' + usdt +' USD',style: TextStyle(color:Colors.white,fontSize: 14)),
@@ -186,19 +187,15 @@ class _MyAssestsState extends State<MyAssests>
                                         // Replace with a Row for horizontal icon + text
                                         children: <Widget>[
                                           Container(
-                                            decoration: new BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              border: Border.all(color: Colors.white,width: 3, )
-                                            ),
                                             child: Image(
                                               image: AssetImage(
-                                                  "lib/assets/img/trade_one_shot.png"),
+                                                  "lib/assets/img/deposit_circle.png"),
                                               height: 60,
                                               width: 60,
                                             ),
                                           ),
                                           SizedBox(height: 5,),
-                                          Text(MyLocalizations.of(context).getData('deposit'),style: TextStyle(color:Colors.white),)
+                                          Text(MyLocalizations.of(context).getData('deposit'),style: TextStyle(color:Colors.white,fontSize: 14),)
                                         ],
                                       ),
                                     ),
@@ -220,19 +217,15 @@ class _MyAssestsState extends State<MyAssests>
                                         // Replace with a Row for horizontal icon + text
                                         children: <Widget>[
                                             Container(
-                                            decoration: new BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              border: Border.all(color: Colors.white,width: 3, )
-                                            ),
                                             child: Image(
                                               image: AssetImage(
-                                                  "lib/assets/img/trade_clearance sale.png"),
+                                                  "lib/assets/img/withdraw_circle.png"),
                                               height: 60,
                                               width: 60,
                                             ),
                                           ),
                                           SizedBox(height: 5,),
-                                          Text(MyLocalizations.of(context).getData('withdraw'),style: TextStyle(color:Colors.white),)
+                                          Text(MyLocalizations.of(context).getData('withdraw'),style: TextStyle(color:Colors.white,fontSize: 14),)
                                         ],
                                       ),
                                     ),
@@ -254,19 +247,15 @@ class _MyAssestsState extends State<MyAssests>
                                         // Replace with a Row for horizontal icon + text
                                         children: <Widget>[
                                           Container(
-                                            decoration: new BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              border: Border.all(color: Colors.white,width: 3, )
-                                            ),
                                             child: Image(
                                               image: AssetImage(
-                                                  "lib/assets/img/trade_replenishment.png"),
+                                                  "lib/assets/img/change_wallet_circle.png"),
                                               height: 60,
                                               width: 60,
                                             ),
                                           ),
                                           SizedBox(height: 5,),
-                                          Text(MyLocalizations.of(context).getData('change_wallet'),style: TextStyle(color:Colors.white),)
+                                          Text(MyLocalizations.of(context).getData('change_wallet'),style: TextStyle(color:Colors.white,fontSize: 14),)
                                         ],
                                       ),
                                     ),
@@ -294,7 +283,7 @@ class _MyAssestsState extends State<MyAssests>
                                 itemCount: dataList.length,
                                 itemBuilder: (BuildContext ctxt, int index) {
                                 return Container(
-                                  padding: EdgeInsets.all(10),
+                                  padding: EdgeInsets.all(4),
                                   margin: EdgeInsets.all(10),
                                   decoration: new BoxDecoration(
                                   color: Color(0xff595c64),
@@ -383,7 +372,7 @@ class _MyAssestsState extends State<MyAssests>
                               children: [
                                Text(MyLocalizations.of(context).getData('total_assets_converted_USDT'),style: TextStyle(color:Colors.white,fontSize: 16),),
                                SizedBox(height: 10,),
-                               Text(gas==null?'':gas,style: TextStyle(color:Colors.white,fontSize: 26)),
+                               Text(gas==null?'':gas,style: TextStyle(color:Colors.white,fontSize: 20)),
                                SizedBox(height: 5,),
                                gas==null?Text(''):
                                Text(gas==''?'':'≈ ' + gas +' USD',style: TextStyle(color:Colors.white,fontSize: 14)),
@@ -403,7 +392,7 @@ class _MyAssestsState extends State<MyAssests>
                                 itemCount: dataList.length,
                                 itemBuilder: (BuildContext ctxt, int index) {
                                 return Container(
-                                  padding: EdgeInsets.all(10),
+                                  padding: EdgeInsets.all(4),
                                   margin: EdgeInsets.all(10),
                                   decoration: new BoxDecoration(
                                   color: Color(0xff595c64),
@@ -492,7 +481,7 @@ class _MyAssestsState extends State<MyAssests>
                               children: [
                                Text(MyLocalizations.of(context).getData('total_assets_converted_USDT'),style: TextStyle(color:Colors.white,fontSize: 16),),
                                SizedBox(height: 10,),
-                               Text(gasPingyi==null?'':gasPingyi,style: TextStyle(color:Colors.white,fontSize: 26)),
+                               Text(gasPingyi==null?'':gasPingyi,style: TextStyle(color:Colors.white,fontSize: 20)),
                                SizedBox(height: 5,),
                                gas==null?Text(''):
                                Text(gasPingyi==''?'':'≈ ' + gasPingyi +' USD',style: TextStyle(color:Colors.white,fontSize: 14)),
@@ -512,7 +501,7 @@ class _MyAssestsState extends State<MyAssests>
                                 itemCount: dataList.length,
                                 itemBuilder: (BuildContext ctxt, int index) {
                                 return Container(
-                                  padding: EdgeInsets.all(10),
+                                  padding: EdgeInsets.all(4),
                                   margin: EdgeInsets.all(10),
                                   decoration: new BoxDecoration(
                                   color: Color(0xff595c64),

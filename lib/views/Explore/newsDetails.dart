@@ -42,6 +42,7 @@ class _NewsDetailsState extends State<NewsDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff212630),
       appBar: PreferredSize(
           child: AppBar(
             backgroundColor: Theme.of(context).backgroundColor,
@@ -50,14 +51,6 @@ class _NewsDetailsState extends State<NewsDetails> {
           preferredSize: Size.fromHeight(0)),
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("lib/assets/img/background.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
         Container(
           child: SingleChildScrollView(
             child: Column(
@@ -97,10 +90,6 @@ class _NewsDetailsState extends State<NewsDetails> {
                                     padding: EdgeInsets.all(10),
                                     child: Text( MyLocalizations.of(context).getData('news'),style: TextStyle(color:Colors.black54,fontSize:20,fontWeight:FontWeight.bold)),
                                   ),
-                                  Container(
-                                    padding: EdgeInsets.all(10),
-                                    child:Text(widget.time,style: TextStyle(color:Colors.grey,fontSize:16,fontWeight:FontWeight.bold)),
-                                  ),
                                 ],
                               )
                             ),
@@ -116,7 +105,7 @@ class _NewsDetailsState extends State<NewsDetails> {
                                   gradient: LinearGradient(
                                   begin: Alignment.topCenter,
                                   end: Alignment.bottomCenter,
-                                  colors: [Color(0xff9957ED), Color(0xff7835E5)])
+                                  colors: [Color(0xff595c64), Color(0xff595c64)])
                               ),
                               child: Column(
                                 children: [
@@ -126,12 +115,17 @@ class _NewsDetailsState extends State<NewsDetails> {
                                     child: Image(
                                        fit: BoxFit.fill,
                                       image: NetworkImage(
-                                        widget.banner ==null?
-                                        'https://philip.greatwallsolution.com/sae.png':
+                                        widget.banner !=null?
+                                        'https://philip.greatwallsolution.com/icon.png':
                                         widget.banner),
                                       height: 250,
                                       width: MediaQuery.of(context).size.width,
                                     )
+                                  ),
+                                  Container(
+                                    alignment: Alignment.topRight,
+                                    padding: EdgeInsets.all(10),
+                                    child:Text(widget.time,style: TextStyle(color:Colors.white,fontSize:14)),
                                   ),
                                   Container(
                                     alignment: Alignment.centerLeft,
