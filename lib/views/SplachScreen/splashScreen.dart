@@ -8,25 +8,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:robot/API/config.dart';
 import 'package:robot/API/request.dart';
 import 'package:package_info/package_info.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
 
 class SplashScreen extends StatefulWidget {
   final url;
   final onChangeLanguage;
-  final NotificationAppLaunchDetails notificationAppLaunchDetails;
 
-  SplashScreen(this.url, this.onChangeLanguage, 
-    this.notificationAppLaunchDetails, {
-    Key key,
-  }) : super(key: key);
-
-  bool get didNotificationLaunchApp =>
-      notificationAppLaunchDetails?.didNotificationLaunchApp ?? false;
-
+  SplashScreen(this.url, this.onChangeLanguage);
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -34,88 +22,17 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   String token = " ";
   String secPwd = "";
-  String firebaseToken = " ";
   var site;
   var version;
-
-
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   @override
   void initState() {
     super.initState();
     validateLogin();
     lookUp();
-    _requestPermissions();
-    print('sihai2');
-    _firebaseMessaging.requestNotificationPermissions(
-        const IosNotificationSettings(sound: true, badge: true, alert: true));
-    _firebaseMessaging.onIosSettingsRegistered
-        .listen((IosNotificationSettings settings) {
-      print("Settings registered: $settings");
-    });
-    _firebaseMessaging.getToken().then((String deviceToken) {
-      assert(deviceToken != null);
-      setState(() {
-        firebaseToken = deviceToken;
-      });
-      print('-----');
-      print(firebaseToken);
-      print('-----');
-    });
-    _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        setState(() {});
-        print("onMessage: sihai");
-        _showNotification();
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        setState(() {});
-        print('object');
-        print("onLaunch: $message");
-      },
-      onResume: (Map<String, dynamic> message) async {
-        setState(() {});
-        print('00000');
-        print("onResume: $message");
-      },
-    );
   }
 
-  void _requestPermissions() {
-    flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin>()
-        ?.requestPermissions(
-          alert: true,
-          badge: true,
-          sound: true,
-        );
-    flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            MacOSFlutterLocalNotificationsPlugin>()
-        ?.requestPermissions(
-          alert: true,
-          badge: true,
-          sound: true,
-        );
-  }
-
-  Future<void> _showNotification() async {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-            'your channel id', 'your channel name', 'your channel description',
-            importance: Importance.max,
-            priority: Priority.high,
-            ticker: 'ticker');
-    const NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(
-        0, 'plain title', 'plain body', platformChannelSpecifics,
-        payload: 'item x');
-  }
-
-  lookUp() async {
+   lookUp() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     String versionName = packageInfo.version;
     print(versionName);
@@ -123,30 +40,31 @@ class _SplashScreenState extends State<SplashScreen> {
     print(contentData);
     if(contentData != null){
       if (contentData['code'] == 0) {
-        if (mounted) {
-          setState(() {
-            site = contentData['data']['system']['SITE_ON'];
-            version = contentData['data']['system']['APP_VERSION'];
-            if(site == '0'){
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        LoginPage(widget.url, widget.onChangeLanguage)),
-              );
-            }
-            if(versionName != version){
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        LoginPage(widget.url, widget.onChangeLanguage)),
-              );
-            }
-          });
-        }
+      if (mounted) {
+        setState(() {
+          site = contentData['data']['system']['SITE_ON'];
+          version = contentData['data']['system']['APP_VERSION'];
+          if(site == '0'){
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      LoginPage(widget.url, widget.onChangeLanguage)),
+            );
+          }
+          if(versionName != version){
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      LoginPage(widget.url, widget.onChangeLanguage)),
+            );
+          }
+        });
       }
     }
+    }
+    
   }
 
   getRequest() async {
