@@ -133,7 +133,7 @@ class _LoginPageState extends State<LoginPage>
         );
   }
 
-  Future<void> _showNotification() async {
+  Future<void> _showNotification(notice) async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
             'your channel id', 'your channel name', 'your channel description',
@@ -143,7 +143,7 @@ class _LoginPageState extends State<LoginPage>
     const NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
-        0, 'plain title', 'plain body', platformChannelSpecifics,
+        0, notice['title'], notice['body'], platformChannelSpecifics,
         payload: 'item x');
   }
 
@@ -378,7 +378,7 @@ class _LoginPageState extends State<LoginPage>
       onMessage: (Map<String, dynamic> message) async {
         setState(() {});
         print("onMessage: $message");
-        _showNotification();
+        _showNotification(message['notification']);
       },
       onLaunch: (Map<String, dynamic> message) async {
         setState(() {});
