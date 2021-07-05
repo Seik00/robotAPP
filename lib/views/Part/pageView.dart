@@ -10,6 +10,7 @@ import 'package:robot/views/SystemSetting/settings.dart';
 import 'package:robot/views/clientSide/circle.dart';
 import 'package:robot/views/clientSide/market.dart';
 import 'package:robot/views/clientSide/myAssest.dart';
+import 'package:robot/views/clientSide/product.dart';
 import 'package:robot/views/clientSide/quantity.dart';
 import 'package:robot/views/clientSide/share.dart';
 import 'package:robot/views/clientSide/upload.dart';
@@ -89,7 +90,7 @@ class _TopViewingState extends State<TopViewing>
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     String versionName = packageInfo.version;
     print(versionName);
-    var contentData = await Request().getRequest(Config().url + "/api/project/lookup", context);
+    var contentData = await Request().getWithoutRequest(Config().url + "api/global/lookup", context);
     print(contentData);
     if(contentData != null){
       if (contentData['code'] == 0) {
@@ -155,7 +156,6 @@ class _TopViewingState extends State<TopViewing>
                       widget.url, widget.onChangeLanguage))));
       });
     }else if(active == 0){
-      print(active);
       print('--------------------------------------');
        Navigator.pushReplacement(
         context,
@@ -173,6 +173,7 @@ class _TopViewingState extends State<TopViewing>
       _pageOptions = [
         Services(widget.url, widget.onChangeLanguage),
         Quantity(widget.url, widget.onChangeLanguage),
+        Product(widget.url, widget.onChangeLanguage),
         //Market(widget.url, widget.onChangeLanguage),
         MyAssests(widget.url,widget.onChangeLanguage),
         Settings(widget.url, widget.onChangeLanguage),
@@ -182,6 +183,7 @@ class _TopViewingState extends State<TopViewing>
         return [
           TabItem(icon: Icons.home,title:MyLocalizations.of(context).getData('home')),
           TabItem(icon: Icons.compare_arrows,title: MyLocalizations.of(context).getData('quantitative')),
+          TabItem(icon: Icons.construction_rounded,title: MyLocalizations.of(context).getData('derivatives')),
           //TabItem(icon: Icons.language,title:'Market'),
           TabItem(icon: Icons.monetization_on,title:MyLocalizations.of(context).getData('my_assets')),
           TabItem(icon: Icons.person,title:MyLocalizations.of(context).getData('me')),

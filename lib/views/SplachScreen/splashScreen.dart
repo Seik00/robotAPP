@@ -29,14 +29,14 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     validateLogin();
-    //lookUp();
+    lookUp();
   }
 
    lookUp() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     String versionName = packageInfo.version;
     print(versionName);
-    var contentData = await Request().getRequest(Config().url + "/api/project/lookup", context);
+    var contentData = await Request().getWithoutRequest(Config().url + "api/global/lookup", context);
     print(contentData);
     if(contentData != null){
       if (contentData['code'] == 0) {
@@ -69,19 +69,17 @@ class _SplashScreenState extends State<SplashScreen> {
 
   getRequest() async {
     var contentData = await Request().getRequest(Config().url + "api/member/get-member-info", context);
-    print(contentData);
+   
     if(contentData != null){
       if (contentData['code'] == 0) {
       if (mounted) {
         setState(() {
           secPwd = contentData['data']['password2'];
-          print(contentData);
-          print('--------------------------------------');
+         
         });
       }
     }
     checkIsLogin();
-    print(contentData);
     }else{
         // Navigator.pushReplacement(
       //   context,

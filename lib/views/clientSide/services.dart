@@ -266,12 +266,12 @@ class _ServicesState extends State<Services>
                       children: <Widget>[
                     FlatButton(
                       onPressed: () => {
-                        _timer.cancel(),
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => RobotPackage(widget.url)),
-                        ).then((value) => startLoop())
+                        // _timer.cancel(),
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //       builder: (context) => RobotPackage(widget.url)),
+                        // ).then((value) => startLoop())
                       },
                      padding: EdgeInsets.all(8.0),
                       child: Column(
@@ -291,7 +291,7 @@ class _ServicesState extends State<Services>
                               ),
                             ),
                           SizedBox(height:5),
-                          Text(MyLocalizations.of(context).getData('robot_package'),style: TextStyle(fontSize: 12,color: Colors.white))
+                          Text(MyLocalizations.of(context).getData('user_guide'),style: TextStyle(fontSize: 12,color: Colors.white))
                         ],
                       ),
                     ),

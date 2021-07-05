@@ -789,35 +789,8 @@ class _TradeState extends State<Trade> {
                               children: <Widget>[
                                 GestureDetector(
                                   onTap: (){
-                                    if(robotList['is_clean']==0)
                                     info2==null? Container():
                                     singleStrategy();
-                                    if(robotList['is_clean']==1)
-                                    AwesomeDialog(
-                                      context: context,
-                                      dialogType: DialogType.ERROR,
-                                      animType: AnimType.RIGHSLIDE,
-                                      headerAnimationLoop: false,
-                                      title: MyLocalizations.of(context).getData('error'),
-                                      desc: MyLocalizations.of(context).getData('robot_clean'),
-                                      btnOkOnPress: () {},
-                                      btnOkText: MyLocalizations.of(context).getData('close'),
-                                      btnOkIcon: Icons.cancel,
-                                      btnOkColor: Colors.red)
-                                    ..show();
-                                    if(robotList['is_clean']==0 && robotList['show_msg'] == '卖出成功' && robotList['values_str'] == '' )
-                                    AwesomeDialog(
-                                      context: context,
-                                      dialogType: DialogType.ERROR,
-                                      animType: AnimType.RIGHSLIDE,
-                                      headerAnimationLoop: false,
-                                      title: MyLocalizations.of(context).getData('error'),
-                                      desc: MyLocalizations.of(context).getData('sold'),
-                                      btnOkOnPress: () {},
-                                      btnOkText: MyLocalizations.of(context).getData('close'),
-                                      btnOkIcon: Icons.cancel,
-                                      btnOkColor: Colors.red)
-                                    ..show();
                                   },
                                   child: Container(
                                      decoration: new BoxDecoration(
@@ -850,35 +823,8 @@ class _TradeState extends State<Trade> {
                               children: <Widget>[
                                   GestureDetector(
                                     onTap: (){
-                                      if(robotList['is_clean']==0)
                                       info2==null? Container():
                                       delete();
-                                        if(robotList['is_clean']==1)
-                                        AwesomeDialog(
-                                          context: context,
-                                          dialogType: DialogType.ERROR,
-                                          animType: AnimType.RIGHSLIDE,
-                                          headerAnimationLoop: false,
-                                          title: MyLocalizations.of(context).getData('error'),
-                                          desc: MyLocalizations.of(context).getData('robot_clean'),
-                                          btnOkOnPress: () {},
-                                          btnOkText: MyLocalizations.of(context).getData('close'),
-                                          btnOkIcon: Icons.cancel,
-                                          btnOkColor: Colors.red)
-                                        ..show();
-                                        if(robotList['is_clean']==0 && robotList['show_msg'] == '卖出成功' && robotList['values_str'] == '' )
-                                        AwesomeDialog(
-                                          context: context,
-                                          dialogType: DialogType.ERROR,
-                                          animType: AnimType.RIGHSLIDE,
-                                          headerAnimationLoop: false,
-                                          title: MyLocalizations.of(context).getData('error'),
-                                          desc: MyLocalizations.of(context).getData('sold'),
-                                          btnOkOnPress: () {},
-                                          btnOkText: MyLocalizations.of(context).getData('close'),
-                                          btnOkIcon: Icons.cancel,
-                                          btnOkColor: Colors.red)
-                                        ..show();
                                     },
                                     child: Container(
                                      decoration: new BoxDecoration(
@@ -1292,41 +1238,17 @@ class _TradeState extends State<Trade> {
                     btnOkIcon: Icons.cancel,
                     btnOkColor: Colors.red)
                   ..show();
-                  else if(robotList['is_clean']==0 && robotList['show_msg'] == '卖出成功' && robotList['values_str'] == '' )
-                  AwesomeDialog(
-                    context: context,
-                    dialogType: DialogType.ERROR,
-                    animType: AnimType.RIGHSLIDE,
-                    headerAnimationLoop: false,
-                    title: MyLocalizations.of(context).getData('error'),
-                    desc: MyLocalizations.of(context).getData('sold'),
-                    btnOkOnPress: () {},
-                    btnOkText: MyLocalizations.of(context).getData('close'),
-                    btnOkIcon: Icons.cancel,
-                    btnOkColor: Colors.red)
-                  ..show();
-                  else if(robotList['status']==0 && robotList['is_clean']==0)
+                 
+                  else if(robotList['status']==0)
                   play();
-                  else if(robotList['status']==1 && robotList['is_clean']==0)
+                  else if(robotList['status']==1)
                   pause();
 
-                  else if(robotList['is_clean']==1)
-                  AwesomeDialog(
-                    context: context,
-                    dialogType: DialogType.ERROR,
-                    animType: AnimType.RIGHSLIDE,
-                    headerAnimationLoop: false,
-                    title: MyLocalizations.of(context).getData('error'),
-                    desc: MyLocalizations.of(context).getData('robot_clean'),
-                    btnOkOnPress: () {},
-                    btnOkText: MyLocalizations.of(context).getData('close'),
-                    btnOkIcon: Icons.cancel,
-                    btnOkColor: Colors.red)
-                  ..show();
+                  
                 },
                 color: Colors.yellowAccent,
                 textColor: Colors.black,
-                child: robotList == null || robotList.isEmpty || robotList['status']==0?Text('Start Up'):Text('Pause'),
+                child: robotList == null || robotList.isEmpty || robotList['status']==0?Text(MyLocalizations.of(context).getData('start_up')):Text(MyLocalizations.of(context).getData('pause')),
               ),
             ),
           ],

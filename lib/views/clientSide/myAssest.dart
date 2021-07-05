@@ -152,17 +152,17 @@ class _MyAssestsState extends State<MyAssests>
                               borderRadius: BorderRadius.circular(10),
                             ),
                             margin: EdgeInsets.only(top:20,bottom:10,left: 10,right: 10),
-                            padding:EdgeInsets.all(20),
+                            padding:EdgeInsets.all(10),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                               Text(MyLocalizations.of(context).getData('total_assets_converted_USDT'),style: TextStyle(color:Colors.white,fontSize: 16),),
+                               Text(MyLocalizations.of(context).getData('total_assets_converted_USDT'),style: TextStyle(color:Colors.white,fontSize: 15),),
                                SizedBox(height: 10,),
-                               Text(usdt==null?'':usdt,style: TextStyle(color:Colors.white,fontSize: 20)),
+                               Text(usdt==null?'':usdt,style: TextStyle(color:Colors.white,fontSize: 18)),
                                SizedBox(height: 5,),
                                usdt==null?Text(''):
-                               Text('≈ ' + usdt +' USD',style: TextStyle(color:Colors.white,fontSize: 14)),
+                               Text('≈ ' + usdt +' USD',style: TextStyle(color:Colors.white,fontSize: 12)),
                               ],
                             ),
                             ),
@@ -266,7 +266,7 @@ class _MyAssestsState extends State<MyAssests>
                             SizedBox(height:10),
                             Container(
                               alignment: Alignment.centerLeft,
-                              child: Text(MyLocalizations.of(context).getData('history_record'),style: TextStyle(color:Colors.white,fontSize: 18),),
+                              child: Text(MyLocalizations.of(context).getData('history_record'),style: TextStyle(color:Colors.white,fontSize: 16),),
                             ),
                             
                             Container(
@@ -297,11 +297,11 @@ class _MyAssestsState extends State<MyAssests>
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              Text(dataList[index]['detail'],style: TextStyle(color: Colors.white,fontSize: 14),),
+                                              Text(dataList[index]['detail'],style: TextStyle(color: Colors.white,fontSize: 12),),
                                               SizedBox(height:5),
                                               dataList[index]['action'] =='-'?
-                                              Text('-'+dataList[index]['found'],style: TextStyle(color: Colors.redAccent,fontSize: 20)):
-                                              Text('+'+dataList[index]['found'],style: TextStyle(color: Colors.greenAccent,fontSize: 20)),
+                                              Text('-'+dataList[index]['found'],style: TextStyle(color: Colors.redAccent,fontSize: 16)):
+                                              Text('+'+dataList[index]['found'],style: TextStyle(color: Colors.greenAccent,fontSize: 16)),
                                               SizedBox(height:5),
                                             ],
                                           ),
@@ -316,8 +316,8 @@ class _MyAssestsState extends State<MyAssests>
                                                 padding: EdgeInsets.only(left:15),
                                                 child: Row(
                                                   children: [
-                                                    Text(MyLocalizations.of(context).getData('order_time'),style: TextStyle(color: Colors.white70)),
-                                                    Text(dataList[index]['created_at'],style: TextStyle(color: Colors.white70)),
+                                                    Text(MyLocalizations.of(context).getData('order_time'),style: TextStyle(color: Colors.white70,fontSize: 13)),
+                                                    Text(dataList[index]['created_at'],style: TextStyle(color: Colors.white70,fontSize: 13)),
                                                   ],
                                                 )),
                                               SizedBox(height:5),
@@ -326,8 +326,8 @@ class _MyAssestsState extends State<MyAssests>
                                                 padding: EdgeInsets.only(left:15),
                                                 child: Row(
                                                   children: [
-                                                    Text(MyLocalizations.of(context).getData('previous_balance')+ ' : ',style: TextStyle(color: Colors.white70)),
-                                                    Text(dataList[index]['previous'].toString()+ ' USDT',style: TextStyle(color: Colors.white70)),
+                                                    Text(MyLocalizations.of(context).getData('previous_balance')+ ' : ',style: TextStyle(color: Colors.white70,fontSize: 13)),
+                                                    Text(dataList[index]['previous'].toString()+ ' USDT',style: TextStyle(color: Colors.white70,fontSize: 13)),
                                                   ],
                                                 )),
                                               SizedBox(height:5),
@@ -336,8 +336,8 @@ class _MyAssestsState extends State<MyAssests>
                                                 padding: EdgeInsets.only(left:15),
                                                 child: Row(
                                                   children: [
-                                                    Text(MyLocalizations.of(context).getData('current_balance')+ ' : ',style: TextStyle(color: Colors.white70)),
-                                                    Text(dataList[index]['current'].toString()+ ' USDT',style: TextStyle(color: Colors.white70)),
+                                                    Text(MyLocalizations.of(context).getData('current_balance')+ ' : ',style: TextStyle(color: Colors.white70,fontSize: 13)),
+                                                    Text(dataList[index]['current'].toString()+ ' USDT',style: TextStyle(color: Colors.white70,fontSize: 13)),
                                                   ],
                                                 )),
                                             ],
@@ -365,17 +365,17 @@ class _MyAssestsState extends State<MyAssests>
                               borderRadius: BorderRadius.circular(10),
                             ),
                             margin: EdgeInsets.only(top:20,bottom:10,left: 10,right: 10),
-                            padding:EdgeInsets.all(20),
+                            padding:EdgeInsets.all(10),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                               Text(MyLocalizations.of(context).getData('total_assets_converted_USDT'),style: TextStyle(color:Colors.white,fontSize: 16),),
+                               Text(MyLocalizations.of(context).getData('total_assets_converted_USDT'),style: TextStyle(color:Colors.white,fontSize: 15),),
                                SizedBox(height: 10,),
-                               Text(gas==null?'':gas,style: TextStyle(color:Colors.white,fontSize: 20)),
+                               Text(gas==null?'':gas,style: TextStyle(color:Colors.white,fontSize: 18)),
                                SizedBox(height: 5,),
                                gas==null?Text(''):
-                               Text(gas==''?'':'≈ ' + gas +' USD',style: TextStyle(color:Colors.white,fontSize: 14)),
+                               Text(gas==''?'':'≈ ' + gas +' USD',style: TextStyle(color:Colors.white,fontSize: 12)),
                               ],
                             ),
                             ),
@@ -406,11 +406,11 @@ class _MyAssestsState extends State<MyAssests>
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              Text(dataList[index]['detail'],style: TextStyle(color: Colors.white,fontSize: 14),),
+                                              Text(dataList[index]['detail'],style: TextStyle(color: Colors.white,fontSize: 12),),
                                               SizedBox(height:5),
                                               dataList[index]['action'] =='-'?
-                                              Text('-'+dataList[index]['found'],style: TextStyle(color: Colors.redAccent,fontSize: 20)):
-                                              Text('+'+dataList[index]['found'],style: TextStyle(color: Colors.greenAccent,fontSize: 20)),
+                                              Text('-'+dataList[index]['found'],style: TextStyle(color: Colors.redAccent,fontSize: 16)):
+                                              Text('+'+dataList[index]['found'],style: TextStyle(color: Colors.greenAccent,fontSize: 16)),
                                               SizedBox(height:5),
                                             ],
                                           ),
@@ -425,7 +425,7 @@ class _MyAssestsState extends State<MyAssests>
                                                 padding: EdgeInsets.only(left:15),
                                                 child: Row(
                                                   children: [
-                                                    Text(MyLocalizations.of(context).getData('order_time'),style: TextStyle(color: Colors.white70)),
+                                                    Text(MyLocalizations.of(context).getData('order_time'),style: TextStyle(color: Colors.white70,fontSize: 13)),
                                                     Text(dataList[index]['created_at'],style: TextStyle(color: Colors.white70)),
                                                   ],
                                                 )),
@@ -435,8 +435,8 @@ class _MyAssestsState extends State<MyAssests>
                                                 padding: EdgeInsets.only(left:15),
                                                 child: Row(
                                                   children: [
-                                                    Text(MyLocalizations.of(context).getData('previous_balance')+ ' : ',style: TextStyle(color: Colors.white70)),
-                                                    Text(dataList[index]['previous'].toString()+ ' USDT',style: TextStyle(color: Colors.white70)),
+                                                    Text(MyLocalizations.of(context).getData('previous_balance')+ ' : ',style: TextStyle(color: Colors.white70,fontSize: 13)),
+                                                    Text(dataList[index]['previous'].toString()+ ' USDT',style: TextStyle(color: Colors.white70,fontSize: 13)),
                                                   ],
                                                 )),
                                               SizedBox(height:5),
@@ -445,8 +445,8 @@ class _MyAssestsState extends State<MyAssests>
                                                 padding: EdgeInsets.only(left:15),
                                                 child: Row(
                                                   children: [
-                                                    Text(MyLocalizations.of(context).getData('current_balance')+ ' : ',style: TextStyle(color: Colors.white70)),
-                                                    Text(dataList[index]['current'].toString()+ ' USDT',style: TextStyle(color: Colors.white70)),
+                                                    Text(MyLocalizations.of(context).getData('current_balance')+ ' : ',style: TextStyle(color: Colors.white70,fontSize: 13)),
+                                                    Text(dataList[index]['current'].toString()+ ' USDT',style: TextStyle(color: Colors.white70,fontSize: 13)),
                                                   ],
                                                 )),
                                             ],
@@ -474,17 +474,17 @@ class _MyAssestsState extends State<MyAssests>
                               borderRadius: BorderRadius.circular(10),
                             ),
                             margin: EdgeInsets.only(top:20,bottom:10,left: 10,right: 10),
-                            padding:EdgeInsets.all(20),
+                            padding:EdgeInsets.all(10),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                               Text(MyLocalizations.of(context).getData('total_assets_converted_USDT'),style: TextStyle(color:Colors.white,fontSize: 16),),
+                               Text(MyLocalizations.of(context).getData('total_assets_converted_USDT'),style: TextStyle(color:Colors.white,fontSize: 15),),
                                SizedBox(height: 10,),
-                               Text(gasPingyi==null?'':gasPingyi,style: TextStyle(color:Colors.white,fontSize: 20)),
+                               Text(gasPingyi==null?'':gasPingyi,style: TextStyle(color:Colors.white,fontSize: 18)),
                                SizedBox(height: 5,),
                                gas==null?Text(''):
-                               Text(gasPingyi==''?'':'≈ ' + gasPingyi +' USD',style: TextStyle(color:Colors.white,fontSize: 14)),
+                               Text(gasPingyi==''?'':'≈ ' + gasPingyi +' USD',style: TextStyle(color:Colors.white,fontSize: 12)),
                               ],
                             ),
                             ),
@@ -515,11 +515,11 @@ class _MyAssestsState extends State<MyAssests>
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              Text(dataList[index]['detail'],style: TextStyle(color: Colors.white,fontSize: 14),),
+                                              Text(dataList[index]['detail'],style: TextStyle(color: Colors.white,fontSize: 12),),
                                               SizedBox(height:5),
                                               dataList[index]['action'] =='-'?
-                                              Text('-'+dataList[index]['found'],style: TextStyle(color: Colors.redAccent,fontSize: 20)):
-                                              Text('+'+dataList[index]['found'],style: TextStyle(color: Colors.greenAccent,fontSize: 20)),
+                                              Text('-'+dataList[index]['found'],style: TextStyle(color: Colors.redAccent,fontSize: 16)):
+                                              Text('+'+dataList[index]['found'],style: TextStyle(color: Colors.greenAccent,fontSize: 16)),
                                               SizedBox(height:5),
                                             ],
                                           ),
@@ -534,8 +534,8 @@ class _MyAssestsState extends State<MyAssests>
                                                 padding: EdgeInsets.only(left:15),
                                                 child: Row(
                                                   children: [
-                                                    Text(MyLocalizations.of(context).getData('order_time'),style: TextStyle(color: Colors.white70)),
-                                                    Text(dataList[index]['created_at'],style: TextStyle(color: Colors.white70)),
+                                                    Text(MyLocalizations.of(context).getData('order_time'),style: TextStyle(color: Colors.white70,fontSize: 13)),
+                                                    Text(dataList[index]['created_at'],style: TextStyle(color: Colors.white70,fontSize: 13)),
                                                   ],
                                                 )),
                                               SizedBox(height:5),
@@ -544,8 +544,8 @@ class _MyAssestsState extends State<MyAssests>
                                                 padding: EdgeInsets.only(left:15),
                                                 child: Row(
                                                   children: [
-                                                    Text(MyLocalizations.of(context).getData('previous_balance')+ ' : ',style: TextStyle(color: Colors.white70)),
-                                                    Text(dataList[index]['previous'].toString()+ ' USDT',style: TextStyle(color: Colors.white70)),
+                                                    Text(MyLocalizations.of(context).getData('previous_balance')+ ' : ',style: TextStyle(color: Colors.white70,fontSize: 13)),
+                                                    Text(dataList[index]['previous'].toString()+ ' USDT',style: TextStyle(color: Colors.white70,fontSize: 13)),
                                                   ],
                                                 )),
                                               SizedBox(height:5),
@@ -554,8 +554,8 @@ class _MyAssestsState extends State<MyAssests>
                                                 padding: EdgeInsets.only(left:15),
                                                 child: Row(
                                                   children: [
-                                                    Text(MyLocalizations.of(context).getData('current_balance')+ ' : ',style: TextStyle(color: Colors.white70)),
-                                                    Text(dataList[index]['current'].toString()+ ' USDT',style: TextStyle(color: Colors.white70)),
+                                                    Text(MyLocalizations.of(context).getData('current_balance')+ ' : ',style: TextStyle(color: Colors.white70,fontSize: 13)),
+                                                    Text(dataList[index]['current'].toString()+ ' USDT',style: TextStyle(color: Colors.white70,fontSize: 13)),
                                                   ],
                                                 )),
                                             ],

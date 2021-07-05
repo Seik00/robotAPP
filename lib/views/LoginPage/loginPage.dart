@@ -51,7 +51,7 @@ class _LoginPageState extends State<LoginPage>
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     String versionName = packageInfo.version;
     print(versionName);
-    var contentData = await Request().getRequest(Config().url + "/api/project/lookup", context);
+    var contentData = await Request().getWithoutRequest(Config().url + "api/global/lookup", context);
     if(contentData != null){
       if (contentData['code'] == 0) {
       if (mounted) {
@@ -64,6 +64,7 @@ class _LoginPageState extends State<LoginPage>
             _showPendingInfo();
           }
           if(versionName != version){
+            print('123123123');
            checkOSType();
           }
         });
@@ -73,21 +74,22 @@ class _LoginPageState extends State<LoginPage>
   }
 
   checkOSType() {
-    if (Platform.isAndroid) {
-      if (gms = true) {
-        setState(() {
-        _showGoogleInfo();
-        });
-      } else {
-        setState(() {
-          _showUpdateInfo();
-        });
-      }
-    } else if (Platform.isIOS) {
-      setState(() {
-      _showUpdateInfo();
-      });
-    }
+    _showUpdateInfo();
+    // if (Platform.isAndroid) {
+    //   if (gms = true) {
+    //     setState(() {
+    //     _showUpdateInfo();
+    //     });
+    //   } else {
+    //     setState(() {
+    //       _showUpdateInfo();
+    //     });
+    //   }
+    // } else if (Platform.isIOS) {
+    //   setState(() {
+    //   _showUpdateInfo();
+    //   });
+    // }
   }
 
   Future<void> _showGoogleInfo() async {
@@ -98,7 +100,7 @@ class _LoginPageState extends State<LoginPage>
         return WillPopScope(
           onWillPop: () async => false,
           child: AlertDialog(
-            backgroundColor: Color(0xff9957ED),
+            backgroundColor: Colors.blue[100],
             title: Center(
               child: Icon(
               Icons.update, 
@@ -268,6 +270,7 @@ class _LoginPageState extends State<LoginPage>
   void initState() {
     super.initState();
     initialiseLanguage();
+    lookUp();
     //lookUp();
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
@@ -303,6 +306,7 @@ class _LoginPageState extends State<LoginPage>
   @override
   void dispose() {
     super.dispose();
+    
   }
 
   @override
