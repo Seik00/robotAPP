@@ -9,6 +9,7 @@ import 'package:robot/API/config.dart';
 import 'package:robot/API/request.dart';
 import 'package:package_info/package_info.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -33,8 +34,12 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   String token = " ";
   String secPwd = "";
+  String firebaseToken = " ";
   var site;
   var version;
+
+
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   @override
   void initState() {
@@ -42,7 +47,39 @@ class _SplashScreenState extends State<SplashScreen> {
     validateLogin();
     lookUp();
     _requestPermissions();
-    _showNotification();
+    print('sihai2');
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, badge: true, alert: true));
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      print("Settings registered: $settings");
+    });
+    _firebaseMessaging.getToken().then((String deviceToken) {
+      assert(deviceToken != null);
+      setState(() {
+        firebaseToken = deviceToken;
+      });
+      print('-----');
+      print(firebaseToken);
+      print('-----');
+    });
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        setState(() {});
+        print("onMessage: sihai");
+        _showNotification();
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        setState(() {});
+        print('object');
+        print("onLaunch: $message");
+      },
+      onResume: (Map<String, dynamic> message) async {
+        setState(() {});
+        print('00000');
+        print("onResume: $message");
+      },
+    );
   }
 
   void _requestPermissions() {

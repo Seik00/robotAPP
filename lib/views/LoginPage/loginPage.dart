@@ -267,42 +267,42 @@ class _LoginPageState extends State<LoginPage>
     }
   }
 
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   @override
   void initState() {
     super.initState();
     initialiseLanguage();
     lookUp();
     //lookUp();
-    _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        setState(() {});
-        print("onMessage: $message");
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        setState(() {});
-        print("onLaunch: $message");
-      },
-      onResume: (Map<String, dynamic> message) async {
-        setState(() {});
-        print("onResume: $message");
-      },
-    );
-    _firebaseMessaging.requestNotificationPermissions(
-        const IosNotificationSettings(sound: true, badge: true, alert: true));
-    _firebaseMessaging.onIosSettingsRegistered
-        .listen((IosNotificationSettings settings) {
-      print("Settings registered: $settings");
-    });
-    _firebaseMessaging.getToken().then((String deviceToken) {
-      assert(deviceToken != null);
-      setState(() {
-        firebaseToken = deviceToken;
-      });
-      print('-----');
-      print(firebaseToken);
-      print('-----');
-    });
+    // _firebaseMessaging.configure(
+    //   onMessage: (Map<String, dynamic> message) async {
+    //     setState(() {});
+    //     print("onMessage: $message");
+    //   },
+    //   onLaunch: (Map<String, dynamic> message) async {
+    //     setState(() {});
+    //     print("onLaunch: $message");
+    //   },
+    //   onResume: (Map<String, dynamic> message) async {
+    //     setState(() {});
+    //     print("onResume: $message");
+    //   },
+    // );
+    // _firebaseMessaging.requestNotificationPermissions(
+    //     const IosNotificationSettings(sound: true, badge: true, alert: true));
+    // _firebaseMessaging.onIosSettingsRegistered
+    //     .listen((IosNotificationSettings settings) {
+    //   print("Settings registered: $settings");
+    // });
+    // _firebaseMessaging.getToken().then((String deviceToken) {
+    //   assert(deviceToken != null);
+    //   setState(() {
+    //     firebaseToken = deviceToken;
+    //   });
+    //   print('-----');
+    //   print(firebaseToken);
+    //   print('-----');
+    // });
   }
 
   @override
