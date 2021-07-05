@@ -16,6 +16,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'dart:io' show Platform;
 import 'package:flutter_hms_gms_availability/flutter_hms_gms_availability.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class LoginPage extends StatefulWidget {
   final url;
@@ -265,6 +266,7 @@ class _LoginPageState extends State<LoginPage>
       });
     }
   }
+
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   @override
   void initState() {

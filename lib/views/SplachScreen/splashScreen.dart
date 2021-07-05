@@ -8,13 +8,24 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:robot/API/config.dart';
 import 'package:robot/API/request.dart';
 import 'package:package_info/package_info.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
 class SplashScreen extends StatefulWidget {
   final url;
   final onChangeLanguage;
+  final NotificationAppLaunchDetails notificationAppLaunchDetails;
 
-  SplashScreen(this.url, this.onChangeLanguage);
+  SplashScreen(this.url, this.onChangeLanguage, 
+    this.notificationAppLaunchDetails, {
+    Key key,
+  }) : super(key: key);
+
+  bool get didNotificationLaunchApp =>
+      notificationAppLaunchDetails?.didNotificationLaunchApp ?? false;
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -30,9 +41,44 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     validateLogin();
     lookUp();
+    _requestPermissions();
+    _showNotification();
   }
 
-   lookUp() async {
+  void _requestPermissions() {
+    flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
+    flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            MacOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
+  }
+
+  Future<void> _showNotification() async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+            'your channel id', 'your channel name', 'your channel description',
+            importance: Importance.max,
+            priority: Priority.high,
+            ticker: 'ticker');
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+        0, 'plain title', 'plain body', platformChannelSpecifics,
+        payload: 'item x');
+  }
+
+  lookUp() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     String versionName = packageInfo.version;
     print(versionName);
@@ -40,31 +86,30 @@ class _SplashScreenState extends State<SplashScreen> {
     print(contentData);
     if(contentData != null){
       if (contentData['code'] == 0) {
-      if (mounted) {
-        setState(() {
-          site = contentData['data']['system']['SITE_ON'];
-          version = contentData['data']['system']['APP_VERSION'];
-          if(site == '0'){
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      LoginPage(widget.url, widget.onChangeLanguage)),
-            );
-          }
-          if(versionName != version){
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      LoginPage(widget.url, widget.onChangeLanguage)),
-            );
-          }
-        });
+        if (mounted) {
+          setState(() {
+            site = contentData['data']['system']['SITE_ON'];
+            version = contentData['data']['system']['APP_VERSION'];
+            if(site == '0'){
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        LoginPage(widget.url, widget.onChangeLanguage)),
+              );
+            }
+            if(versionName != version){
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        LoginPage(widget.url, widget.onChangeLanguage)),
+              );
+            }
+          });
+        }
       }
     }
-    }
-    
   }
 
   getRequest() async {

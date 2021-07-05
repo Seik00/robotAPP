@@ -11,6 +11,39 @@ import 'vendor/i18n/localizations.dart' show MyLocalizationsDelegate;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:rxdart/subjects.dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+/// Streams are created so that app can respond to notification-related events
+/// since the plugin is initialised in the `main` function
+final BehaviorSubject<ReceivedNotification> didReceiveLocalNotificationSubject =
+    BehaviorSubject<ReceivedNotification>();
+
+final BehaviorSubject<String> selectNotificationSubject =
+    BehaviorSubject<String>();
+
+const MethodChannel platform =
+    MethodChannel('dexterx.dev/flutter_local_notifications_example');
+
+class ReceivedNotification {
+  ReceivedNotification({
+    this.id,
+    this.title,
+    this.body,
+    this.payload,
+  });
+
+  final int id;
+  final String title;
+  final String body;
+  final String payload;
+}
+
+
+String selectedNotificationPayload;
 
 var language = '';
 var loadingText = "";
@@ -25,6 +58,39 @@ String languageType = "";
 void main() async{
   HttpOverrides.global = new MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
+
+  final NotificationAppLaunchDetails notificationAppLaunchDetails =
+      await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+  if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
+    selectedNotificationPayload = notificationAppLaunchDetails.payload;
+  }
+
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('icon');
+
+  /// Note: permissions aren't requested here just to demonstrate that can be
+  /// done later
+  final IOSInitializationSettings initializationSettingsIOS =
+      IOSInitializationSettings(
+          requestAlertPermission: false,
+          requestBadgePermission: false,
+          requestSoundPermission: false,
+          onDidReceiveLocalNotification:
+              (int id, String title, String body, String payload) async {
+            didReceiveLocalNotificationSubject.add(ReceivedNotification(
+                id: id, title: title, body: body, payload: payload));
+          });
+  final InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+      onSelectNotification: (String payload) async {
+    if (payload != null) {
+      debugPrint('notification payload: $payload');
+    }
+    selectedNotificationPayload = payload;
+    selectNotificationSubject.add(payload);
+  });
 
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, 
@@ -71,7 +137,7 @@ void main() async{
   }
 
   Map<String, Map<String, String>> localizedValues = await initializeI18n();
-  runApp(MyApp(url,localizedValues));
+  runApp(MyApp(url,localizedValues, notificationAppLaunchDetails));
 }
 
 class ChineseCupertinoLocalizations implements CupertinoLocalizations {
@@ -373,7 +439,16 @@ class MyBehavior extends ScrollBehavior {
 class MyApp extends StatefulWidget {
   final url;
   final Map<String, Map<String, String>> localizedValues;
-  MyApp(this.url,this.localizedValues);
+  final NotificationAppLaunchDetails notificationAppLaunchDetails;
+
+  MyApp(
+    this.url,this.localizedValues, 
+    this.notificationAppLaunchDetails, {
+    Key key,
+  }) : super(key: key);
+
+  bool get didNotificationLaunchApp =>
+      notificationAppLaunchDetails?.didNotificationLaunchApp ?? false;
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -489,7 +564,7 @@ class _MyAppState extends State<MyApp> {
         textSelectionColor: Color(0xff5A718B),
       ),
       home: Scaffold(
-        body: SplashScreen(widget.url,this.onChangeLanguage)
+        body: SplashScreen(widget.url,this.onChangeLanguage, widget.notificationAppLaunchDetails)
         // body: TopViewing()
       ),
     );
