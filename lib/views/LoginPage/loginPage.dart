@@ -88,7 +88,7 @@ class _LoginPageState extends State<LoginPage>
     selectedNotificationPayload = notificationAppLaunchDetails.payload;
   }
   const AndroidInitializationSettings initializationSettingsAndroid =
-      AndroidInitializationSettings('food');
+      AndroidInitializationSettings('icon');
 
   /// Note: permissions aren't requested here just to demonstrate that can be
   /// done later
