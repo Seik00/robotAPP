@@ -18,6 +18,8 @@ import 'package:flutter_hms_gms_availability/flutter_hms_gms_availability.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:rxdart/subjects.dart';
+import 'package:platform_device_id/platform_device_id.dart';
+
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -79,6 +81,9 @@ class _LoginPageState extends State<LoginPage>
   var otp = '1';
   var mobileNumber;
   String firebaseToken = " ";
+  var osType;
+  String _deviceId = 'Unknown';
+
 
   setUpMsg()async{   
 
@@ -191,6 +196,45 @@ class _LoginPageState extends State<LoginPage>
     //   });
     // }
   }
+
+  checkPhoneType() {
+    if (Platform.isAndroid) {
+      if (gms = true) {
+        setState(() {
+        osType = "ANDROID";
+        });
+      } else {
+        setState(() {
+          osType = "HUAWEI";
+        });
+      }
+    } else if (Platform.isIOS) {
+      setState(() {
+        osType = "IOS";
+      });
+    }
+  }
+
+  Future<void> initPlatformState() async {
+    String deviceId;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      deviceId = await PlatformDeviceId.getDeviceId;
+    } on PlatformException {
+      deviceId = 'Failed to get deviceId.';
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      _deviceId = deviceId;
+      print("deviceId->$_deviceId");
+    });
+  }
+
 
   Future<void> _showGoogleInfo() async {
     return showDialog<void>(
@@ -328,19 +372,38 @@ class _LoginPageState extends State<LoginPage>
         prefs.setString("token", contentData['data']['token']);
 
         Timer(
-            Duration(seconds: 0),
-            () => Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => TopViewing(
-                          widget.url,
-                          widget.onChangeLanguage,
-                        ))));
+        Duration(seconds: 0),
+        () => Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => TopViewing(
+                      widget.url,
+                      widget.onChangeLanguage,
+                    ))));
+                    
+        var tmap = new Map<String, dynamic>();
+        print('start here-----------');
+        setState(() {
+          tmap['device_token'] = firebaseToken;
+          tmap['device_id'] = _deviceId;
+          tmap['os_type'] = osType;
+        });
+      
+        print(tmap['device_token']);
+        print(tmap['os_type']);
+        postDeviceToken(tmap);
+
       
       } else {
        
       }
     }
+  }
+
+  postDeviceToken(dynamic data) async {
+    var contentData = await Request().postWithoutToken(
+        Config().url + "api/global/add_device_token", data, context);
+    print(contentData);
   }
 
 
@@ -372,6 +435,8 @@ class _LoginPageState extends State<LoginPage>
     super.initState();
     initialiseLanguage();
     lookUp();
+    initPlatformState();
+    checkPhoneType();
     setUpMsg();
     _requestPermissions();
     _firebaseMessaging.configure(
@@ -450,7 +515,18 @@ class _LoginPageState extends State<LoginPage>
                           //           )
                           //       )),
                           // ),
-                          Spacer(flex: 3,),
+                          Spacer(flex: 1,),
+                          Center(
+                            child: Container(
+                              child: Image(
+                                image: AssetImage(
+                                    "lib/assets/img/inv_logo.png"),
+                                height: 100,
+                                width: 100,
+                              ),
+                            ),
+                          ),
+                          Spacer(flex: 1,),
                           Container(
                             child: Text('Login',style: TextStyle(color: Colors.white,fontSize: 30)),
                           ),

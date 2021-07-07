@@ -24,6 +24,7 @@ class _BuyPinState extends State<BuyPin> {
 
   TextEditingController amountController = TextEditingController();
   TextEditingController usdtController = TextEditingController();
+  TextEditingController secpwdController = TextEditingController();
   
   bool _validate = false;
   var body;
@@ -136,6 +137,12 @@ class _BuyPinState extends State<BuyPin> {
                             _inputAmount(),
                              SizedBox(height: 20.0),
 
+                            Container(
+                              child: Text(MyLocalizations.of(context).getData('sec_password'),style: TextStyle(color: Colors.white,fontSize: 16),),
+                            ),
+                            SizedBox(height: 5.0),
+                            _inputPassword(),
+                            SizedBox(height: 20.0),
 
                             Container(
                             child: GestureDetector(
@@ -224,6 +231,31 @@ class _BuyPinState extends State<BuyPin> {
     );
   }
 
+  _inputPassword() {
+    return new Container(
+      child: TextFormField(
+        controller: secpwdController,
+        obscureText: true,
+        validator: validateInput,
+        autofocus: false,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        decoration: new InputDecoration(
+              contentPadding: const EdgeInsets.all(8.0),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Colors.grey, width: 1),
+              ),
+              filled: true,
+              fillColor: Colors.white,
+            ),
+        keyboardType: TextInputType.text,
+        onSaved: (str) {
+          print(str);
+        },
+      ),
+    );
+  }
+
   String validateInput(String value) {
     if (value.isEmpty) {
       return MyLocalizations.of(context).getData('value_fill_in');
@@ -266,6 +298,7 @@ class _BuyPinState extends State<BuyPin> {
       if (mounted)
         setState(() {
           tmap['amount'] = amountController.text;
+          tmap['sec_password'] = secpwdController.text;
           print(tmap['amount']);
         });
          postData(tmap);

@@ -23,6 +23,7 @@ class _InvitationState extends State<Invitation> with SingleTickerProviderStateM
 
   var shareLink;
   var pattern;
+  var id;
 
   getRequest() async {
     var contentData = await Request().getRequest(Config().url + "api/member/get-member-info", context);
@@ -30,105 +31,17 @@ class _InvitationState extends State<Invitation> with SingleTickerProviderStateM
       if (mounted) {
         setState(() {
           shareLink = contentData['share_link'];
+          id = contentData['id'];
           print(shareLink);
         });
       }
     }
   }
 
-  Future<void> savePattern() async {
-    final prefs = await SharedPreferences.getInstance();
-     prefs.setString("pattern", pattern);
-
-  }
-
-  Future<String> getPattern() async {
-    final prefs = await SharedPreferences.getInstance();
-    pattern = prefs.getString('pattern') ?? "null";
-
-    return pattern;
-  }
-
-  Future<void> _showPattern() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return AlertDialog(
-            backgroundColor: Color(0xff9957ED),
-            title: Text(MyLocalizations.of(context).getData('sport_type'),style: TextStyle(color: Colors.white)),
-            content: Wrap(
-              direction: Axis.vertical,
-              spacing: 15,
-              children: <Widget>[
-                GestureDetector(
-                    onTap: () {
-                       setState(() {
-                        pattern = '1';
-                        savePattern();
-                        Navigator.pop(context);
-                      });
-                    },
-                    child: Row(children: [
-                      Container(
-                        margin: EdgeInsets.only(right:10),
-                        width: 30.0,
-                        height: 30.0,
-                        child: Icon(Icons.sports_soccer,color: Colors.white,),
-                        ),
-                      Text(MyLocalizations.of(context).getData('sport_type_one'),style: TextStyle(color: Colors.white),)
-                    ],)
-                   ),
-                GestureDetector(
-                    onTap: () {
-                       setState(() {
-                        pattern = '2';
-                        print(pattern);
-                        savePattern();
-                        Navigator.pop(context);
-                      });
-                    },
-                    child: Row(children:[
-                      Container(
-                        margin: EdgeInsets.only(right:10),
-                        width: 30.0,
-                        height: 30.0,
-                        child: Icon(Icons.sports_volleyball,color: Colors.white),
-                        ),
-                      Text(MyLocalizations.of(context).getData('sport_type_two'),style: TextStyle(color: Colors.white))
-                    ]),
-                   ),
-                GestureDetector(
-                   onTap: () {
-                       setState(() {
-                        pattern = '3';
-                        print(pattern);
-                        savePattern();
-                        Navigator.pop(context);
-                      });
-                    },
-                    child: Row(children: [
-                      Container(
-                        margin: EdgeInsets.only(right:10),
-                        width: 30.0,
-                        height: 30.0,
-                        child: Icon(Icons.sports_basketball,color: Colors.white),
-                        ),
-                      Text(MyLocalizations.of(context).getData('sport_type_three'),style: TextStyle(color: Colors.white),)
-                    ],)
-                   ),
-              ],
-            ));
-      },
-    );
-  }
-
   @override
   void initState() {
     super.initState();
     getRequest();
-    getPattern();
-    print(pattern);
   }
 
   @override
@@ -150,7 +63,7 @@ class _InvitationState extends State<Invitation> with SingleTickerProviderStateM
         width: double.infinity,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: pattern == '1'?AssetImage("lib/assets/img/invite_bg1.png"):pattern == '2'?AssetImage("lib/assets/img/invite_bg2.png"):pattern == '3'?AssetImage("lib/assets/img/invite_bg3.png"):AssetImage("lib/assets/img/background.png"),
+            image: AssetImage("lib/assets/img/inv_bg.png"),
             fit: BoxFit.cover,
           ),
         ),
@@ -175,50 +88,14 @@ class _InvitationState extends State<Invitation> with SingleTickerProviderStateM
             SizedBox(
               height: 50,
             ),
-            Container(
-              padding: EdgeInsets.only(top:10,bottom:10),
-              decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.5),
-                    //image: DecorationImage(image: AssetImage("lib/assets/img/vietnam_flag.png"))
-                ), 
-              child: Center(
-                child:Container(
-                  child: Row(
-                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      
-                    Container(
-                      child: Text(
-                      MyLocalizations.of(context).getData('scan'),
-                      style: TextStyle(color: Colors.white,fontSize: 22,fontWeight: FontWeight.bold),)
-                    ),
-                    Container(
-                      child: Text(
-                      MyLocalizations.of(context).getData('download'),
-                      style: TextStyle(color: Colors.white,fontSize: 22,fontWeight: FontWeight.bold),)
-                    ),
-                    Container(
-                      child: Flexible(
-                        child: Text(
-                        MyLocalizations.of(context).getData('experience'),
-                        style: TextStyle(color: Colors.white,fontSize: 22,fontWeight: FontWeight.bold,),),
-                      )
-                    )
-                  ],),
-                )
-              ),
-            ),
-            Container(
-               padding: EdgeInsets.only(bottom:10),
-               decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.5),
-                    //image: DecorationImage(image: AssetImage("lib/assets/img/vietnam_flag.png"))
-                ), 
-               child: Center(
-                child:Container(
-                  child: Text(
-                    MyLocalizations.of(context).getData('scan_qr'),
-                    style: TextStyle(color: Colors.grey[350],fontSize: 18,fontWeight: FontWeight.bold),),)
+            Center(
+              child: Container(
+                child: Image(
+                  image: AssetImage(
+                      "lib/assets/img/inv_logo.png"),
+                  height: 80,
+                  width: 80,
+                ),
               ),
             ),
             SizedBox(height:10),
@@ -226,6 +103,45 @@ class _InvitationState extends State<Invitation> with SingleTickerProviderStateM
             //   padding: EdgeInsets.all(20),
             //   child: Text(MyLocalizations.of(context).getData('invite_desc'),textAlign: TextAlign.center,style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),),)
             //   ),
+            Container(
+              child:Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(MyLocalizations.of(context).getData('invi_code'),style: TextStyle(color: Colors.white),),
+                  GestureDetector(
+                    onTap: () {
+                      Clipboard.setData(new ClipboardData(text: id.toString()));
+                      Fluttertoast.showToast(
+                        msg: MyLocalizations.of(context).getData('copy_invi_code'),
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        backgroundColor: Color(0xFFDCDCDC),
+                        textColor: Colors.black,
+                      );
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[ 
+                          Container(
+                            padding: EdgeInsets.only(right:5),
+                            child:Text(
+                              id==null?'':id.toString(),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.normal
+                              ),
+                            )
+                          ),
+                          Icon(Icons.content_copy, size: 20, color: Colors.white,)
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            ),
              SizedBox(height:20),
             Center(
               child: Container(
@@ -233,17 +149,32 @@ class _InvitationState extends State<Invitation> with SingleTickerProviderStateM
                   color: Colors.white,
                     //image: DecorationImage(image: AssetImage("lib/assets/img/qr-frame.png"))
                 ), 
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.all(6),
                 child: Container(
                   child: QrImage(
                     data: shareLink ==null?'':shareLink,
                     version: QrVersions.auto,
-                    size: 180.0,
+                    size: 150.0,
                   ),
                 ),
               ),
             ),
-            SizedBox(height:30),
+            SizedBox(height:20),
+            Center(
+              child: Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey,width: 2,),
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                    //image: DecorationImage(image: AssetImage("lib/assets/img/vietnam_flag.png"))
+                ), 
+                child: Text(
+                      MyLocalizations.of(context).getData('scan_qr'),
+                      style: TextStyle(color: Colors.black,fontSize: 16,),)
+              ),
+            ),
+            SizedBox(height:20),
             Center(
               child: GestureDetector(
                 onTap: () {
@@ -257,6 +188,7 @@ class _InvitationState extends State<Invitation> with SingleTickerProviderStateM
                   );
                 },
                 child: Container(
+                padding: EdgeInsets.all(15),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     gradient: LinearGradient(
@@ -265,7 +197,6 @@ class _InvitationState extends State<Invitation> with SingleTickerProviderStateM
                     colors: [Color(0xfffaef1d), Color(0xfff9f21a)])
                 ),
                 width: MediaQuery.of(context).size.width/2,
-                height: MediaQuery.of(context).size.height / 15,
                 alignment: Alignment.center,
                 child: Text(MyLocalizations.of(context).getData('copy'),style: TextStyle(color: Colors.black),
                 )),

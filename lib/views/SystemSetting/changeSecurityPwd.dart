@@ -62,7 +62,7 @@ class _ChangeSecurityPwdState extends State<ChangeSecurityPwd> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Color(0xff212630),
       appBar: PreferredSize(
           child: AppBar(
             backgroundColor: Theme.of(context).backgroundColor,
@@ -75,14 +75,6 @@ class _ChangeSecurityPwdState extends State<ChangeSecurityPwd> {
         },
         child: Stack(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("lib/assets/img/background.png"),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
             Container(
             child: SingleChildScrollView(
               child: Column(
@@ -141,7 +133,7 @@ class _ChangeSecurityPwdState extends State<ChangeSecurityPwd> {
                                       gradient: LinearGradient(
                                       begin: Alignment.topCenter,
                                       end: Alignment.bottomCenter,
-                                      colors: [Color(0xff3DC2EA), Color(0xff7C1999)])
+                                      colors: [Color(0xfff6fb15), Color(0xfff6fb15)])
                                   ),
                                   margin: EdgeInsets.all(20),
                                   width: MediaQuery.of(context).size.width/2,
@@ -149,7 +141,7 @@ class _ChangeSecurityPwdState extends State<ChangeSecurityPwd> {
                                   alignment: Alignment.center,
                                   child: Text(
                                     MyLocalizations.of(context).getData('submit'),
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(color: Colors.black),
                                   )),
                             ),
                           )

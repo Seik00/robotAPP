@@ -34,7 +34,7 @@ class _SettingsState extends State<Settings>
   var type;
   var currentLanguage;
   var username;
-  var email;
+  var id;
   var packageName;
   var packageNameEn;
   var language;
@@ -55,7 +55,7 @@ class _SettingsState extends State<Settings>
         setState(() {
           print(contentData);
           username = contentData['username'];
-          email = contentData['email'];
+          id = contentData['id'];
           packageName = contentData['package']['package_name'];
           packageNameEn = contentData['package']['package_name_en'];
         });
@@ -114,18 +114,17 @@ class _SettingsState extends State<Settings>
                                   children: [
                                     SizedBox(height:50),
                                     Image(
-                                      image: NetworkImage(
-                                        'https://bosco.greatwallsolution.com/images/coin/BTC.png'
-                                        ),
+                                      image: AssetImage(
+                                          "lib/assets/img/inv_logo.png"),
                                       height: 60,
                                       width: 60,
                                     ),
                                     SizedBox(height: 10),
                                     Container(
-                                      child: Text(username==null?'':username,style: TextStyle(color:Colors.white),),
+                                      child: Text(id==null?'':id.toString(),style: TextStyle(color:Colors.white)),
                                     ),
                                     Container(
-                                      child: Text(email==null?'':email,style: TextStyle(color:Colors.white)),
+                                      child: Text(username==null?'':username,style: TextStyle(color:Colors.white),),
                                     ),
                                     Container(
                                       child: 

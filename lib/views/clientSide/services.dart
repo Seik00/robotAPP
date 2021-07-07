@@ -187,8 +187,9 @@ class _ServicesState extends State<Services>
                 ),
                 Container(
             decoration: BoxDecoration(
+              gradient: LinearGradient(
+                      colors: [Color(0xfffFDE323), Color(0xfffF6FB15)]),
               borderRadius: BorderRadius.circular(10),
-              color: Colors.grey.withOpacity(0.8),
               border: Border.all(color:Colors.white54)),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -222,7 +223,7 @@ class _ServicesState extends State<Services>
                               ),
                             ),
                           SizedBox(height:5),
-                          Text(MyLocalizations.of(context).getData('api_binding'),style: TextStyle(fontSize: 12,color: Colors.white),)
+                          Text(MyLocalizations.of(context).getData('api_binding'),style: TextStyle(fontSize: 12,color: Colors.black),overflow: TextOverflow.ellipsis,)
                         ],
                       ),
                     ),
@@ -256,7 +257,41 @@ class _ServicesState extends State<Services>
                               ),
                             ),
                             SizedBox(height:5),
-                          Text(MyLocalizations.of(context).getData('pin_manage'),style: TextStyle(fontSize: 12,color: Colors.white))
+                          Text(MyLocalizations.of(context).getData('pin_manage'),style: TextStyle(fontSize: 12,color: Colors.black),overflow: TextOverflow.ellipsis,)
+                        ],
+                      ),
+                    ),
+                  ])),
+                  Expanded(
+                    child: Column(children: <Widget>[
+                    FlatButton(
+                      onPressed: () => {
+                        _timer.cancel(),
+                          Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PinCenter(widget.url)),
+                        ).then((value) => startLoop())
+                      },
+                      padding: EdgeInsets.all(8.0),
+                      child: Column(
+                        // Replace with a Row for horizontal icon + text
+                        children: <Widget>[
+                          Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                              color: Color(0xff212630),
+                              borderRadius: BorderRadius.circular(25),
+                              border: Border.all(color:Colors.white54)),
+                              child: Image(
+                                image: AssetImage(
+                                    "lib/assets/img/inv_friend.png"),
+                                height: 18,
+                                width: 18,
+                              ),
+                            ),
+                            SizedBox(height:5),
+                          Text(MyLocalizations.of(context).getData('invite_friend'),style: TextStyle(fontSize: 12,color: Colors.black),overflow: TextOverflow.ellipsis,)
                         ],
                       ),
                     ),
@@ -291,7 +326,7 @@ class _ServicesState extends State<Services>
                               ),
                             ),
                           SizedBox(height:5),
-                          Text(MyLocalizations.of(context).getData('user_guide'),style: TextStyle(fontSize: 12,color: Colors.white))
+                          Text(MyLocalizations.of(context).getData('user_guide'),style: TextStyle(fontSize: 12,color: Colors.black),overflow: TextOverflow.ellipsis,)
                         ],
                       ),
                     ),
@@ -325,7 +360,7 @@ class _ServicesState extends State<Services>
                               ),
                             ),
                           SizedBox(height:5),
-                          Text(MyLocalizations.of(context).getData('revenue'),style: TextStyle(fontSize: 12,color: Colors.white))
+                          Text(MyLocalizations.of(context).getData('revenue'),style: TextStyle(fontSize: 12,color: Colors.black),overflow: TextOverflow.ellipsis,)
                         ],
                       ),
                     ),
@@ -356,7 +391,7 @@ class _ServicesState extends State<Services>
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
                             side: BorderSide(
-                                color: Colors.grey)),
+                                color: Color(0xffFDE323),width: 3)),
                         child:Container(
                           padding: EdgeInsets.only(top:10,bottom: 5),
                           alignment: Alignment.topLeft,
@@ -380,7 +415,7 @@ class _ServicesState extends State<Services>
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
                             side: BorderSide(
-                                color: Colors.grey)),
+                                color: Color(0xffF6FB15),width: 3)),
                         child:Container(
                           padding: EdgeInsets.only(top:10,bottom: 5),
                           alignment: Alignment.topLeft,

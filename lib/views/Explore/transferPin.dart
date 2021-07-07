@@ -24,6 +24,7 @@ class _TransferPinState extends State<TransferPin> {
   TextEditingController pinController = TextEditingController();
   TextEditingController amountController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
+  TextEditingController secpwdController = TextEditingController();
   
   bool _validate = false;
   var body;
@@ -135,6 +136,13 @@ class _TransferPinState extends State<TransferPin> {
                              SizedBox(height: 5),
                             _inputAmount(),
                              SizedBox(height: 20.0),
+
+                            Container(
+                              child: Text(MyLocalizations.of(context).getData('sec_password'),style: TextStyle(color: Colors.white,fontSize: 16),),
+                            ),
+                            SizedBox(height: 5.0),
+                            _inputPassword(),
+                            SizedBox(height: 20.0),
 
 
                             Container(
@@ -248,6 +256,31 @@ class _TransferPinState extends State<TransferPin> {
     );
   }
 
+  _inputPassword() {
+    return new Container(
+      child: TextFormField(
+        controller: secpwdController,
+        obscureText: true,
+        validator: validateInput,
+        autofocus: false,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        decoration: new InputDecoration(
+              contentPadding: const EdgeInsets.all(8.0),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Colors.grey, width: 1),
+              ),
+              filled: true,
+              fillColor: Colors.white,
+            ),
+        keyboardType: TextInputType.text,
+        onSaved: (str) {
+          print(str);
+        },
+      ),
+    );
+  }
+
   String validateInput(String value) {
     if (value.isEmpty) {
       return MyLocalizations.of(context).getData('value_fill_in');
@@ -291,6 +324,7 @@ class _TransferPinState extends State<TransferPin> {
         setState(() {
           tmap['username'] = usernameController.text;
           tmap['amount'] = amountController.text;
+          tmap['sec_password'] = secpwdController.text;
           print(tmap['amount']);
         });
          postData(tmap);

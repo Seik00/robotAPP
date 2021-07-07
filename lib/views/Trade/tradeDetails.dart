@@ -195,6 +195,10 @@ class _TradeDetailsState extends State<TradeDetails> {
                                       child: Text(MyLocalizations.of(context).getData('gas_pingyi')),
                                       value: 2,
                                     ),
+                                    DropdownMenuItem(
+                                          child: Text(MyLocalizations.of(context).getData('gas_gas_pingyi')),
+                                          value: 3,
+                                        ),
                                   ],
                                   onChanged: (value) {
                                     setState(() {
@@ -373,7 +377,7 @@ class _TradeDetailsState extends State<TradeDetails> {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
         suffixIcon: IconButton(
-          icon: Text('Time'),
+          icon: Text(MyLocalizations.of(context).getData('times')),
         ),
         contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
@@ -592,6 +596,9 @@ class _TradeDetailsState extends State<TradeDetails> {
             }
             else if(_value == 2){
               finalValue = 'point3';
+            }
+            else if(_value == 3){
+              finalValue = 'point2&point3';
             }
             tmap['gas_type'] = finalValue;
             tmap['robot_id'] = widget.robotId.toString();

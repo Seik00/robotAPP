@@ -143,29 +143,34 @@ bool visible = true;
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          SizedBox(height: 30.0),
+                          SizedBox(height: 20.0),
                           Container(
                             child: Text(MyLocalizations.of(context).getData('amount')+' UDST',style: TextStyle(color: Colors.white,fontSize: 16),),
                           ),
                           SizedBox(height: 5.0),
                           _inputAmount(),
-                          SizedBox(height: 30.0),
+                          SizedBox(height: 20.0),
                           
                           Container(
                             child: Text(MyLocalizations.of(context).getData('from'),style: TextStyle(color: Colors.white,fontSize: 16),),
                           ),
                           SizedBox(height: 5.0),
                           _inputFrom(),
-                          SizedBox(height: 30.0),
+                          SizedBox(height: 20.0),
 
                           Container(
                             child: Text(MyLocalizations.of(context).getData('to'),style: TextStyle(color: Colors.white,fontSize: 16),),
                           ),
                           SizedBox(height: 5.0),
                           _inputTo(),
-
+                          SizedBox(height: 20.0),
+                          Container(
+                            child: Text(MyLocalizations.of(context).getData('sec_password'),style: TextStyle(color: Colors.white,fontSize: 16),),
+                          ),
+                          SizedBox(height: 5.0),
+                          _inputPassword(),
                           
-                           SizedBox(height: 30.0),
+                           SizedBox(height: 20.0),
                           AbsorbPointer(
                             absorbing: !_firstPress,
                             child: GestureDetector(
@@ -361,6 +366,7 @@ bool visible = true;
         setState(() {
           tmap['amount'] = amountController.text;
           tmap['transfer_type'] = 'point1';
+          tmap['sec_password'] = secpwdController.text;
         });
       postData(tmap);
     } else {

@@ -40,6 +40,7 @@ class _TradeState extends State<Trade> {
   int count= 0;
   var dataList;
   double price;
+  var language;
 
   bool isLoading = true;
 
@@ -47,6 +48,7 @@ class _TradeState extends State<Trade> {
   void initState() {
     super.initState();
     startLoop();
+    getLanguage();
     print(widget.type);
   }
 
@@ -80,6 +82,12 @@ class _TradeState extends State<Trade> {
 
   }
   
+  getLanguage() async{
+    final prefs = await SharedPreferences.getInstance();
+    language = prefs.getString('language');
+    print(language);
+  }
+
   initializeData() async {
       final prefs = await SharedPreferences.getInstance();
       var token = prefs.getString('token');
@@ -314,16 +322,20 @@ class _TradeState extends State<Trade> {
       if (mounted)
         setState(() {
           tmap['robot_id'] = widget.robotID.toString();
-          tmap['first_order_value'] = robotList['first_order_value'].toString();
-          tmap['max_order_count'] = robotList['max_order_count'].toString();
-          tmap['stop_profit_rate'] = robotList['stop_profit_rate'].toString();
-          tmap['stop_profit_callback_rate'] = robotList['stop_profit_callback_rate'].toString();
-          tmap['cover_rate'] = robotList['cover_rate'].toString();
-          tmap['cover_callback_rate'] = robotList['cover_callback_rate'].toString();
-          tmap['recycle_status'] = '0';
         
         });
          postData(tmap);
+    
+  }
+
+   _sendToServer2() {
+      var tmap = new Map<String, dynamic>();
+      if (mounted)
+        setState(() {
+          tmap['robot_id'] = widget.robotID.toString();
+        
+        });
+         postData2(tmap);
     
   }
 
@@ -331,7 +343,40 @@ class _TradeState extends State<Trade> {
     final prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
     print(bodyData);
-    var contentData = await Request().postRequest(Config().url+"api/trade-robot/edit", bodyData, token, context);
+    var contentData = await Request().postRequest(Config().url+"api/trade-robot/changeRecycle", bodyData, token, context);
+    
+    print(contentData);
+    if (contentData['code'] == 0) {
+           AwesomeDialog(
+            context: context,
+            animType: AnimType.LEFTSLIDE,
+            headerAnimationLoop: false,
+            dialogType: DialogType.SUCCES,
+            autoHide: Duration(seconds: 2),
+            title: MyLocalizations.of(context).getData('success'),
+            desc:MyLocalizations.of(context).getData('operation_success'),
+            onDissmissCallback: () {
+              _timer.cancel();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => TopViewing(
+                        widget.url, widget.onChangeLanguage)));
+              })
+          ..show();
+    } else {
+     
+    }
+    setState(() {
+     
+    });
+  }
+
+  postData2(bodyData) async {
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    print(bodyData);
+    var contentData = await Request().postRequest(Config().url+"api/trade-robot/restock", bodyData, token, context);
     
     print(contentData);
     if (contentData['code'] == 0) {
@@ -468,7 +513,10 @@ class _TradeState extends State<Trade> {
                 children: <Widget>[
                   Container(
                     alignment: Alignment.center,
-                    child: Text('Single Strategy'),
+                    child: 
+                    robotList['recycle_status'] == 0?
+                    Text(MyLocalizations.of(context).getData('chg_to_circular')):
+                    Text(MyLocalizations.of(context).getData('chg_to_one_shot')),
                   ),
                 ],
               ),
@@ -487,6 +535,59 @@ class _TradeState extends State<Trade> {
                     onPressed: () {
                       setState(() {
                         _sendToServer();
+                      });
+                     
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> reStock() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: AlertDialog(
+            backgroundColor: Colors.blue[100],
+            title: Center(
+              child: Icon(
+              Icons.looks_one, 
+              color: Colors.white,
+              size: 60,
+            ),),
+            content: Container(
+              child: Wrap(
+                children: <Widget>[
+                  Container(
+                    alignment: Alignment.center,
+                    child: 
+                    Text(MyLocalizations.of(context).getData('repleshiment')),
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              Row(
+                children: [
+                  TextButton(
+                    child: Text('Cancel',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                    onPressed: () {
+                      Navigator.pop(context, true);
+                    },
+                  ),
+                  TextButton(
+                    child: Text('Confirm',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                    onPressed: () {
+                      setState(() {
+                        _sendToServer2();
                       });
                      
                     },
@@ -806,7 +907,12 @@ class _TradeState extends State<Trade> {
                                   ),
                                 ),
                                 SizedBox(height: 5,),
-                                Text(MyLocalizations.of(context).getData('one_shot'),style: TextStyle(color:Colors.white),)
+                                robotList == null?Container(
+                                  child: Text(MyLocalizations.of(context).getData('one_shot'),style: TextStyle(color:Colors.white),),
+                                ):
+                                robotList['recycle_status'] == 0?
+                                Text(MyLocalizations.of(context).getData('one_shot'),style: TextStyle(color:Colors.white),):
+                                Text(MyLocalizations.of(context).getData('circular'),style: TextStyle(color:Colors.white),)
                               ],
                             ),
                           ),
@@ -849,18 +955,8 @@ class _TradeState extends State<Trade> {
                           child: Column(children: <Widget>[
                           FlatButton(
                             onPressed: () => {
-                              AwesomeDialog(
-                                context: context,
-                                dialogType: DialogType.WARNING,
-                                animType: AnimType.RIGHSLIDE,
-                                headerAnimationLoop: false,
-                                title: MyLocalizations.of(context).getData('coming_soon'),
-                                desc: MyLocalizations.of(context).getData('please_be_patient'),
-                                btnOkOnPress: () {},
-                                btnOkText: MyLocalizations.of(context).getData('close'),
-                                btnOkIcon: Icons.cancel,
-                                btnOkColor: Colors.orangeAccent)
-                              ..show()
+                              info2==null? Container():
+                              reStock(),
                             },
                             padding: EdgeInsets.all(10.0),
                             child: Column(
@@ -900,7 +996,7 @@ class _TradeState extends State<Trade> {
                       children: [
                         Text(MyLocalizations.of(context).getData('message'),style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 15)),
                         SizedBox(height: 10,),
-                        Text(robotList==null?'':robotList['show_msg'],style:TextStyle(color: Colors.white)),
+                        Text(robotList==null?'':language=='zh'?robotList['show_msg']:robotList['show_msg_en'],style:TextStyle(color: Colors.white)),
                       ],
                     ),
                   ),

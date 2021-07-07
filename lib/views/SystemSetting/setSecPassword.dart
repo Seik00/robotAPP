@@ -80,6 +80,13 @@ class _SetSecPasswordState extends State<SetSecPassword>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff212630),
+      appBar: PreferredSize(
+      child: AppBar(
+        backgroundColor: Theme.of(context).backgroundColor,
+        elevation: 0,
+      ),
+      preferredSize: Size.fromHeight(0)),
       body: new GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(new FocusNode());
@@ -88,106 +95,90 @@ class _SetSecPasswordState extends State<SetSecPassword>
           children: [
              Container(
               child: SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.only(left: 30, right: 30, top: 0),
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage("lib/assets/img/background.png"),
-                      fit: BoxFit.cover,
+                child: Column(
+                  children: [
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                              Icons.keyboard_arrow_left,
+                              color: Colors.white,
+                            ),
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginPage(
+                                      widget.url,
+                                      widget.onChangeLanguage)),
+                            )),
+                        ],
+                      ),
                     ),
-                  ),
-                  height: MediaQuery.of(context).size.height,
-                    child:Container(
-                      child: Form(
-                          key: _key,
-                          autovalidate: _validate,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Spacer(flex: 2,),
-                              Container(
-                                padding: EdgeInsets.only(bottom: 20),
-                                child: Text(
-                                  MyLocalizations.of(context).getData('set_secpwd'),
-                                  style: TextStyle(
-                                      fontSize: 20, fontWeight: FontWeight.w900,color: Colors.white),
-                                ),
-                              ),
-                              SizedBox(height: 30.0),
-                              Container(
-                                child: Text(MyLocalizations.of(context).getData('new_secpwd'),style: TextStyle(color: Colors.white,fontSize: 16),),
-                              ),
-                              SizedBox(height: 5.0),
-                              _inputPassword(),
-                              SizedBox(height: 30.0),
-                              Container(
-                                child: Text(MyLocalizations.of(context).getData('confirm_new_secpwd'),style: TextStyle(color: Colors.white,fontSize: 16),),
-                              ),
-                              SizedBox(height: 5.0),
-                              _inputConfirmPassword(),
-                              SizedBox(height: 30.0),
-                              Container(
-                                  child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
+                    Container(
+                      padding: EdgeInsets.only(left: 30, right: 30, top: 0),
+                      height: MediaQuery.of(context).size.height,
+                        child:Container(
+                          child: Form(
+                              key: _key,
+                              autovalidate: _validate,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  SizedBox(height: 50),
                                   Container(
+                                    padding: EdgeInsets.only(bottom: 20),
                                     child: Text(
-                                        MyLocalizations.of(context).getData('submit'),
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold, fontSize: 30,color: Colors.white)),
+                                      MyLocalizations.of(context).getData('set_secpwd'),
+                                      style: TextStyle(
+                                          fontSize: 20, fontWeight: FontWeight.w900,color: Colors.white),
+                                    ),
                                   ),
+                                  SizedBox(height: 30.0),
                                   Container(
-                                  child: GestureDetector(
-                                  onTap: () {
-                                    _sendToServer();
-                                  },
-                                  child: Container(
-                                        margin: EdgeInsets.only(right:20),
-                                        width: 80.0,
-                                        height: 80.0,
-                                        decoration: new BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          image: new DecorationImage(
-                                              fit: BoxFit.fill,
-                                              image: AssetImage("lib/assets/img/arrow.png")
-                                          )
-                                      ))),
-                            )
+                                    child: Text(MyLocalizations.of(context).getData('new_secpwd'),style: TextStyle(color: Colors.white,fontSize: 16),),
+                                  ),
+                                  SizedBox(height: 5.0),
+                                  _inputPassword(),
+                                  SizedBox(height: 30.0),
+                                  Container(
+                                    child: Text(MyLocalizations.of(context).getData('confirm_new_secpwd'),style: TextStyle(color: Colors.white,fontSize: 16),),
+                                  ),
+                                  SizedBox(height: 5.0),
+                                  _inputConfirmPassword(),
+                                  SizedBox(height: 30.0),
+                                  GestureDetector(
+                                    onTap: ()async{
+                                      setState(() {
+                                      _sendToServer();
+                                      });
+                                    }, 
+                                    child: Center(
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(10),
+                                              gradient: LinearGradient(
+                                              begin: Alignment.topCenter,
+                                              end: Alignment.bottomCenter,
+                                              colors: [Color(0xfff6fb15), Color(0xfff6fb15)])
+                                          ),
+                                          height: MediaQuery.of(context).size.height / 15,
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            MyLocalizations.of(context).getData('submit'),
+                                            style: TextStyle(color: Colors.black),
+                                          )),
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  SizedBox(height: 30.0),
                                 ],
                               )),
-                              Spacer(),
-                              SizedBox(height: 30.0),
-                              Container(
-                                margin: EdgeInsets.only(bottom: 25),
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        padding: EdgeInsets.only(right: 30),
-                                        child: GestureDetector(
-                                             onTap: () {
-                                               Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) => LoginPage(
-                                                        widget.url,
-                                                        widget.onChangeLanguage)),
-                                              );
-                                            },
-                                            child: Text(
-                                              MyLocalizations.of(context)
-                                                  .getData('sign_in'),
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20,color: Colors.white70),
-                                            )),
-                                      ),
-                                    ]),
-                              ),
-                            ],
-                          )),
-                    ),
+                        ),
           ),
+                  ],
+                ),
               ),
             ),
            
@@ -200,7 +191,6 @@ class _SetSecPasswordState extends State<SetSecPassword>
 
   _inputPassword() {
     return new Container(
-      width: 250,
       child: TextFormField(
         controller: passwordController,
         obscureText: visible,
@@ -225,7 +215,6 @@ class _SetSecPasswordState extends State<SetSecPassword>
 
   _inputConfirmPassword() {
     return new Container(
-      width: 250,
       child: TextFormField(
         controller: confirmPasswordController,
         obscureText: visible,

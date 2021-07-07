@@ -7,6 +7,7 @@ import 'package:robot/API/config.dart';
 import 'package:robot/API/request.dart';
 import 'package:robot/vendor/i18n/localizations.dart';
 import 'package:robot/views/Explore/changeWallet.dart';
+import 'package:robot/views/Explore/transfer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 class MyAssests extends StatefulWidget {
@@ -190,12 +191,12 @@ class _MyAssestsState extends State<MyAssests>
                                             child: Image(
                                               image: AssetImage(
                                                   "lib/assets/img/deposit_circle.png"),
-                                              height: 60,
-                                              width: 60,
+                                              height: 30,
+                                              width: 30,
                                             ),
                                           ),
                                           SizedBox(height: 5,),
-                                          Text(MyLocalizations.of(context).getData('deposit'),style: TextStyle(color:Colors.white,fontSize: 14),)
+                                          Text(MyLocalizations.of(context).getData('deposit'),style: TextStyle(color:Colors.white,fontSize: 12),)
                                         ],
                                       ),
                                     ),
@@ -220,12 +221,12 @@ class _MyAssestsState extends State<MyAssests>
                                             child: Image(
                                               image: AssetImage(
                                                   "lib/assets/img/withdraw_circle.png"),
-                                              height: 60,
-                                              width: 60,
+                                              height: 30,
+                                              width: 30,
                                             ),
                                           ),
                                           SizedBox(height: 5,),
-                                          Text(MyLocalizations.of(context).getData('withdraw'),style: TextStyle(color:Colors.white,fontSize: 14),)
+                                          Text(MyLocalizations.of(context).getData('withdraw'),style: TextStyle(color:Colors.white,fontSize: 12),)
                                         ],
                                       ),
                                     ),
@@ -250,12 +251,42 @@ class _MyAssestsState extends State<MyAssests>
                                             child: Image(
                                               image: AssetImage(
                                                   "lib/assets/img/change_wallet_circle.png"),
-                                              height: 60,
-                                              width: 60,
+                                              height: 30,
+                                              width: 30,
                                             ),
                                           ),
                                           SizedBox(height: 5,),
-                                          Text(MyLocalizations.of(context).getData('change_wallet'),style: TextStyle(color:Colors.white,fontSize: 14),)
+                                          Text(MyLocalizations.of(context).getData('change_wallet'),style: TextStyle(color:Colors.white,fontSize: 12),)
+                                        ],
+                                      ),
+                                    ),
+                                  ])),
+                                  Container(
+                                    child: Column(children: <Widget>[
+                                    FlatButton(
+                                      onPressed: () => {
+                                        // Navigator.push(
+                                        //   context,
+                                        //   MaterialPageRoute(
+                                        //       builder: (context) => Transfer(widget.url)),
+                                        // ).then((value) {
+                                        //   getRequest();initializeData('point1');
+                                        // })
+                                      },
+                                      padding: EdgeInsets.all(10.0),
+                                      child: Column(
+                                        // Replace with a Row for horizontal icon + text
+                                        children: <Widget>[
+                                          Container(
+                                            child: Image(
+                                              image: AssetImage(
+                                                  "lib/assets/img/change_wallet_circle.png"),
+                                              height: 30,
+                                              width: 30,
+                                            ),
+                                          ),
+                                          SizedBox(height: 5,),
+                                          Text(MyLocalizations.of(context).getData('transfer'),style: TextStyle(color:Colors.white,fontSize: 12),)
                                         ],
                                       ),
                                     ),
@@ -263,6 +294,7 @@ class _MyAssestsState extends State<MyAssests>
                                 ],
                               ),
                             ),
+                            
                             SizedBox(height:10),
                             Container(
                               alignment: Alignment.centerLeft,

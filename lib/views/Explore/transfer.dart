@@ -73,14 +73,6 @@ bool visible = true;
         child: Stack(
           children: [
             Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("lib/assets/img/background.png"),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Container(
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

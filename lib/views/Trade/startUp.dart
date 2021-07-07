@@ -34,6 +34,7 @@ class _StartUpState extends State<StartUp> {
   TextEditingController recycleStatusController = TextEditingController();
   TextEditingController pointTwoController = TextEditingController();
   TextEditingController pointThreeController = TextEditingController();
+  TextEditingController secpwdController = TextEditingController();
   
   bool _validate = false;
   var body;
@@ -170,6 +171,20 @@ class _StartUpState extends State<StartUp> {
                 ),
                 Column(
                   children: [
+                    Container(
+                        decoration: BoxDecoration(
+                          color: Colors.yellowAccent,
+                        ),
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.all(10),
+                        child: Row(
+                          children: [
+                            Icon(Icons.warning),
+                            SizedBox(width:5),
+                            Flexible(child: Text(MyLocalizations.of(context).getData('start_up_details'),style: TextStyle(fontSize: 12),)),
+                          ],
+                        ),
+                      ),
                     Container(
                     width: MediaQuery.of(context).size.width,
                     child: Row(
@@ -317,6 +332,10 @@ class _StartUpState extends State<StartUp> {
                                           child: Text(MyLocalizations.of(context).getData('gas_pingyi')),
                                           value: 2,
                                         ),
+                                        DropdownMenuItem(
+                                          child: Text(MyLocalizations.of(context).getData('gas_gas_pingyi')),
+                                          value: 3,
+                                        ),
                                       ],
                                       onChanged: (value) {
                                         setState(() {
@@ -368,13 +387,19 @@ class _StartUpState extends State<StartUp> {
                                 SizedBox(height: 20.0),
 
                                 Container(
+                                  child: Text(MyLocalizations.of(context).getData('sec_password'),style: TextStyle(color: Colors.white,fontSize: 16),),
+                                ),
+                                SizedBox(height: 5.0),
+                                _inputPassword(),
+                                SizedBox(height: 20.0),
+                                
+                                Container(
                                   child: Text(MyLocalizations.of(context).getData('strategy_type'),style: TextStyle(color:Colors.white),),
                                 ),
                                 SizedBox(height: 5),
                                 recycleStatus(),
                                 SizedBox(height: 20.0),
-
-
+                              
                                 Container(
                                 child: GestureDetector(
                                 onTap: ()async{
@@ -653,6 +678,31 @@ class _StartUpState extends State<StartUp> {
     );
   }
 
+  _inputPassword() {
+    return new Container(
+      child: TextFormField(
+        controller: secpwdController,
+        obscureText: true,
+        validator: validateInput,
+        autofocus: false,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        decoration: new InputDecoration(
+              contentPadding: const EdgeInsets.all(8.0),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Colors.grey, width: 1),
+              ),
+              filled: true,
+              fillColor: Colors.white,
+            ),
+        keyboardType: TextInputType.text,
+        onSaved: (str) {
+          print(str);
+        },
+      ),
+    );
+  }
+
   String validateInput(String value) {
     if (value.isEmpty) {
       return MyLocalizations.of(context).getData('value_fill_in');
@@ -730,6 +780,9 @@ class _StartUpState extends State<StartUp> {
             else if(_value == 2){
               finalValue = 'point3';
             }
+            else if(_value == 3){
+              finalValue = 'point2&point3';
+            }
             tmap['gas_type'] = finalValue;
             tmap['platform'] = widget.type;
             tmap['market_id'] = widget.marketId.toString();
@@ -740,6 +793,7 @@ class _StartUpState extends State<StartUp> {
             tmap['cover_rate'] = coverRateController.text.toString();
             tmap['cover_callback_rate'] = coverCallBackRateController.text.toString();
             tmap['recycle_status'] = _radioValue.toString();
+            tmap['sec_password'] = secpwdController.text;
             print(tmap['platform']);
             print(tmap['market_id']);
           });

@@ -8,6 +8,7 @@ import 'package:robot/views/SystemSetting/changeSecurityPwd.dart';
 import 'package:robot/views/SystemSetting/countryChanges.dart';
 import 'package:robot/views/SystemSetting/userBank.dart';
 import '../../vendor/i18n/localizations.dart' show MyLocalizations;
+import 'package:package_info/package_info.dart';
 
 class SecurityCenter extends StatefulWidget {
   final url;
@@ -24,12 +25,22 @@ class _SecurityCenterState extends State<SecurityCenter>
   final scrollController = ScrollController();
 
   var currentLanguage;
+  String versionName;
 
   @override
   void initState() {
     super.initState();
+    package();
   }
 
+  package() async{
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    setState(() {      
+      versionName = packageInfo.version;
+      print(versionName);
+    });
+    
+  }
   Future<void> _showLanguages() async {
     return showDialog<void>(
       context: context,
@@ -111,12 +122,18 @@ class _SecurityCenterState extends State<SecurityCenter>
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        IconButton(
-                        icon: Icon(
-                          Icons.keyboard_arrow_left,
-                          color: Colors.white,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                            icon: Icon(
+                              Icons.keyboard_arrow_left,
+                              color: Colors.white,
+                            ),
+                            onPressed: () => Navigator.pop(context, true)),
+                            Text('v '+versionName.toString(),style: TextStyle(color: Colors.white),),
+                          ],
                         ),
-                        onPressed: () => Navigator.pop(context, true)),
                         Center(
                           child: Container(
                             child: Text(
@@ -129,63 +146,6 @@ class _SecurityCenterState extends State<SecurityCenter>
                           ),
                         ),
                         SizedBox(height: 20),
-                        // InkWell(
-                        //   onTap: () {
-                        //     Navigator.push(
-                        //       context,
-                        //       MaterialPageRoute(builder: (context) => ChangePwd(widget.url)),
-                        //     );
-                        //   },
-                        //   child: Container(
-                        //     margin: EdgeInsets.only(bottom: 10, top: 10),
-                        //     child: Row(
-                        //       children: <Widget>[
-                        //         Container(
-                        //           decoration: BoxDecoration(
-                        //             shape: BoxShape.circle,
-                        //           ),
-                        //           margin: EdgeInsets.only(right: 20),
-                        //           padding: EdgeInsets.all(10),
-                        //           child: Image(
-                        //             image: AssetImage(
-                        //                 "lib/assets/img/me_team.png"),
-                        //             height: 30,
-                        //             width: 40,
-                        //           )
-                        //         ),
-                        //         Expanded(
-                        //           child: Column(
-                        //             crossAxisAlignment:
-                        //                 CrossAxisAlignment.start,
-                        //             children: <Widget>[
-                        //               Container(
-                        //                 child: Text(
-                        //                   MyLocalizations.of(context)
-                        //                       .getData('change_login_pwd'),
-                        //                   style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
-                        //                 ),
-                        //               ),
-                        //             ],
-                        //           ),
-                        //         ),
-                        //         Expanded(
-                        //           child: Column(
-                        //             crossAxisAlignment: CrossAxisAlignment.end,
-                        //             children: <Widget>[
-                        //               Container(
-                        //                   child: (Icon(
-                        //                       Icons.chevron_right_outlined,color: Colors.white,))),
-                        //             ],
-                        //           ),
-                        //         ),
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
-                        // Divider(
-                        //   height: 1,
-                        //   color: Colors.grey[400],
-                        // ),
                         InkWell(
                           onTap: () {
                             _showLanguages();
@@ -216,6 +176,120 @@ class _SecurityCenterState extends State<SecurityCenter>
                                         child: Text(
                                           MyLocalizations.of(context)
                                               .getData('language'),
+                                          style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      Container(
+                                          child: (Icon(
+                                              Icons.chevron_right_outlined,color: Colors.white,))),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Divider(
+                          height: 1,
+                          color: Colors.grey[400],
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => ChangePwd(widget.url)),
+                            );
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(bottom: 10, top: 10),
+                            child: Row(
+                              children: <Widget>[
+                                Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                  margin: EdgeInsets.only(right: 20),
+                                  padding: EdgeInsets.all(10),
+                                  child: Image(
+                                    image: AssetImage(
+                                        "lib/assets/img/me_team.png"),
+                                    height: 30,
+                                    width: 40,
+                                  )
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Container(
+                                        child: Text(
+                                          MyLocalizations.of(context)
+                                              .getData('change_login_pwd'),
+                                          style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      Container(
+                                          child: (Icon(
+                                              Icons.chevron_right_outlined,color: Colors.white,))),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Divider(
+                          height: 1,
+                          color: Colors.grey[400],
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => ChangeSecurityPwd(widget.url)),
+                            );
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(bottom: 10, top: 10),
+                            child: Row(
+                              children: <Widget>[
+                                Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                  margin: EdgeInsets.only(right: 20),
+                                  padding: EdgeInsets.all(10),
+                                  child: Image(
+                                    image: AssetImage(
+                                        "lib/assets/img/me_team.png"),
+                                    height: 30,
+                                    width: 40,
+                                  )
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Container(
+                                        child: Text(
+                                          MyLocalizations.of(context)
+                                              .getData('change_security_pwd'),
                                           style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
                                         ),
                                       ),

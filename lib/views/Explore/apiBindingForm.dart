@@ -25,6 +25,7 @@ class _ApiBindingFormState extends State<ApiBindingForm> {
   TextEditingController apiKeyController = TextEditingController();
   TextEditingController secretKeyController = TextEditingController();
   TextEditingController passpharseController = TextEditingController();
+  TextEditingController secpwdController = TextEditingController();
   
   bool _validate = false;
   var body;
@@ -152,6 +153,14 @@ class _ApiBindingFormState extends State<ApiBindingForm> {
                             _inputPasspharse(),
                              SizedBox(height: 20.0),
 
+                            Container(
+                              child: Text(MyLocalizations.of(context).getData('sec_password'),style: TextStyle(color: Colors.white,fontSize: 16),),
+                            ),
+                            SizedBox(height: 5.0),
+                            _inputPassword(),
+
+                            SizedBox(height: 20.0),
+
                             isShow == false || isShow == null?
                             Container(
                             child: GestureDetector(
@@ -182,8 +191,11 @@ class _ApiBindingFormState extends State<ApiBindingForm> {
                             Container(
                             child: GestureDetector(
                             onTap: ()async{
+                              var tmap = new Map<String, dynamic>();
                               setState(() {
-                                unBind(body);
+                                tmap['platform'] = widget.type;
+                                tmap['sec_password'] = secpwdController.text;
+                                unBind(tmap);
                               });
                             }, 
                             child: Center(
@@ -352,6 +364,30 @@ class _ApiBindingFormState extends State<ApiBindingForm> {
     );
   }
   
+  _inputPassword() {
+    return new Container(
+      child: TextFormField(
+        controller: secpwdController,
+        obscureText: true,
+        validator: validateInput,
+        autofocus: false,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        decoration: new InputDecoration(
+              contentPadding: const EdgeInsets.all(8.0),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Colors.grey, width: 1),
+              ),
+              filled: true,
+              fillColor: Colors.white,
+            ),
+        keyboardType: TextInputType.text,
+        onSaved: (str) {
+          print(str);
+        },
+      ),
+    );
+  }
 
   String validateInput(String value) {
     if (value.isEmpty) {
@@ -426,6 +462,7 @@ class _ApiBindingFormState extends State<ApiBindingForm> {
           tmap['api_key'] = apiKeyController.text;
           tmap['secret_key'] = secretKeyController.text;
           tmap['passphrase'] = passpharseController.text;
+          tmap['sec_password'] = secpwdController.text;
           print(tmap['platform']);
           print(tmap['api_key']);
           print(tmap['secret_key']);

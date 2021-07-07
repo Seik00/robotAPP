@@ -76,6 +76,7 @@ class _FreeRegisterState extends State<FreeRegister>
   void initState() {
     super.initState();
     getCountryList();
+    getLanguage();
   }
 
   @override
@@ -147,11 +148,11 @@ class _FreeRegisterState extends State<FreeRegister>
                             _inputUsername(),
                             SizedBox(height: 30.0),
                             
-                            _inputMobile(),
-                            SizedBox(height: 30.0),
+                            // _inputMobile(),
+                            // SizedBox(height: 30.0),
 
-                             _inputEmail(),
-                            SizedBox(height: 30.0),
+                            //  _inputEmail(),
+                            // SizedBox(height: 30.0),
 
                              _inputPassword(),
                             SizedBox(height: 30.0),
@@ -266,7 +267,7 @@ class _FreeRegisterState extends State<FreeRegister>
         autofocus: false,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
-        hintText: MyLocalizations.of(context).getData('username'),
+        hintText: MyLocalizations.of(context).getData('email'),
         contentPadding: const EdgeInsets.all(18.0),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(25),
@@ -542,8 +543,8 @@ class _FreeRegisterState extends State<FreeRegister>
         setState(() {
           tmap['country_id'] = selectedCountryID.toString();
           tmap['username'] = usernameController.text;
-          tmap['email'] = emailController.text;
-          tmap['contact_number'] = mobileController.text;
+          tmap['email'] = usernameController.text;
+          // tmap['contact_number'] = mobileController.text;
           tmap['password'] = passwordController.text;
           tmap['password_confirmation'] = comfirmPasswordController.text;
           tmap['ref_id'] = refIDController.text;

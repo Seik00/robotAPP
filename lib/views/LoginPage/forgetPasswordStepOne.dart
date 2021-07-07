@@ -188,29 +188,29 @@ class _ForgetPwdStepOneState extends State<ForgetPwdStepOne>
                                   )),
                             ),
                           ),),
-                            SizedBox(height: 30.0),
-                            Container(
-                              margin: EdgeInsets.only(bottom: 25),
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.only(right: 30),
-                                      child: GestureDetector(
-                                          onTap: () {
-                                            Navigator.pop(context, true);
-                                          },
-                                          child: Text(
-                                            MyLocalizations.of(context)
-                                                .getData('sign_in'),
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20,
-                                                color: Colors.white70),
-                                          )),
-                                    ),
-                                  ]),
-                            ),
+                            // SizedBox(height: 30.0),
+                            // Container(
+                            //   margin: EdgeInsets.only(bottom: 25),
+                            //   child: Row(
+                            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //       children: [
+                            //         Container(
+                            //           padding: EdgeInsets.only(right: 30),
+                            //           child: GestureDetector(
+                            //               onTap: () {
+                            //                 Navigator.pop(context, true);
+                            //               },
+                            //               child: Text(
+                            //                 MyLocalizations.of(context)
+                            //                     .getData('sign_in'),
+                            //                 style: TextStyle(
+                            //                     fontWeight: FontWeight.bold,
+                            //                     fontSize: 20,
+                            //                     color: Colors.white70),
+                            //               )),
+                            //         ),
+                            //       ]),
+                            // ),
                           ],
                         )),
                   ),
@@ -236,7 +236,8 @@ class _ForgetPwdStepOneState extends State<ForgetPwdStepOne>
                   controller: usernameController,
                   validator: validateVcode,
                   decoration: new InputDecoration(
-                  hintText: MyLocalizations.of(context).getData('username'),
+                  hintText: MyLocalizations.of(context).getData('email'),
+                  contentPadding: const EdgeInsets.all(8.0),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                     borderSide: BorderSide(color: Colors.grey, width: 1),
@@ -260,7 +261,7 @@ class _ForgetPwdStepOneState extends State<ForgetPwdStepOne>
                   animType: AnimType.RIGHSLIDE,
                   headerAnimationLoop: false,
                   title: MyLocalizations.of(context).getData('error'),
-                  desc: MyLocalizations.of(context).getData('enter_username'),
+                  desc: MyLocalizations.of(context).getData('enter_email'),
                   btnOkOnPress: () {},
                   btnOkIcon: Icons.cancel,
                   btnOkColor: Colors.red)
@@ -276,7 +277,7 @@ class _ForgetPwdStepOneState extends State<ForgetPwdStepOne>
               });
               }
             },
-          child: Icon(Icons.send,color: Colors.white,)
+          child: Icon(Icons.send,color: Color(0xfff6fb15),)
           )
         )
       ],

@@ -148,11 +148,11 @@ class _RegisterStepOneState extends State<RegisterStepOne>
                             _inputUsername(),
                               SizedBox(height: 20.0),
                             
-                            _inputMobile(),
-                              SizedBox(height: 20.0),
+                            // _inputMobile(),
+                            //   SizedBox(height: 20.0),
 
-                             _inputEmail(),
-                              SizedBox(height: 20.0),
+                            //  _inputEmail(),
+                            //   SizedBox(height: 20.0),
 
                              _inputPassword(),
                               SizedBox(height: 20.0),
@@ -267,7 +267,7 @@ class _RegisterStepOneState extends State<RegisterStepOne>
         autofocus: false,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
-        hintText: MyLocalizations.of(context).getData('username'),
+        hintText: MyLocalizations.of(context).getData('email'),
         contentPadding: const EdgeInsets.all(14.0),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -544,8 +544,8 @@ class _RegisterStepOneState extends State<RegisterStepOne>
           tmap['country_id'] = selectedCountryID.toString();
           tmap['user_group'] = '1';
           tmap['username'] = usernameController.text;
-          tmap['email'] = emailController.text;
-          tmap['contact_number'] = mobileController.text;
+          tmap['email'] = usernameController.text;
+          // tmap['contact_number'] = mobileController.text;
           tmap['password'] = passwordController.text;
           tmap['password_confirmation'] = comfirmPasswordController.text;
           tmap['ref_id'] = refIDController.text;

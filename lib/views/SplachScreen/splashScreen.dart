@@ -71,14 +71,12 @@ class _SplashScreenState extends State<SplashScreen> {
     var contentData = await Request().getRequest(Config().url + "api/member/get-member-info", context);
    
     if(contentData != null){
-      if (contentData['code'] == 0) {
       if (mounted) {
         setState(() {
-          secPwd = contentData['data']['password2'];
+          secPwd = contentData['password2'];
          
         });
       }
-    }
     checkIsLogin();
     }else{
         // Navigator.pushReplacement(
@@ -91,20 +89,20 @@ class _SplashScreenState extends State<SplashScreen> {
 
    checkIsLogin() async{
     if(secPwd == null || secPwd == ""){
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => SetSecPassword(widget.url,widget.onChangeLanguage)),
-      // );
-      setState(() {
-        Timer(
-          Duration(seconds: 1),
-          () => Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => TopViewing(
-                      widget.url, widget.onChangeLanguage))));
-      });
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SetSecPassword(widget.url,widget.onChangeLanguage)),
+      );
+      // setState(() {
+      //   Timer(
+      //     Duration(seconds: 1),
+      //     () => Navigator.pushReplacement(
+      //         context,
+      //         MaterialPageRoute(
+      //             builder: (context) => TopViewing(
+      //                 widget.url, widget.onChangeLanguage))));
+      // });
     }else{
       setState(() {
         Timer(

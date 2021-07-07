@@ -24,7 +24,14 @@ class TransactionRecord extends StatefulWidget {
 class _TransactionRecordState extends State<TransactionRecord> {
   var type = '';
   var dataList;
- 
+  var language;
+  
+  getLanguage() async{
+    final prefs = await SharedPreferences.getInstance();
+    language = prefs.getString('language');
+    print(language);
+  }
+
   initializeData() async {
       final prefs = await SharedPreferences.getInstance();
       var token = prefs.getString('token');
@@ -54,6 +61,7 @@ class _TransactionRecordState extends State<TransactionRecord> {
   void initState() {
     super.initState();
     initializeData();
+    getLanguage();
   }
 
 
@@ -132,7 +140,11 @@ class _TransactionRecordState extends State<TransactionRecord> {
                                 children: [
                                   Text(dataList[index]['platform'],style: TextStyle(color: Colors.white,fontSize: 18),),
                                   SizedBox(height:5),
-                                  Text(dataList[index]['content'],style: TextStyle(color: Colors.white,fontSize: 14)),
+                                  Text(
+                                    language=='zh'?
+                                    dataList[index]['content']:
+                                    dataList[index]['conteant_log']
+                                    ,style: TextStyle(color: Colors.white,fontSize: 14)),
                                   SizedBox(height:5),
                                 ],
                               ),

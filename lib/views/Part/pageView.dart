@@ -125,36 +125,34 @@ class _TopViewingState extends State<TopViewing>
    getRequest() async {
     var contentData = await Request().getRequest(Config().url + "api/member/get-member-info", context);
     if(contentData != null){
-      if (contentData['code'] == 0) {
       if (mounted) {
         setState(() {
-          secPwd = contentData['data']['password2'];
-          active = contentData['data']['active'];
+          secPwd = contentData['password2'];
+          active = contentData['active'];
           
         });
       }
       checkIsLogin();
-    }
     }
    
   }
 
   checkIsLogin() async{
     if(secPwd == null || secPwd == ""){
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => SetSecPassword(widget.url,widget.onChangeLanguage)),
-      // );
-       setState(() {
-        Timer(
-          Duration(seconds: 1),
-          () => Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => TopViewing(
-                      widget.url, widget.onChangeLanguage))));
-      });
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SetSecPassword(widget.url,widget.onChangeLanguage)),
+      );
+      //  setState(() {
+      //   Timer(
+      //     Duration(seconds: 1),
+      //     () => Navigator.pushReplacement(
+      //         context,
+      //         MaterialPageRoute(
+      //             builder: (context) => TopViewing(
+      //                 widget.url, widget.onChangeLanguage))));
+      // });
     }else if(active == 0){
       print('--------------------------------------');
        Navigator.pushReplacement(
