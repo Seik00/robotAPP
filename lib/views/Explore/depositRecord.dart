@@ -55,7 +55,7 @@ class _DepositRecordState extends State<DepositRecord> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Color(0xff212630),
       appBar: PreferredSize(
           child: AppBar(
             backgroundColor: Theme.of(context).backgroundColor,
@@ -64,14 +64,6 @@ class _DepositRecordState extends State<DepositRecord> {
           preferredSize: Size.fromHeight(0)),
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("lib/assets/img/background.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
           Container(
           child: SingleChildScrollView(
             child: Column(
@@ -110,86 +102,70 @@ class _DepositRecordState extends State<DepositRecord> {
                         itemCount: dataList.length,
                         itemBuilder: (BuildContext ctxt, int index) {
                         return Container(
-                          margin: EdgeInsets.only(bottom:15),
-                          child: ConstrainedBox(
-                              constraints: new BoxConstraints(
-                                minHeight: MediaQuery.of(context).size.height/8,
-                                minWidth: MediaQuery.of(context).size.width,
-                                maxWidth: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.all(4),
+                          margin: EdgeInsets.all(10),
+                          decoration: new BoxDecoration(
+                          color: Color(0xff595c64),
+                          borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            children: [
+                              Container(
+                              child: ExpansionTile(
+                                title: Container(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(dataList[index]['detail'],style: TextStyle(color: Colors.white,fontSize: 12),),
+                                      SizedBox(height:5),
+                                      dataList[index]['action'] =='-'?
+                                      Text('-'+dataList[index]['found'],style: TextStyle(color: Colors.redAccent,fontSize: 16)):
+                                      Text('+'+dataList[index]['found'],style: TextStyle(color: Colors.greenAccent,fontSize: 16)),
+                                      SizedBox(height:5),
+                                    ],
+                                  ),
+                                ),
+                                children: <Widget>[
+                                  Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(height:10),
+                                      Container(
+                                        alignment: Alignment.bottomLeft,
+                                        padding: EdgeInsets.only(left:15),
+                                        child: Row(
+                                          children: [
+                                            Text(MyLocalizations.of(context).getData('order_time'),style: TextStyle(color: Colors.white70,fontSize: 13)),
+                                            Text(dataList[index]['created_at'],style: TextStyle(color: Colors.white70,fontSize: 13)),
+                                          ],
+                                        )),
+                                      SizedBox(height:5),
+                                      Container(
+                                        alignment: Alignment.bottomLeft,
+                                        padding: EdgeInsets.only(left:15),
+                                        child: Row(
+                                          children: [
+                                            Text(MyLocalizations.of(context).getData('previous_balance')+ ' : ',style: TextStyle(color: Colors.white70,fontSize: 13)),
+                                            Text(dataList[index]['previous'].toString()+ ' USDT',style: TextStyle(color: Colors.white70,fontSize: 13)),
+                                          ],
+                                        )),
+                                      SizedBox(height:5),
+                                      Container(
+                                        alignment: Alignment.bottomLeft,
+                                        padding: EdgeInsets.only(left:15),
+                                        child: Row(
+                                          children: [
+                                            Text(MyLocalizations.of(context).getData('current_balance')+ ' : ',style: TextStyle(color: Colors.white70,fontSize: 13)),
+                                            Text(dataList[index]['current'].toString()+ ' USDT',style: TextStyle(color: Colors.white70,fontSize: 13)),
+                                          ],
+                                        )),
+                                    ],
+                                  ),
+                                ],
                               ),
-                              child: new DecoratedBox(
-                                 decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10),
-                                          gradient: LinearGradient(
-                                          begin: Alignment.topCenter,
-                                          end: Alignment.bottomCenter,
-                                          colors: [Color(0xff9957ED), Color(0xff7835E5)])
-                                      ),
-                                child: Column(
-                                  children: [
-                                     Container(
-                                      padding: EdgeInsets.all(10),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children:[
-                                          Text(MyLocalizations.of(context).getData('status'),style: TextStyle(color:Colors.white,fontSize:16,fontWeight:FontWeight.bold)),
-                                          if(dataList[index]['status'] == 0)
-                                          Text(MyLocalizations.of(context).getData('pending'),style: TextStyle(color:Colors.white,fontSize:16,fontWeight:FontWeight.bold)),
-
-                                          if(dataList[index]['status'] == 1)
-                                          Text(MyLocalizations.of(context).getData('approved'),style: TextStyle(color:Colors.greenAccent,fontSize:16,fontWeight:FontWeight.bold)),
-
-                                          if(dataList[index]['status'] == 2)
-                                          Text(MyLocalizations.of(context).getData('rejected'),style: TextStyle(color:Colors.redAccent,fontSize:16,fontWeight:FontWeight.bold)),
-                                        ]
-                                      ),
-                                    ),
-                                    Divider(
-                                      height: 2,
-                                      color: Colors.white,
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.all(10),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children:[
-                                          Text(MyLocalizations.of(context).getData('amount'),style: TextStyle(color:Colors.white,fontSize:16,fontWeight:FontWeight.bold)),
-                                          Text('USD '+dataList[index]['amount'],style: TextStyle(color:Colors.white,fontSize:16,fontWeight:FontWeight.bold)),
-                                        ]
-                                      ),
-                                    ),
-                                    Divider(
-                                      height: 2,
-                                      color: Colors.white,
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.all(10),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children:[
-                                          Text(MyLocalizations.of(context).getData('paid_amount'),style: TextStyle(color:Colors.white,fontSize:16,fontWeight:FontWeight.bold)),
-                                          Text(dataList[index]['country']['short_form']+' '+dataList[index]['pay_amount'],style: TextStyle(color:Colors.white,fontSize:16,fontWeight:FontWeight.bold)),
-                                        ]
-                                      ),
-                                    ),
-                                    Divider(
-                                      height: 2,
-                                      color: Colors.white,
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.all(10),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children:[
-                                          Text(MyLocalizations.of(context).getData('date'),style: TextStyle(color:Colors.white,fontSize:16,fontWeight:FontWeight.bold)),
-                                          Text(dataList[index]['created_at'],style: TextStyle(color:Colors.white,fontSize:16,fontWeight:FontWeight.bold)),
-                                        ]
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ),
-                            ),
+                            )
+                            ],
+                          ),
                         );
                         }),
                     ]

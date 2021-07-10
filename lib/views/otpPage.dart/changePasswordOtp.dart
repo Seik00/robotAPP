@@ -1,102 +1,68 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:robot/API/config.dart';
 import 'package:robot/API/request.dart';
-import 'package:robot/main.dart';
-import 'package:robot/views/LoginPage/forgetPassword.dart';
-import 'package:robot/views/LoginPage/registerPage.dart';
-import 'package:robot/views/Part/pageView.dart';
+import 'package:robot/views/Explore/apiBindingForm.dart';
+import 'package:robot/views/LoginPage/countryPicker.dart';
+import 'package:robot/views/LoginPage/freeRegister.dart';
+import 'package:robot/views/SystemSetting/changePwd.dart';
 import '../../vendor/i18n/localizations.dart' show MyLocalizations;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:async';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'countryPicker.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:http/http.dart' as http;
 
-class ForgetPwdStepOne extends StatefulWidget {
+class ChangePasswordOtp extends StatefulWidget {
   final url;
-  final onChangeLanguage;
 
-  ForgetPwdStepOne(this.url, this.onChangeLanguage);
+  ChangePasswordOtp(this.url);
   @override
-  _ForgetPwdStepOneState createState() => _ForgetPwdStepOneState();
+  _ChangePasswordOtpState createState() => _ChangePasswordOtpState();
 }
 
-class _ForgetPwdStepOneState extends State<ForgetPwdStepOne>
+class _ChangePasswordOtpState extends State<ChangePasswordOtp>
     with SingleTickerProviderStateMixin {
   final GlobalKey<FormState> _key = new GlobalKey();
 
-  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController vcodeController = TextEditingController();
 
-  var selectedCountryID;
-  var selectedCountryCode = '+60';
-  var countryList;
-  var otp;
-  List<String> countryName = [];
+ 
 
   bool _validate = false;
   bool visible = true;
-  var currentlanguage;
-  String mobile, vcode;
+  var username,email,mobile;
+
+  var language;
+  var token;
+  var otp;
+  var userEmail;
 
   getLanguage() async{
     final prefs = await SharedPreferences.getInstance();
-    currentlanguage = prefs.getString('language');
-   
+    language = prefs.getString('language');
+    token = prefs.getString('token');
   }
- 
-  getCountryList() async {
-    var contentData = await Request()
-        .getRequest(Config().url + "api/global/country_list", context);
 
-    if (contentData != null) {
-      if (contentData['status'] == true) {
-        countryList = contentData['data'];
-        for (var i = 0; i < countryList.length; i++) {
-          setState(() {
-            if (countryList[i]["name_en"] == 'Malaysia') {
-              selectedCountryCode = countryList[i]["country_code"];
-              selectedCountryID = countryList[i]['id'];
-            }
-            countryName.add(countryList[i]["name_en"] +" " +"(" +countryList[i]["country_code"] +")");
-          });
-        }
+  getRequest() async {
+    var contentData = await Request().getRequest(Config().url + "api/member/get-member-info", context);
+    if(contentData != null){
+      if (mounted) {
+        setState(() {
+          print(contentData);
+          emailController.text = contentData['email'];
+        });
       }
-    }
-  }
-
-  postOtp(dynamic data) async {
-    var contentData = await Request().postWithoutToken(Config().url + "api/auth/request-user-otp", data, context);
-    print(contentData);
-    if (contentData != null) {
-      if (contentData['code'] == 0) {
-        AwesomeDialog(
-        context: context,
-        animType: AnimType.LEFTSLIDE,
-        headerAnimationLoop: false,
-        dialogType: DialogType.SUCCES,
-        autoHide: Duration(seconds: 2),
-        title: MyLocalizations.of(context).getData('success'),
-        desc:MyLocalizations.of(context).getData('operation_success'),
-        onDissmissCallback: () {
-         otp = contentData['data'];
-         print(otp);
-        })
-      ..show();
-    } else {
-     
-    }
     }
   }
 
   @override
   void initState() {
     super.initState();
-    getCountryList();
     getLanguage();
+    getRequest();
   }
 
   @override
@@ -119,15 +85,16 @@ class _ForgetPwdStepOneState extends State<ForgetPwdStepOne>
         },
         child: Stack(
           children: [
-            Container(
+             Container(
               decoration: BoxDecoration(
-                  color: Color(0xff212630),
-                ),
+                 color: Color(0xff212630),
+              ),
             ),
             Container(
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   IconButton(
                       icon: Icon(
@@ -151,24 +118,27 @@ class _ForgetPwdStepOneState extends State<ForgetPwdStepOne>
                               padding: EdgeInsets.only(bottom: 20),
                               child: Text(
                                 MyLocalizations.of(context)
-                                    .getData('forget_password'),
+                                    .getData('get_vcode'),
                                 style: TextStyle(
                                     fontSize: 25,
                                     color: Colors.white),
                               ),
                             ),
-                            SizedBox(height: 30.0),
-                            
-                            _inputUsername(),
                             SizedBox(height: 20.0),
-                            
+                           
+                           _inputEmail(),
+                            SizedBox(height: 20.0),
+                          
                             _inputVcode(),
-                            SizedBox(height: 30.0),
+                              SizedBox(height: 20.0),
+
                             Container(
                             child: GestureDetector(
                             onTap: ()async{
+                              var tmap = new Map<String, dynamic>();
                               setState(() {
-                                _sendToServer();
+                                tmap['otp'] = otp.toString();
+                                postData(tmap);
                               });
                             }, 
                             child: Center(
@@ -188,29 +158,7 @@ class _ForgetPwdStepOneState extends State<ForgetPwdStepOne>
                                   )),
                             ),
                           ),),
-                            // SizedBox(height: 30.0),
-                            // Container(
-                            //   margin: EdgeInsets.only(bottom: 25),
-                            //   child: Row(
-                            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            //       children: [
-                            //         Container(
-                            //           padding: EdgeInsets.only(right: 30),
-                            //           child: GestureDetector(
-                            //               onTap: () {
-                            //                 Navigator.pop(context, true);
-                            //               },
-                            //               child: Text(
-                            //                 MyLocalizations.of(context)
-                            //                     .getData('sign_in'),
-                            //                 style: TextStyle(
-                            //                     fontWeight: FontWeight.bold,
-                            //                     fontSize: 20,
-                            //                     color: Colors.white70),
-                            //               )),
-                            //         ),
-                            //       ]),
-                            // ),
+                              SizedBox(height: 20.0),
                           ],
                         )),
                   ),
@@ -223,7 +171,8 @@ class _ForgetPwdStepOneState extends State<ForgetPwdStepOne>
       ),
     );
   }
-  _inputUsername() {
+
+  _inputEmail() {
     return Row(
       children: [
         Stack(
@@ -233,8 +182,9 @@ class _ForgetPwdStepOneState extends State<ForgetPwdStepOne>
               child: TextFormField(
                   textAlign: TextAlign.left,
                   keyboardType: TextInputType.text,
-                  controller: usernameController,
-                  validator: validateVcode,
+                  enabled: false,
+                  controller: emailController,
+                  validator: validateInput,
                   decoration: new InputDecoration(
                   hintText: MyLocalizations.of(context).getData('email'),
                   contentPadding: const EdgeInsets.all(8.0),
@@ -254,7 +204,7 @@ class _ForgetPwdStepOneState extends State<ForgetPwdStepOne>
         Expanded(
           child: GestureDetector(
             onTap: (){
-              if(usernameController.text == ''){
+              if(emailController.text == ''){
                   AwesomeDialog(
                   context: context,
                   dialogType: DialogType.ERROR,
@@ -268,12 +218,9 @@ class _ForgetPwdStepOneState extends State<ForgetPwdStepOne>
                   ..show();
               }else{
                  setState(() {
-                  Map<String, dynamic> map = {};
-                  map['lang'] = currentlanguage == 'zh'?'cn':currentlanguage;
-                  map['username'] = usernameController.text;
-                  print(map['lang']);
-                  print(map['username']);
-                  postOtp(map);
+                  var tmap = new Map<String, dynamic>();
+                  tmap['otp_type'] = 'email';
+                  postOtp(tmap);
               });
               }
             },
@@ -284,12 +231,14 @@ class _ForgetPwdStepOneState extends State<ForgetPwdStepOne>
     );
   }
 
+ 
+
   _inputVcode() {
     return new Container(
       width: 250,
       child: TextFormField(
         controller: vcodeController,
-        validator: validateVcode,
+        validator: validateInput,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
         hintText: MyLocalizations.of(context).getData('vcode'),
@@ -309,33 +258,77 @@ class _ForgetPwdStepOneState extends State<ForgetPwdStepOne>
     );
   }
 
-  String validateVcode(String value) {
+  String validateInput(String value) {
     if (value.isEmpty) {
-      return MyLocalizations.of(context).getData('vcode_required');
+      return MyLocalizations.of(context).getData('value_fill_in');
     } 
     return null;
   }
 
-  _sendToServer() {
-    if (_key.currentState.validate()) {
-      _key.currentState.save();
-      var tmap = new Map<String, dynamic>();
-      if (mounted)
-        setState(() {
-          tmap['username'] = usernameController.text;
-          tmap['password'] = vcodeController.text;
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //       builder: (context) => ForgetPwd(
-            //           widget.url,
-            //           widget.onChangeLanguage,email)),
-            // ).then((value) {Navigator.pop(context, true);});
-        });
+  String validateMobile(String value) {
+    String pattern = r'(^[0-9]*$)';
+    RegExp regExp = new RegExp(pattern);
+    if (value.replaceAll(" ", "").isEmpty) {
+      return MyLocalizations.of(context).getData('mobile_required');
+    } else if (!regExp.hasMatch(value.replaceAll(" ", ""))) {
+      return MyLocalizations.of(context).getData('mobile_digits');
+    }
+    return null;
+  }
+
+  postOtp(bodyData) async {
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var contentData = await Request().postRequest(Config().url+"api/member/requestUserOTP", bodyData, token, context);
+
+    print(contentData);
+    if (contentData != null) {
+      if (contentData['code'] == 0) {
+        AwesomeDialog(
+        context: context,
+        animType: AnimType.LEFTSLIDE,
+        headerAnimationLoop: false,
+        dialogType: DialogType.SUCCES,
+        autoHide: Duration(seconds: 2),
+        title: MyLocalizations.of(context).getData('success'),
+        desc:MyLocalizations.of(context).getData('operation_success'),
+        onDissmissCallback: () {
+         otp = contentData['data'];
+         print(otp);
+        })
+      ..show();
     } else {
-      setState(() {
-        _validate = true;
-      });
+     
+    }
+    }
+  }
+  
+  postData(bodyData) async {
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var contentData = await Request().postRequest(Config().url+"api/member/checkUserOTP", bodyData, token, context);
+
+    print(contentData);
+    if (contentData != null) {
+      if (contentData['code'] == 0) {
+        AwesomeDialog(
+        context: context,
+        animType: AnimType.LEFTSLIDE,
+        headerAnimationLoop: false,
+        dialogType: DialogType.SUCCES,
+        autoHide: Duration(seconds: 2),
+        title: MyLocalizations.of(context).getData('success'),
+        desc:MyLocalizations.of(context).getData('operation_success'),
+        onDissmissCallback: () {
+           Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ChangePwd( widget.url)));
+        })
+      ..show();
+    } else {
+     
+    }
     }
   }
 }

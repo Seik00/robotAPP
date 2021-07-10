@@ -11,15 +11,15 @@ import 'package:robot/views/Explore/apiBinding.dart';
 import 'package:robot/views/Explore/newsList.dart';
 import 'package:robot/views/Explore/pinCenter.dart';
 import 'package:robot/views/Explore/revenue.dart';
-import 'package:robot/views/Explore/robotPackage.dart';
+import 'package:robot/views/SystemSetting/invitation.dart';
 import 'package:robot/views/Trade/trade.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 final List<String> imgList = [
-  'https://philip.greatwallsolution.com/btc_bg.png',
-  'https://philip.greatwallsolution.com/btc_bg.png',
-  'https://philip.greatwallsolution.com/btc_bg.png',
+  'https://philip.greatwallsolution.com/banner1.png',
+  'https://philip.greatwallsolution.com/banner2.png',
 ];
 
 class Services extends StatefulWidget {
@@ -42,7 +42,22 @@ class _ServicesState extends State<Services>
   var btc;
   var eth;
   var ltc;
-  double revenue;
+  var mip;
+  var pip;
+  double revenue; 
+  var language;
+  var newsList;
+  var bannerList;
+
+  getLanguage() async{
+    final prefs = await SharedPreferences.getInstance();
+    language = prefs.getString('language');
+    if(language == 'zh'){
+      language = 'cn';
+    }
+    initializeData();
+    banner();
+  }
 
   startLoop(){
     const oneSec = const Duration(seconds: 1);
@@ -133,6 +148,61 @@ class _ServicesState extends State<Services>
       }
   }
 
+  lookUp() async {
+    var contentData = await Request().getWithoutRequest(Config().url + "api/global/lookup", context);
+   
+    if(contentData != null){
+      if (contentData['code'] == 0) {
+      if (mounted) {
+        setState(() {
+          mip = contentData['data']['system']['MIP_POOL'];
+          pip = contentData['data']['system']['PIP_POOL'];
+           print(mip);
+           print(pip);
+        });
+      }
+    }
+    }
+  }
+
+   initializeData() async {
+      final prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString('token');
+
+      var body = {
+        'language': language.toString(),
+      };
+      var uri = Uri.https(Config().url2, 'api/news/news-list', body);
+
+      var response = await http.get(uri, headers: {
+        'Authorization': 'Bearer $token'
+      }).timeout(new Duration(seconds: 10));
+      var contentData = json.decode(response.body);
+      setState(() {
+        newsList = contentData['data']['data'];
+    });
+  }
+
+  banner() async {
+      final prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString('token');
+
+      var body = {
+        'language': language.toString(),
+      };
+      var uri = Uri.https(Config().url2, 'api/news/banner-list', body);
+
+      var response = await http.get(uri, headers: {
+        'Authorization': 'Bearer $token'
+      }).timeout(new Duration(seconds: 10));
+      var contentData = json.decode(response.body);
+      print(contentData);
+      setState(() {
+        bannerList = contentData['data'];
+        // print(bannerList);
+        // print('--------');
+    });
+  }
   
  TabController _tabController;
 
@@ -142,6 +212,8 @@ class _ServicesState extends State<Services>
     _tabController = new TabController(length: 2, vsync: this);
     // initializeData();
     startLoop();
+    getLanguage();
+    lookUp();
   }
 
   @override
@@ -270,7 +342,7 @@ class _ServicesState extends State<Services>
                           Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => PinCenter(widget.url)),
+                              builder: (context) => Invitation(widget.url,widget.onChangeLanguage)),
                         ).then((value) => startLoop())
                       },
                       padding: EdgeInsets.all(8.0),
@@ -378,57 +450,49 @@ class _ServicesState extends State<Services>
                     primary: false,
                     shrinkWrap: true,
                     crossAxisCount: 2,
-                    childAspectRatio: 3,
+                    childAspectRatio: 2.8,
                     crossAxisSpacing: 10.0,
                     mainAxisSpacing: 10.0,
                     children: [
-                      FlatButton(
-                          onPressed: () {
-                            setState(() {
-                              
-                            });
-                          },
-                        shape: RoundedRectangleBorder(
+                      Container(
+                         decoration: BoxDecoration(  
+                            color: Color(0xff5dbb95), 
                             borderRadius: BorderRadius.circular(15),
-                            side: BorderSide(
-                                color: Color(0xffFDE323),width: 3)),
-                        child:Container(
-                          padding: EdgeInsets.only(top:10,bottom: 5),
-                          alignment: Alignment.topLeft,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(MyLocalizations.of(context).getData('prize_pool'),style: TextStyle(color: Colors.grey),),
-                               SizedBox(height: 3,),
-                              Text('0.00',style: TextStyle(color: Colors.white,fontSize: 16),),
-                              
-                          ],),
-                        )
+                            border: Border.all(color: Color(0xff68dbac),width: 3,)
+                          ),
+                        padding: EdgeInsets.only(left:10,right:10,top:5),
+                        alignment: Alignment.topLeft,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('MIP '+MyLocalizations.of(context).getData('prize_pool'),style: TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.bold),),
+                            SizedBox(height: 3,),
+                            mip==null?
+                            Text('0.000',style: TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.bold),):
+                            Text(mip.toString(),style: TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.bold),),
+                            
+                        ],),
                       ),
-                      FlatButton(
-                          onPressed: () {
-                            setState(() {
-                              
-                            });
-                          },
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            side: BorderSide(
-                                color: Color(0xffF6FB15),width: 3)),
-                        child:Container(
-                          padding: EdgeInsets.only(top:10,bottom: 5),
-                          alignment: Alignment.topLeft,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(MyLocalizations.of(context).getData('prize_pool'),style: TextStyle(color: Colors.grey),),
-                              SizedBox(height: 3,),
-                              Text('0.00',style: TextStyle(color: Colors.white,fontSize: 16),),
-                              
-                          ],),
-                        )
+                      Container(
+                        decoration: BoxDecoration(  
+                          color: Color(0xffa2c6ff), 
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(color: Color(0xff7aabf7),width: 3,)
+                        ),
+                        padding: EdgeInsets.only(left:10,right:10,top:5),
+                        alignment: Alignment.topLeft,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('PIP '+MyLocalizations.of(context).getData('prize_pool'),style: TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.bold),),
+                            SizedBox(height: 3,),
+                            pip==null?
+                            Text('0.000',style: TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.bold),):
+                            Text(pip,style: TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.bold),),
+                            
+                        ],),
                       ),
                     ],
                   ),
@@ -446,7 +510,7 @@ class _ServicesState extends State<Services>
                       children: [
                         Icon(Icons.announcement,color: Colors.white,),
                         SizedBox(width:5),
-                        Expanded(child: Text('ddsddsddsddsddsddsddsddsddsddsddsddsddsdsd',style: TextStyle(color:Colors.white),overflow: TextOverflow.ellipsis,))
+                        Expanded(child: Text(newsList==null?'':newsList[0]['title'],style: TextStyle(color:Colors.white),overflow: TextOverflow.ellipsis,))
                       ],
                     ),
                   ),

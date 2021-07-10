@@ -127,6 +127,14 @@ class _BonusRecordState extends State<BonusRecord> {
                           style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),
                         ),
                       )
+                      else if(widget.type == 'global_bonus')
+                      Container(
+                        padding: EdgeInsets.only(bottom:5),
+                        child: Text(
+                          MyLocalizations.of(context).getData('global_bonus_balance'),
+                          style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),
+                        ),
+                      )
                       else
                       Container(
                         padding: EdgeInsets.only(bottom:5),

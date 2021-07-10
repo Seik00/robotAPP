@@ -99,27 +99,27 @@ class _ChangeSecurityPwdState extends State<ChangeSecurityPwd> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          SizedBox(height: 30.0),
+                          SizedBox(height: 20.0),
                           Container(
                             child: Text(MyLocalizations.of(context).getData('old_sec_password'),style: TextStyle(color: Colors.white,fontSize: 16),),
                           ),
                           SizedBox(height: 5.0),
                           _inputOldPassword(),
-                          SizedBox(height: 30.0),
+                          SizedBox(height: 20.0),
 
                           Container(
                             child: Text(MyLocalizations.of(context).getData('new_sec_password'),style: TextStyle(color: Colors.white,fontSize: 16),),
                           ),
                           SizedBox(height: 5.0),
                           _inputPassword(),
-                          SizedBox(height: 30.0),
+                          SizedBox(height: 20.0),
 
                           Container(
                             child: Text(MyLocalizations.of(context).getData('confirm_sec_new_password'),style: TextStyle(color: Colors.white,fontSize: 16),),
                           ),
                           SizedBox(height: 5.0),
                           _inputConfirmPassword(),
-
+                           SizedBox(height: 20.0),
                           GestureDetector(
                             onTap: ()async{
                               setState(() {
@@ -135,8 +135,6 @@ class _ChangeSecurityPwdState extends State<ChangeSecurityPwd> {
                                       end: Alignment.bottomCenter,
                                       colors: [Color(0xfff6fb15), Color(0xfff6fb15)])
                                   ),
-                                  margin: EdgeInsets.all(20),
-                                  width: MediaQuery.of(context).size.width/2,
                                   height: MediaQuery.of(context).size.height / 15,
                                   alignment: Alignment.center,
                                   child: Text(

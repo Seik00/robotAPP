@@ -26,6 +26,9 @@ class _NoticListState extends State<NoticList> {
   getLanguage() async{
     final prefs = await SharedPreferences.getInstance();
     language = prefs.getString('language');
+    if(language == 'zh'){
+      language = 'cn';
+    }
     print(language);
   }
    
@@ -53,7 +56,7 @@ class _NoticListState extends State<NoticList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Color(0xff212630),
       appBar: PreferredSize(
           child: AppBar(
             backgroundColor: Theme.of(context).backgroundColor,
@@ -62,14 +65,6 @@ class _NoticListState extends State<NoticList> {
           preferredSize: Size.fromHeight(0)),
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("lib/assets/img/background.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
           Container(
           child: SingleChildScrollView(
             child: Column(

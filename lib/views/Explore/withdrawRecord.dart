@@ -56,7 +56,7 @@ class _WithdrawRecordState extends State<WithdrawRecord> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Color(0xff212630),
       appBar: PreferredSize(
           child: AppBar(
             backgroundColor: Theme.of(context).backgroundColor,
@@ -65,14 +65,6 @@ class _WithdrawRecordState extends State<WithdrawRecord> {
           preferredSize: Size.fromHeight(0)),
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("lib/assets/img/background.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
           Container(
           child: SingleChildScrollView(
             child: Column(
@@ -124,7 +116,7 @@ class _WithdrawRecordState extends State<WithdrawRecord> {
                                           gradient: LinearGradient(
                                           begin: Alignment.topCenter,
                                           end: Alignment.bottomCenter,
-                                          colors: [Color(0xff9957ED), Color(0xff7835E5)])
+                                          colors: [Color(0xfffFDE323), Color(0xfffF6FB15)])
                                       ),
                                 child: Column(
                                   children: [
@@ -133,9 +125,9 @@ class _WithdrawRecordState extends State<WithdrawRecord> {
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children:[
-                                          Text(MyLocalizations.of(context).getData('status'),style: TextStyle(color:Colors.white,fontSize:16,fontWeight:FontWeight.bold)),
+                                          Text(MyLocalizations.of(context).getData('status'),style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold)),
                                           if(dataList[index]['status'] == 0)
-                                          Text(MyLocalizations.of(context).getData('pending'),style: TextStyle(color:Colors.white,fontSize:16,fontWeight:FontWeight.bold)),
+                                          Text(MyLocalizations.of(context).getData('pending'),style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold)),
 
                                           if(dataList[index]['status'] == 1)
                                           Text(MyLocalizations.of(context).getData('approved'),style: TextStyle(color:Colors.lightBlue,fontSize:16,fontWeight:FontWeight.bold)),
@@ -150,57 +142,58 @@ class _WithdrawRecordState extends State<WithdrawRecord> {
                                     ),
                                     Divider(
                                       height: 2,
-                                      color: Colors.white,
+                                      color: Colors.black,
                                     ),
                                     Container(
                                       padding: EdgeInsets.all(10),
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children:[
-                                          Text(MyLocalizations.of(context).getData('amount'),style: TextStyle(color:Colors.white,fontSize:16,fontWeight:FontWeight.bold)),
-                                          Text(dataList[index]['amount'],style: TextStyle(color:Colors.white,fontSize:16,fontWeight:FontWeight.bold)),
+                                          Text(MyLocalizations.of(context).getData('address'),style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold)),
+                                          SizedBox(width:10),
+                                          Expanded(child: Text('123123123123123123123123123123123123123',style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold),overflow: TextOverflow.ellipsis)),
                                         ]
                                       ),
                                     ),
                                     Divider(
                                       height: 2,
-                                      color: Colors.white,
+                                      color: Colors.black,
                                     ),
                                     Container(
                                       padding: EdgeInsets.all(10),
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children:[
-                                          Text(MyLocalizations.of(context).getData('get_amount'),style: TextStyle(color:Colors.white,fontSize:16,fontWeight:FontWeight.bold)),
-                                          Text(dataList[index]['get_amount'],style: TextStyle(color:Colors.white,fontSize:16,fontWeight:FontWeight.bold)),
+                                          Text(MyLocalizations.of(context).getData('amount'),style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold)),
+                                          Text(dataList[index]['amount'],style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold)),
                                         ]
                                       ),
                                     ),
                                     Divider(
                                       height: 2,
-                                      color: Colors.white,
+                                      color: Colors.black,
                                     ),
                                     Container(
                                       padding: EdgeInsets.all(10),
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children:[
-                                          Text(MyLocalizations.of(context).getData('currency'),style: TextStyle(color:Colors.white,fontSize:16,fontWeight:FontWeight.bold)),
-                                          Text(dataList[index]['currency'],style: TextStyle(color:Colors.white,fontSize:16,fontWeight:FontWeight.bold)),
+                                          Text(MyLocalizations.of(context).getData('get_amount'),style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold)),
+                                          Text(dataList[index]['get_amount'],style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold)),
                                         ]
                                       ),
                                     ),
                                     Divider(
                                       height: 2,
-                                      color: Colors.white,
+                                      color: Colors.black,
                                     ),
                                     Container(
                                       padding: EdgeInsets.all(10),
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children:[
-                                          Text(MyLocalizations.of(context).getData('date'),style: TextStyle(color:Colors.white,fontSize:16,fontWeight:FontWeight.bold)),
-                                          Text(dataList[index]['created_at'],style: TextStyle(color:Colors.white,fontSize:16,fontWeight:FontWeight.bold)),
+                                          Text(MyLocalizations.of(context).getData('date'),style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold)),
+                                          Text(dataList[index]['created_at'],style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold)),
                                         ]
                                       ),
                                     ),

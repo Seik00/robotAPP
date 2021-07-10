@@ -34,6 +34,19 @@ class Request {
           btnOkColor: Colors.red)
           ..show();
         }
+        else if(contentData['message'] =='INCORRECT_OTP'){
+          AwesomeDialog(
+          context: context,
+          dialogType: DialogType.ERROR,
+          animType: AnimType.RIGHSLIDE,
+          headerAnimationLoop: false,
+          title: MyLocalizations.of(context).getData('error'),
+          desc: MyLocalizations.of(context).getData('incorrect_otp'),
+          btnOkOnPress: () {},
+          btnOkIcon: Icons.cancel,
+          btnOkColor: Colors.red)
+          ..show();
+        }
         else if(contentData['message'] =='INCORRECT_USERNAME'){
           AwesomeDialog(
           context: context,

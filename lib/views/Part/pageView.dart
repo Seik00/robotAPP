@@ -2,25 +2,23 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:robot/views/LoginPage/loginPage.dart';
 import 'package:robot/views/SystemSetting/setSecPassword.dart';
 import 'package:robot/views/SystemSetting/settings.dart';
-import 'package:robot/views/clientSide/circle.dart';
-import 'package:robot/views/clientSide/market.dart';
 import 'package:robot/views/clientSide/myAssest.dart';
 import 'package:robot/views/clientSide/product.dart';
 import 'package:robot/views/clientSide/quantity.dart';
-import 'package:robot/views/clientSide/share.dart';
-import 'package:robot/views/clientSide/upload.dart';
 import 'package:robot/views/clientSide/services.dart';
-import 'package:robot/views/videoPlayer.dart';
 import '../../vendor/i18n/localizations.dart' show MyLocalizations;
 import 'package:robot/API/config.dart';
 import 'package:robot/API/request.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:platform_device_id/platform_device_id.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+import 'dart:io' show Platform;
 
 class TopViewing extends StatefulWidget {
   final url;
@@ -59,39 +57,30 @@ class _TopViewingState extends State<TopViewing>
   var publicPath;
   var annouceNumber2;
   var check = true;
-  String _deviceId;
+  String firebaseToken = " ";
+  var osType;
+  String _deviceId = 'Unknown';
+  bool gms, hms;
 
+   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   @override
   void initState() {
     super.initState();
     getRequest();
-    //initPlatformState();
     lookUp();
+    _firebaseMessaging.getToken().then((String deviceToken) {
+      assert(deviceToken != null);
+      setState(() {
+        firebaseToken = deviceToken;
+      });
+    });
   }
- 
-  // Future<void> initPlatformState() async {
-  //   String deviceId;
-  //   try {
-  //     deviceId = await PlatformDeviceId.getDeviceId;
-  //   } on PlatformException {
-  //     deviceId = 'Failed to get deviceId.';
-  //   }
 
-   
-  //   if (!mounted) return;
-
-  //   setState(() {
-  //     _deviceId = deviceId;
-  //     print("deviceId->$_deviceId");
-  //   });
-  // }
 
    lookUp() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     String versionName = packageInfo.version;
-    print(versionName);
     var contentData = await Request().getWithoutRequest(Config().url + "api/global/lookup", context);
-    print(contentData);
     if(contentData != null){
       if (contentData['code'] == 0) {
       if (mounted) {
@@ -107,7 +96,6 @@ class _TopViewingState extends State<TopViewing>
             );
           }
           if(versionName != version){
-            print('hererererererereree');
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -116,10 +104,69 @@ class _TopViewingState extends State<TopViewing>
             );
           }
         });
+         checkPhoneType();
       }
     }
     }
+  }
+
+  checkPhoneType() {
+    if (Platform.isAndroid) {
+      if (gms = true) {
+        setState(() {
+        osType = "ANDROID";
+        });
+      } else {
+        setState(() {
+          osType = "HUAWEI";
+        });
+      }
+    } else if (Platform.isIOS) {
+      setState(() {
+        osType = "IOS";
+      });
+    }
+    initPlatformState();
+  }
+
+  Future<void> initPlatformState() async {
+    String deviceId;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      deviceId = await PlatformDeviceId.getDeviceId;
+    } on PlatformException {
+      deviceId = 'Failed to get deviceId.';
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      _deviceId = deviceId;
+    });
     
+    sendToken();
+  }
+
+  sendToken(){
+    var tmap = new Map<String, dynamic>();
+    setState(() {
+      tmap['device_token'] = firebaseToken;
+      tmap['device_id'] = _deviceId;
+      tmap['device_type'] = osType;
+    });
+  
+    postDeviceToken(tmap);
+  }
+
+  postDeviceToken(bodyData) async {
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    
+    var contentData = await Request().postRequest(Config().url+"api/global/add_user_device_token", bodyData, token, context);
+    print(contentData);
   }
 
    getRequest() async {

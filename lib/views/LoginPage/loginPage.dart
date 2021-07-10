@@ -8,6 +8,8 @@ import 'package:robot/views/LoginPage/forgetPasswordStepOne.dart';
 import 'package:robot/views/LoginPage/freeRegister.dart';
 import 'package:robot/views/LoginPage/registerStepOne.dart';
 import 'package:robot/views/Part/pageView.dart';
+import 'package:robot/views/SystemSetting/verifyOtp.dart';
+import 'package:robot/views/otpPage.dart/forgetPasswordOtp.dart';
 import '../../vendor/i18n/localizations.dart' show MyLocalizations;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
@@ -174,6 +176,7 @@ class _LoginPageState extends State<LoginPage>
           }
         });
       }
+      checkPhoneType();
     }
     }
   }
@@ -213,6 +216,7 @@ class _LoginPageState extends State<LoginPage>
         osType = "IOS";
       });
     }
+    initPlatformState();
   }
 
   Future<void> initPlatformState() async {
@@ -233,6 +237,7 @@ class _LoginPageState extends State<LoginPage>
       _deviceId = deviceId;
       print("deviceId->$_deviceId");
     });
+    sendToken();
   }
 
 
@@ -379,30 +384,28 @@ class _LoginPageState extends State<LoginPage>
                 builder: (context) => TopViewing(
                       widget.url,
                       widget.onChangeLanguage,
-                    ))));
-                    
-        var tmap = new Map<String, dynamic>();
-        print('start here-----------');
-        setState(() {
-          tmap['device_token'] = firebaseToken;
-          tmap['device_id'] = _deviceId;
-          tmap['os_type'] = osType;
-        });
-      
-        print(tmap['device_token']);
-        print(tmap['os_type']);
-        postDeviceToken(tmap);
-
-      
+                    ))));   
       } else {
        
       }
     }
   }
 
+  sendToken(){
+    var tmap = new Map<String, dynamic>();
+      print('start here-----------');
+      setState(() {
+        tmap['device_token'] = firebaseToken;
+        tmap['device_id'] = _deviceId;
+        tmap['device_type'] = osType;
+      });
+    
+      print(tmap['device_token']);
+      postDeviceToken(tmap);
+  }
+
   postDeviceToken(dynamic data) async {
-    var contentData = await Request().postWithoutToken(
-        Config().url + "api/global/add_device_token", data, context);
+    var contentData = await Request().postWithoutToken(Config().url + "api/global/add_device_token", data, context);
     print(contentData);
   }
 
@@ -435,8 +438,6 @@ class _LoginPageState extends State<LoginPage>
     super.initState();
     initialiseLanguage();
     lookUp();
-    initPlatformState();
-    checkPhoneType();
     setUpMsg();
     _requestPermissions();
     _firebaseMessaging.configure(
@@ -526,13 +527,19 @@ class _LoginPageState extends State<LoginPage>
                               ),
                             ),
                           ),
+                          SizedBox(height: 10,),
+                          Center(
+                            child: Container(
+                              child: Text('INFINITY',style: TextStyle(color: Colors.white,fontSize: 25),),
+                            ),
+                          ),
                           Spacer(flex: 1,),
                           Container(
                             child: Text('Login',style: TextStyle(color: Colors.white,fontSize: 30)),
                           ),
                           SizedBox(height: 40.0),
                           _inputUserName(),
-                          SizedBox(height: 30.0),
+                          SizedBox(height: 15.0),
                           _inputPassword(),
                           SizedBox(height: 30.0),
                           GestureDetector(
@@ -540,7 +547,7 @@ class _LoginPageState extends State<LoginPage>
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ForgetPwdStepOne(
+                                  builder: (context) => ForgetPasswordOtp(
                                       widget.url,
                                       widget.onChangeLanguage)),
                             );
@@ -562,7 +569,6 @@ class _LoginPageState extends State<LoginPage>
                             child: Center(
                               child: Container(
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
                                       gradient: LinearGradient(
                                       begin: Alignment.topCenter,
                                       end: Alignment.bottomCenter,
@@ -598,7 +604,7 @@ class _LoginPageState extends State<LoginPage>
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => FreeRegister(widget.url,widget.onChangeLanguage)),
+                                                builder: (context) => VerifyOtp(widget.url,widget.onChangeLanguage)),
                                           );
                                         },
                                         child: Text(
@@ -629,10 +635,26 @@ class _LoginPageState extends State<LoginPage>
         controller: nameController,
         validator: validateUsername,
         autofocus: false,
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: Colors.white,),
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.person_outline,color: Colors.white,),
+          fillColor: Color(0xff5f646e), filled: true,
+          prefixIcon:  Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              padding: EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: Colors.black,
+                 borderRadius: BorderRadius.circular(25),
+              ),
+              child: Image.asset(
+                'lib/assets/img/login_icon.png',
+                width: 10,
+                height: 10,
+                fit: BoxFit.fill,
+              ),
+            ),
+          ),
           isDense: true,
           hintText: MyLocalizations.of(context).getData('username'),
           hintStyle: TextStyle(color: Colors.white70),
@@ -640,13 +662,13 @@ class _LoginPageState extends State<LoginPage>
           contentPadding: EdgeInsets.symmetric(vertical: 10),
           enabledBorder: OutlineInputBorder(
              borderRadius: const BorderRadius.all(
-              const Radius.circular(25.0),
+              const Radius.circular(10.0),
             ),
-            borderSide: BorderSide(color: Colors.white, width: 2.0),
+            borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 2.0),
           ),
           border: new OutlineInputBorder(
             borderRadius: const BorderRadius.all(
-              const Radius.circular(25.0),
+              const Radius.circular(10.0),
             ),
           ),
         ),
@@ -668,7 +690,23 @@ class _LoginPageState extends State<LoginPage>
         style: TextStyle(color: Colors.white),
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.lock,color: Colors.white,),
+          fillColor: Color(0xff5f646e), filled: true,
+          prefixIcon:  Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.black,
+                 borderRadius: BorderRadius.circular(25),
+              ),
+              child: Image.asset(
+                'lib/assets/img/login_password.png',
+                width: 10,
+                height: 10,
+                fit: BoxFit.fill,
+              ),
+            ),
+          ),
           isDense: true,
           hintText: MyLocalizations.of(context).getData('password'),
           hintStyle: TextStyle(color: Colors.white70),
@@ -676,13 +714,13 @@ class _LoginPageState extends State<LoginPage>
           contentPadding: EdgeInsets.symmetric(vertical: 10),
           enabledBorder: OutlineInputBorder(
              borderRadius: const BorderRadius.all(
-              const Radius.circular(25.0),
+              const Radius.circular(10.0),
             ),
-            borderSide: BorderSide(color: Colors.white, width: 2.0),
+             borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 2.0),
           ),
           border: new OutlineInputBorder(
             borderRadius: const BorderRadius.all(
-              const Radius.circular(25.0),
+              const Radius.circular(10.0),
             ),
           ),
         ),

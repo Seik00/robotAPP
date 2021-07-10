@@ -17,10 +17,9 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 class ForgetPwd extends StatefulWidget {
   final url;
   final onChangeLanguage;
-  final username;
-  final vcode;
+  final emailUsername;
 
-  ForgetPwd(this.url,this.onChangeLanguage,this.username,this.vcode);
+  ForgetPwd(this.url,this.onChangeLanguage,this.emailUsername);
   @override
   _ForgetPwdState createState() => _ForgetPwdState();
 }
@@ -47,6 +46,7 @@ class _ForgetPwdState extends State<ForgetPwd>
   void initState() {
     super.initState();
     getLanguage();
+    print(widget.emailUsername);
   }
 
   @override
@@ -57,6 +57,7 @@ class _ForgetPwdState extends State<ForgetPwd>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+    backgroundColor: Color(0xff212630),
      appBar: PreferredSize(
         child: AppBar(backgroundColor: Theme.of(context).backgroundColor, elevation: 0,), 
         preferredSize: Size.fromHeight(0)),
@@ -66,14 +67,6 @@ class _ForgetPwdState extends State<ForgetPwd>
         },
         child: Stack(
           children: [
-            Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("lib/assets/img/background.png"),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
               Container(
             child: SingleChildScrollView(
               child: Column(
@@ -100,7 +93,7 @@ class _ForgetPwdState extends State<ForgetPwd>
                               child: Text(
                                 MyLocalizations.of(context).getData('forget_password'),
                                 style: TextStyle(
-                                    fontSize: 48, fontWeight: FontWeight.w900,color: Colors.white),
+                                    fontSize: 25, fontWeight: FontWeight.w900,color: Colors.white),
                               ),
                             ),
                             SizedBox(height: 30.0),
@@ -117,62 +110,31 @@ class _ForgetPwdState extends State<ForgetPwd>
                             _inputConfirmPassword(),
                             SizedBox(height: 30.0),
                             Container(
-                                child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  child: Text(
-                                      MyLocalizations.of(context).getData('submit'),
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold, fontSize: 30,color: Colors.white)),
-                                ),
-                                Container(
-                                  child: GestureDetector(
-                                      onTap: () {
-                                        _sendToServer();
-                                      },
-                                      child: Container(
-                                            margin: EdgeInsets.only(right:20),
-                                            width: 80.0,
-                                            height: 80.0,
-                                            decoration: new BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              image: new DecorationImage(
-                                                  fit: BoxFit.fill,
-                                                  image: AssetImage("lib/assets/img/arrow.png")
-                                              )
-                                          ))),
-                                )
-                              ],
-                            )),
-                            SizedBox(height: 30.0),
-                            Container(
-                              margin: EdgeInsets.only(bottom: 25),
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.only(right: 30),
-                                      child: GestureDetector(
-                                           onTap: () {
-                                             Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) => LoginPage(
-                                                      widget.url,
-                                                      widget.onChangeLanguage)),
-                                            ).then((value) {Navigator.pop(context, true);});
-                                          },
-                                          child: Text(
-                                            MyLocalizations.of(context)
-                                                .getData('sign_in'),
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20,color: Colors.white70),
-                                          )),
+                              child: GestureDetector(
+                              onTap: ()async{
+                                setState(() {
+                                  _sendToServer();
+                                });
+                              }, 
+                              child: Center(
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        gradient: LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [Color(0xfffaef1d), Color(0xfff9f21a)])
                                     ),
-                                  ]),
-                            ),
+                                    height: MediaQuery.of(context).size.height / 15,
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      MyLocalizations.of(context).getData('submit'),
+                                      style: TextStyle(color: Colors.black),
+                                    )),
+                              ),
+                            ),),
+                            SizedBox(height: 30.0),
+                           
                           ],
                         )),
                   ),
@@ -188,7 +150,6 @@ class _ForgetPwdState extends State<ForgetPwd>
 
   _inputPassword() {
     return new Container(
-      width: 250,
       child: TextFormField(
         controller: passwordController,
         obscureText: visible,
@@ -213,7 +174,6 @@ class _ForgetPwdState extends State<ForgetPwd>
 
   _inputConfirmPassword() {
     return new Container(
-      width: 250,
       child: TextFormField(
         controller: confirmPasswordController,
         obscureText: visible,
@@ -286,12 +246,9 @@ class _ForgetPwdState extends State<ForgetPwd>
       var tmap = new Map<String, dynamic>();
       if (mounted)
         setState(() {
-          tmap['username'] = widget.username;
-          tmap['passcode'] = widget.vcode;
+        
+          tmap['username'] = widget.emailUsername;
           tmap['password'] = passwordController.text;
-          print(tmap['password']);
-          print(tmap['username']);
-          print(tmap['passcode']);
          
         });
          postData(tmap);

@@ -129,7 +129,7 @@ class _RevenueState extends State<Revenue> {
                                 ),
                                 todayRevenue == null?
                                 Text('≈ ' + '0' +' USD',style: TextStyle(color:Colors.black,fontSize: 15)):
-                                Text('≈ ' + double.parse(todayRevenue).toStringAsFixed(5) +' USD',style: TextStyle(color:Colors.black,fontSize: 12)),
+                                Text('≈ ' + double.parse(todayRevenue).toStringAsFixed(6) +' USD',style: TextStyle(color:Colors.black,fontSize: 12)),
                               ],
                             ),
                              Column(
@@ -153,7 +153,7 @@ class _RevenueState extends State<Revenue> {
                                 ),
                                 totalRevenue==null?
                                 Text('≈ ' + '0' +' USD',style: TextStyle(color:Colors.black,fontSize: 15)):
-                                Text('≈ ' + double.parse(totalRevenue).toStringAsFixed(5) +' USD',style: TextStyle(color:Colors.black,fontSize: 12)),
+                                Text('≈ ' + double.parse(totalRevenue).toStringAsFixed(6) +' USD',style: TextStyle(color:Colors.black,fontSize: 12)),
                               ],
                             ),
                           ],
@@ -220,11 +220,11 @@ class _RevenueState extends State<Revenue> {
                                     Container(
                                       child: dataList[index]['revenue'].substring(0)=='-'?
                                       Text(
-                                        double.parse(dataList[index]['revenue']).toStringAsFixed(5)+' USDT',
+                                        double.parse(dataList[index]['revenue']).toStringAsFixed(6)+' USDT',
                                         style: TextStyle(color: Colors.redAccent,fontSize: 16),
                                       ):
                                       Text(
-                                        double.parse(dataList[index]['revenue']).toStringAsFixed(5)+' USDT',
+                                        double.parse(dataList[index]['revenue']).toStringAsFixed(6)+' USDT',
                                         style: TextStyle(color: Colors.greenAccent,fontSize: 16),
                                       ),
                                     ),

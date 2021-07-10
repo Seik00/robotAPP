@@ -7,6 +7,8 @@ import 'package:robot/views/SystemSetting/changePwd.dart';
 import 'package:robot/views/SystemSetting/changeSecurityPwd.dart';
 import 'package:robot/views/SystemSetting/countryChanges.dart';
 import 'package:robot/views/SystemSetting/userBank.dart';
+import 'package:robot/views/otpPage.dart/changePasswordOtp.dart';
+import 'package:robot/views/otpPage.dart/changeSecPasswordOtp.dart';
 import '../../vendor/i18n/localizations.dart' show MyLocalizations;
 import 'package:package_info/package_info.dart';
 
@@ -26,7 +28,7 @@ class _SecurityCenterState extends State<SecurityCenter>
 
   var currentLanguage;
   String versionName;
-
+  
   @override
   void initState() {
     super.initState();
@@ -204,7 +206,7 @@ class _SecurityCenterState extends State<SecurityCenter>
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => ChangePwd(widget.url)),
+                              MaterialPageRoute(builder: (context) => ChangePasswordOtp(widget.url)),
                             );
                           },
                           child: Container(
@@ -261,7 +263,7 @@ class _SecurityCenterState extends State<SecurityCenter>
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => ChangeSecurityPwd(widget.url)),
+                              MaterialPageRoute(builder: (context) => ChangeSecPasswordOtp(widget.url)),
                             );
                           },
                           child: Container(

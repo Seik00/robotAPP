@@ -4,21 +4,22 @@ import 'package:robot/API/config.dart';
 import 'package:robot/API/request.dart';
 import 'package:robot/views/Explore/apiBindingForm.dart';
 import 'package:robot/views/Explore/investRecord.dart';
-import 'package:robot/views/otpPage.dart/apiBindingOtp.dart';
+import 'package:robot/views/Explore/noticList.dart';
+import 'package:robot/views/SystemSetting/customerService.dart';
 import '../../vendor/i18n/localizations.dart' show MyLocalizations;
 import 'package:skeleton_text/skeleton_text.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ApiBinding extends StatefulWidget {
+class ServiceCenter extends StatefulWidget {
    final url;
 
-  ApiBinding(this.url);
+  ServiceCenter(this.url);
   @override
-  _ApiBindingState createState() => _ApiBindingState();
+  _ServiceCenterState createState() => _ServiceCenterState();
 }
 
-class _ApiBindingState extends State<ApiBinding> {
+class _ServiceCenterState extends State<ServiceCenter> {
   var type = '';
  
  
@@ -75,7 +76,7 @@ class _ApiBindingState extends State<ApiBinding> {
                             child: 
                             Container(
                                alignment: Alignment.centerLeft,
-                              child: Text(MyLocalizations.of(context).getData('api_binding'),style: TextStyle(color: Colors.white,fontSize: 20),))),
+                              child: Text(MyLocalizations.of(context).getData('contact_service'),style: TextStyle(color: Colors.white,fontSize: 20),))),
                           
                         ],
                       ),
@@ -88,7 +89,7 @@ class _ApiBindingState extends State<ApiBinding> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ApiBindingOtp(widget.url,type = 'binance')),
+                              builder: (context) => NoticList(widget.url)),
                         );
                       },
                       child: Container(
@@ -106,12 +107,7 @@ class _ApiBindingState extends State<ApiBinding> {
                               ),
                               margin: EdgeInsets.only(right: 20),
                               padding: EdgeInsets.all(10),
-                              child: Image(
-                                image: AssetImage(
-                                    "lib/assets/img/BNB.png"),
-                                height: 40,
-                                width: 40,
-                              )
+                              child: Icon(Icons.book_rounded,size: 30,color: Color(0xffFDE323),)
                             ),
                             Expanded(
                               child: Column(
@@ -120,7 +116,7 @@ class _ApiBindingState extends State<ApiBinding> {
                                 children: <Widget>[
                                   Container(
                                     child: Text(
-                                      MyLocalizations.of(context).getData('binance'),
+                                      MyLocalizations.of(context).getData('service_reply'),
                                       style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
                                     ),
                                   ),
@@ -148,7 +144,7 @@ class _ApiBindingState extends State<ApiBinding> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ApiBindingOtp(widget.url,type='huobi')),
+                              builder: (context) => CustomerService(widget.url)),
                         );
                       },
                       child: Container(
@@ -166,12 +162,7 @@ class _ApiBindingState extends State<ApiBinding> {
                               ),
                               margin: EdgeInsets.only(right: 20),
                               padding: EdgeInsets.all(10),
-                              child: Image(
-                                image: AssetImage(
-                                    "lib/assets/img/HT.png"),
-                                height: 40,
-                                width: 40,
-                              )
+                              child: Icon(Icons.live_help_rounded,size: 30,color: Color(0xffFDE323),)
                             ),
                             Expanded(
                               child: Column(
@@ -180,7 +171,7 @@ class _ApiBindingState extends State<ApiBinding> {
                                 children: <Widget>[
                                   Container(
                                     child: Text(
-                                      MyLocalizations.of(context).getData('huobi'),
+                                      MyLocalizations.of(context).getData('contact_service'),
                                       style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
                                     ),
                                   ),

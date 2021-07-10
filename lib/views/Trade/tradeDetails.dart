@@ -147,143 +147,160 @@ class _TradeDetailsState extends State<TradeDetails> {
                     ],
                   ),
                 ),
-                Container(
-                    padding: EdgeInsets.only(left: 30, right: 30, top: 0),
-                    child: Form(
-                        key: _key,
-                        autovalidate: _validate,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            
-                            SizedBox(height: 20.0),
+                Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.yellowAccent,
+                      ),
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        children: [
+                          Icon(Icons.warning),
+                          SizedBox(width:5),
+                          Flexible(child: Text(MyLocalizations.of(context).getData('start_up_details'),style: TextStyle(fontSize: 12),)),
+                        ],
+                      ),
+                    ),
+                    Container(
+                        padding: EdgeInsets.only(left: 30, right: 30, top: 0),
+                        child: Form(
+                            key: _key,
+                            autovalidate: _validate,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                SizedBox(height: 20.0),
 
-                            Container(
-                              child: Text('GAS',style: TextStyle(color: Colors.white),),
-                            ),
-                            SizedBox(height: 5),
-                            _inputPointTwo(),
-                            SizedBox(height: 20.0),
-                               
-                            Container(
-                              child: Text(MyLocalizations.of(context).getData('gas_pingyi'),style: TextStyle(color: Colors.white),),
-                            ),
-                            SizedBox(height: 5),
-                            _inputPointThree(),
-                            SizedBox(height: 20.0),
+                                Container(
+                                  child: Text('GAS',style: TextStyle(color: Colors.white),),
+                                ),
+                                SizedBox(height: 5),
+                                _inputPointTwo(),
+                                SizedBox(height: 20.0),
+                                   
+                                Container(
+                                  child: Text(MyLocalizations.of(context).getData('gas_pingyi'),style: TextStyle(color: Colors.white),),
+                                ),
+                                SizedBox(height: 5),
+                                _inputPointThree(),
+                                SizedBox(height: 20.0),
 
-                            Container(
-                              child: Text(MyLocalizations.of(context).getData('gas_type'),style: TextStyle(color: Colors.white),),
-                            ),
-                            SizedBox(height: 5),
-                            Container(
-                                padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                                width: MediaQuery.of(context).size.width,
-                                decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: Colors.white,
-                                border: Border.all()),
-                                child: DropdownButton(
-                                  isExpanded: true,
-                                  value: _value,
-                                  items: [
-                                    DropdownMenuItem(
-                                      child: Text('GAS'),
-                                      value: 1,
-                                    ),
-                                    DropdownMenuItem(
-                                      child: Text(MyLocalizations.of(context).getData('gas_pingyi')),
-                                      value: 2,
-                                    ),
-                                    DropdownMenuItem(
-                                          child: Text(MyLocalizations.of(context).getData('gas_gas_pingyi')),
-                                          value: 3,
+                                Container(
+                                  child: Text(MyLocalizations.of(context).getData('gas_type'),style: TextStyle(color: Colors.white),),
+                                ),
+                                SizedBox(height: 5),
+                                Container(
+                                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: Colors.white,
+                                    border: Border.all()),
+                                    child: DropdownButton(
+                                      isExpanded: true,
+                                      value: _value,
+                                      items: [
+                                        DropdownMenuItem(
+                                          child: Text('GAS'),
+                                          value: 1,
                                         ),
-                                  ],
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _value = value;
-                                    });
-                                  }),
-                            ),
-                            SizedBox(height: 20.0),
-                            Container(
-                              child: Text(MyLocalizations.of(context).getData('first_buy_in_amount'),style: TextStyle(color: Colors.white),),
-                            ),
-                            SizedBox(height: 5),
-                            _inputfirstOrderValue(),
-                            SizedBox(height: 20.0),
+                                        DropdownMenuItem(
+                                          child: Text(MyLocalizations.of(context).getData('gas_pingyi')),
+                                          value: 2,
+                                        ),
+                                        DropdownMenuItem(
+                                              child: Text(MyLocalizations.of(context).getData('gas_gas_pingyi')),
+                                              value: 3,
+                                            ),
+                                      ],
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _value = value;
+                                        });
+                                      }),
+                                ),
+                                SizedBox(height: 20.0),
+                                Container(
+                                  child: Text(MyLocalizations.of(context).getData('first_buy_in_amount'),style: TextStyle(color: Colors.white),),
+                                ),
+                                SizedBox(height: 5),
+                                _inputfirstOrderValue(),
+                                SizedBox(height: 20.0),
 
-                            Container(
-                              child: Text(MyLocalizations.of(context).getData('numbers_of_cover_up'),style: TextStyle(color: Colors.white)),
-                            ),
-                            SizedBox(height: 5),
-                            _inputmaxOrderCount(),
-                            SizedBox(height: 20.0),
-                            
-                            Container(
-                              child: Text(MyLocalizations.of(context).getData('take_profit_ratio'),style: TextStyle(color: Colors.white)),
-                            ),
-                            SizedBox(height: 5),
-                            _inputstopProfitRate(),
-                            SizedBox(height: 20.0),
+                                Container(
+                                  child: Text(MyLocalizations.of(context).getData('numbers_of_cover_up'),style: TextStyle(color: Colors.white)),
+                                ),
+                                SizedBox(height: 5),
+                                _inputmaxOrderCount(),
+                                SizedBox(height: 20.0),
+                                
+                                Container(
+                                  child: Text(MyLocalizations.of(context).getData('take_profit_ratio'),style: TextStyle(color: Colors.white)),
+                                ),
+                                SizedBox(height: 5),
+                                _inputstopProfitRate(),
+                                SizedBox(height: 20.0),
 
-                            Container(
-                              child: Text(MyLocalizations.of(context).getData('earnings_callback'),style: TextStyle(color: Colors.white)),
-                            ),
-                            SizedBox(height: 5),
-                            _inputstopProfitCallback(),
-                            SizedBox(height: 20.0),
+                                Container(
+                                  child: Text(MyLocalizations.of(context).getData('earnings_callback'),style: TextStyle(color: Colors.white)),
+                                ),
+                                SizedBox(height: 5),
+                                _inputstopProfitCallback(),
+                                SizedBox(height: 20.0),
 
-                            Container(
-                              child: Text(MyLocalizations.of(context).getData('margin_call_drop'),style: TextStyle(color: Colors.white)),
-                            ),
-                            SizedBox(height: 5),
-                            _inputcoverRate(),
-                            SizedBox(height: 20.0),
+                                Container(
+                                  child: Text(MyLocalizations.of(context).getData('margin_call_drop'),style: TextStyle(color: Colors.white)),
+                                ),
+                                SizedBox(height: 5),
+                                _inputcoverRate(),
+                                SizedBox(height: 20.0),
 
-                            Container(
-                              child: Text(MyLocalizations.of(context).getData('buy_in_callback'),style: TextStyle(color: Colors.white)),
-                            ),
-                            SizedBox(height: 5),
-                            _inputcoverCallbackRate(),
-                            SizedBox(height: 20.0),
+                                Container(
+                                  child: Text(MyLocalizations.of(context).getData('buy_in_callback'),style: TextStyle(color: Colors.white)),
+                                ),
+                                SizedBox(height: 5),
+                                _inputcoverCallbackRate(),
+                                SizedBox(height: 20.0),
 
-                            Container(
-                              child: Text(MyLocalizations.of(context).getData('strategy_type'),style: TextStyle(color: Colors.white)),
-                            ),
-                            SizedBox(height: 5),
-                            recycleStatus(),
-                            SizedBox(height: 20.0),
+                                Container(
+                                  child: Text(MyLocalizations.of(context).getData('strategy_type'),style: TextStyle(color: Colors.white)),
+                                ),
+                                SizedBox(height: 5),
+                                recycleStatus(),
+                                SizedBox(height: 20.0),
 
-                            Container(
-                            child: GestureDetector(
-                            onTap: ()async{
-                              setState(() {
-                                _sendToServer();
-                              });
-                            }, 
-                            child: Center(
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      gradient: LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      colors: [Color(0xfffaef1d), Color(0xfff9f21a)])
-                                  ),
-                                  height: MediaQuery.of(context).size.height / 15,
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    MyLocalizations.of(context).getData('submit'),
-                                    style: TextStyle(color: Colors.black),
-                                  )),
-                            ),
-                          ),),
-                            SizedBox(height: 20.0),
-                          ],
-                        )),
-                  ),
+                                Container(
+                                child: GestureDetector(
+                                onTap: ()async{
+                                  setState(() {
+                                    _sendToServer();
+                                  });
+                                }, 
+                                child: Center(
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                          gradient: LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [Color(0xfffaef1d), Color(0xfff9f21a)])
+                                      ),
+                                      height: MediaQuery.of(context).size.height / 15,
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        MyLocalizations.of(context).getData('submit'),
+                                        style: TextStyle(color: Colors.black),
+                                      )),
+                                ),
+                              ),),
+                                SizedBox(height: 20.0),
+                              ],
+                            )),
+                      ),
+                  ],
+                ),
                 ],
               ),
             ),

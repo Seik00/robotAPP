@@ -31,20 +31,24 @@ final TextEditingController secpwdController =
 final GlobalKey<FormState> _key = new GlobalKey();    
 bool _validate = false;
 bool visible = true;
+int _value = 1;
+var finalValue;
 
  var pointOne;
+ var pointTwo;
+ var pointThree;
  var _firstPress = true ;
 
  getRequest() async {
     var contentData = await Request()
         .getRequest(Config().url + "api/member/get-member-info", context);
-    if (contentData['code'] == 0) {
       if (mounted) {
         setState(() {
-          pointOne = contentData['data']['point1'];
+          pointOne = contentData['point1'];
+          pointTwo = contentData['point2'];
+          pointThree = contentData['point3'];
         });
       }
-    }
 
     print(contentData);
   }
@@ -59,7 +63,7 @@ bool visible = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Color(0xff212630),
       appBar: PreferredSize(
           child: AppBar(
             backgroundColor: Theme.of(context).backgroundColor,
@@ -97,7 +101,7 @@ bool visible = true;
                         gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
-                        colors: [Color(0xff7CAAD5), Color(0xff8263CE)])
+                        colors: [Color(0xfff9f21a), Color(0xfff9f21a)])
                     ),
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height / 8,
@@ -110,13 +114,14 @@ bool visible = true;
                           padding: EdgeInsets.only(bottom:5),
                           child: Text(
                             MyLocalizations.of(context).getData('my_balance'),
-                            style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 16),
+                            style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),
                           ),
                         ),
+                        if(_value ==1)
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                          Text('USD',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: Colors.white),),
+                          Text('USDT',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.black),),
                           Padding(padding: EdgeInsets.only(left: 10.0)),
                            Container(
                             child: pointOne == null
@@ -129,7 +134,51 @@ bool visible = true;
                               : Container(
                                   child: Text(
                                     pointOne,
-                                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color:Colors.white),
+                                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color:Colors.black),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ))
+                        ],),
+                        if(_value ==2)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                          Text(MyLocalizations.of(context).getData('gas'),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.black),),
+                          Padding(padding: EdgeInsets.only(left: 10.0)),
+                           Container(
+                            child: pointTwo == null
+                              ? Container(
+                                  child: Row(
+                                  children: <Widget>[
+                                   Text('')
+                                  ],
+                                ))
+                              : Container(
+                                  child: Text(
+                                    pointTwo,
+                                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color:Colors.black),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ))
+                        ],),
+                        if(_value ==3)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                          Text(MyLocalizations.of(context).getData('gas_pingyi'),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.black),),
+                          Padding(padding: EdgeInsets.only(left: 10.0)),
+                           Container(
+                            child: pointThree == null
+                              ? Container(
+                                  child: Row(
+                                  children: <Widget>[
+                                   Text('')
+                                  ],
+                                ))
+                              : Container(
+                                  child: Text(
+                                    pointThree,
+                                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color:Colors.black),
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ))
@@ -162,10 +211,47 @@ bool visible = true;
                            SizedBox(height: 20.0),
 
                           Container(
+                            child: Text(MyLocalizations.of(context).getData('wallet_type'),style: TextStyle(color: Colors.white,fontSize: 16),),
+                          ),
+                          SizedBox(height: 5.0),
+                          Container(
+                              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              color: Colors.white,
+                              border: Border.all()),
+                              child: DropdownButton(
+                                isExpanded: true,
+                                value: _value,
+                                items: [
+                                  DropdownMenuItem(
+                                    child: Text('USDT'),
+                                    value: 1,
+                                  ),
+                                  DropdownMenuItem(
+                                    child: Text(MyLocalizations.of(context).getData('gas')),
+                                    value: 2,
+                                  ),
+                                  DropdownMenuItem(
+                                    child: Text(MyLocalizations.of(context).getData('gas_pingyi')),
+                                    value: 3,
+                                  ),
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    _value = value;
+                                  });
+                                }),
+                          ),
+                           SizedBox(height: 20.0),
+
+                          Container(
                             child: Text(MyLocalizations.of(context).getData('sec_password'),style: TextStyle(color: Colors.white,fontSize: 16),),
                           ),
                           SizedBox(height: 5.0),
                           _inputPassword(),
+                          SizedBox(height: 20.0),
 
                           AbsorbPointer(
                             absorbing: !_firstPress,
@@ -183,15 +269,13 @@ bool visible = true;
                                         gradient: LinearGradient(
                                         begin: Alignment.topCenter,
                                         end: Alignment.bottomCenter,
-                                        colors: [Color(0xff3DC2EA), Color(0xff7C1999)])
+                                        colors: [Color(0xfff9f21a), Color(0xfff9f21a)])
                                     ),
-                                    margin: EdgeInsets.all(20),
-                                    width: MediaQuery.of(context).size.width/2,
                                     height: MediaQuery.of(context).size.height / 15,
                                     alignment: Alignment.center,
                                     child: Text(
                                       MyLocalizations.of(context).getData('submit'),
-                                      style: TextStyle(color: Colors.white),
+                                      style: TextStyle(color: Colors.black),
                                     )),
                               ),
                             ),
@@ -338,9 +422,18 @@ bool visible = true;
       var tmap = new Map<String, dynamic>();
       if (mounted)
         setState(() {
+          if(_value == 1){
+            finalValue = '1';
+          }
+          else if(_value == 2){
+            finalValue = '2';
+          }
+          else if(_value == 3){
+            finalValue = '3';
+          }
           tmap['username'] = usernameController.text;
           tmap['amount'] = amountController.text;
-          tmap['transfer_type'] = '1';
+          tmap['transfer_type'] = finalValue;
           tmap['sec_password'] = secpwdController.text;
         });
       postData(tmap);

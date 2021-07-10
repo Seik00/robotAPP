@@ -7,7 +7,9 @@ import 'package:robot/API/config.dart';
 import 'package:robot/API/request.dart';
 import 'package:robot/vendor/i18n/localizations.dart';
 import 'package:robot/views/Explore/changeWallet.dart';
+import 'package:robot/views/Explore/deposit.dart';
 import 'package:robot/views/Explore/transfer.dart';
+import 'package:robot/views/Explore/withdraw.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 class MyAssests extends StatefulWidget {
@@ -175,19 +177,23 @@ class _MyAssestsState extends State<MyAssests>
                                     child: Column(children: <Widget>[
                                     FlatButton(
                                       onPressed: () => {
-                                        // Navigator.push(
-                                        //   context,
-                                        //   MaterialPageRoute(
-                                        //       builder: (context) => Deposit(widget.url,widget.onChangeLanguage)),
-                                        // ).then((value) {
-                                        //   getRequest();getRequest();
-                                        // })
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Deposit(widget.url,widget.onChangeLanguage)),
+                                        ).then((value) {
+                                          getRequest();getRequest();
+                                        })
                                       },
                                       padding: EdgeInsets.all(10.0),
                                       child: Column(
                                         // Replace with a Row for horizontal icon + text
                                         children: <Widget>[
                                           Container(
+                                             decoration: new BoxDecoration(
+                                                color: Color(0xff5DBB95),
+                                                borderRadius: BorderRadius.circular(25),
+                                              ),
                                             child: Image(
                                               image: AssetImage(
                                                   "lib/assets/img/deposit_circle.png"),
@@ -205,19 +211,23 @@ class _MyAssestsState extends State<MyAssests>
                                     child: Column(children: <Widget>[
                                     FlatButton(
                                       onPressed: () => {
-                                        // Navigator.push(
-                                        //   context,
-                                        //   MaterialPageRoute(
-                                        //       builder: (context) => Withdraw(widget.url)),
-                                        // ).then((value) {
-                                        //   getRequest();getRequest();
-                                        // })
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Withdraw(widget.url)),
+                                        ).then((value) {
+                                          getRequest();getRequest();
+                                        })
                                       },
                                       padding: EdgeInsets.all(10.0),
                                       child: Column(
                                         // Replace with a Row for horizontal icon + text
                                         children: <Widget>[
                                             Container(
+                                            decoration: new BoxDecoration(
+                                              color: Color(0xffEA5F75),
+                                              borderRadius: BorderRadius.circular(25),
+                                            ),
                                             child: Image(
                                               image: AssetImage(
                                                   "lib/assets/img/withdraw_circle.png"),
@@ -248,6 +258,10 @@ class _MyAssestsState extends State<MyAssests>
                                         // Replace with a Row for horizontal icon + text
                                         children: <Widget>[
                                           Container(
+                                            decoration: new BoxDecoration(
+                                              color: Color(0xff5D7ABB),
+                                              borderRadius: BorderRadius.circular(25),
+                                            ),
                                             child: Image(
                                               image: AssetImage(
                                                   "lib/assets/img/change_wallet_circle.png"),
@@ -265,19 +279,23 @@ class _MyAssestsState extends State<MyAssests>
                                     child: Column(children: <Widget>[
                                     FlatButton(
                                       onPressed: () => {
-                                        // Navigator.push(
-                                        //   context,
-                                        //   MaterialPageRoute(
-                                        //       builder: (context) => Transfer(widget.url)),
-                                        // ).then((value) {
-                                        //   getRequest();initializeData('point1');
-                                        // })
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Transfer(widget.url)),
+                                        ).then((value) {
+                                          getRequest();initializeData('point1');
+                                        })
                                       },
                                       padding: EdgeInsets.all(10.0),
                                       child: Column(
                                         // Replace with a Row for horizontal icon + text
                                         children: <Widget>[
                                           Container(
+                                            decoration: new BoxDecoration(
+                                              color: Color(0xff6F5DBB),
+                                              borderRadius: BorderRadius.circular(25),
+                                            ),
                                             child: Image(
                                               image: AssetImage(
                                                   "lib/assets/img/change_wallet_circle.png"),

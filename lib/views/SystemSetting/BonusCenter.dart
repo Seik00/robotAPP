@@ -82,7 +82,7 @@ class _BonusCenterrState extends State<BonusCenter>
                                 Container(
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Color(0xff595c64),
+                                    color: Color(0xff5DBB95),
                                   ),
                                   margin: EdgeInsets.only(right: 20),
                                   padding: EdgeInsets.all(10),
@@ -140,7 +140,7 @@ class _BonusCenterrState extends State<BonusCenter>
                                 Container(
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                     color: Color(0xff595c64),
+                                     color: Color(0xffEA5F75),
                                   ),
                                   margin: EdgeInsets.only(right: 20),
                                   padding: EdgeInsets.all(10),
@@ -198,7 +198,7 @@ class _BonusCenterrState extends State<BonusCenter>
                                 Container(
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                     color: Color(0xff595c64),
+                                     color: Color(0xff6F5DBB),
                                   ),
                                   margin: EdgeInsets.only(right: 20),
                                   padding: EdgeInsets.all(10),
@@ -239,8 +239,62 @@ class _BonusCenterrState extends State<BonusCenter>
                           ),
                         ),
                         Divider(
-                          height: 1,
-                          color: Colors.grey[400],
+                          height: 11,
+                          color: Colors.white,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(builder: (context) => BonusRecord(widget.url,widget.type = 'special_bonus')),
+                            // );
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(bottom: 10, top: 10),
+                            child: Row(
+                              children: <Widget>[
+                                Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                     color: Color(0xff5D7ABB),
+                                  ),
+                                  margin: EdgeInsets.only(right: 20),
+                                  padding: EdgeInsets.all(10),
+                                  child: Image(
+                                    image: AssetImage(
+                                        "lib/assets/img/global_bonus.png"),
+                                    height: 30,
+                                    width: 40,
+                                  )
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Container(
+                                        child: Text(
+                                          MyLocalizations.of(context)
+                                              .getData('global_bonus'),
+                                          style: TextStyle(color: Colors.white,fontSize: 16),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      Container(
+                                          child: (Icon(
+                                              Icons.chevron_right_outlined,color: Colors.white,))),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ])),
             ),

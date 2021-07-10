@@ -7,22 +7,23 @@ import 'package:flutter/rendering.dart';
 import 'package:robot/API/config.dart';
 import 'package:robot/API/request.dart';
 import 'package:robot/views/LoginPage/countryPicker.dart';
+import 'package:robot/views/LoginPage/forgetPassword.dart';
 import 'package:robot/views/LoginPage/freeRegister.dart';
 import '../../vendor/i18n/localizations.dart' show MyLocalizations;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:http/http.dart' as http;
 
-class VerifyOtp extends StatefulWidget {
+class ForgetPasswordOtp extends StatefulWidget {
   final url;
   final onChangeLanguage;
 
-  VerifyOtp(this.url, this.onChangeLanguage);
+  ForgetPasswordOtp(this.url, this.onChangeLanguage);
   @override
-  _VerifyOtpState createState() => _VerifyOtpState();
+  _ForgetPasswordOtpState createState() => _ForgetPasswordOtpState();
 }
 
-class _VerifyOtpState extends State<VerifyOtp>
+class _ForgetPasswordOtpState extends State<ForgetPasswordOtp>
     with SingleTickerProviderStateMixin {
   final GlobalKey<FormState> _key = new GlobalKey();
 
@@ -69,7 +70,7 @@ class _VerifyOtpState extends State<VerifyOtp>
       },
     );
   }
-
+  
   getLanguage() async{
     final prefs = await SharedPreferences.getInstance();
     language = prefs.getString('language');
@@ -392,7 +393,7 @@ class _VerifyOtpState extends State<VerifyOtp>
             Icon(Icons.send,color: Color(0xfff6fb15),):
             Container(
               margin: EdgeInsets.only(left:20),
-              child: Text("$_start",style: TextStyle(color: Color(0xfff6fb15),fontSize: 20),))
+              child: Text("$_start",style: TextStyle(color: Colors.white,fontSize: 20),))
             ),
           )
         )
@@ -489,7 +490,7 @@ class _VerifyOtpState extends State<VerifyOtp>
              Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => FreeRegister( widget.url, widget.onChangeLanguage)));
+                  builder: (context) => ForgetPwd( widget.url, widget.onChangeLanguage,emailController.text)));
           } else if(contentData['message']=='INCORRECT_OTP'){
              AwesomeDialog(
               context: context,

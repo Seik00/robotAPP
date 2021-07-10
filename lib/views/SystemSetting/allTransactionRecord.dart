@@ -22,15 +22,45 @@ class AllTransactionRecord extends StatefulWidget {
 }
 
 class _AllTransactionRecordState extends State<AllTransactionRecord> {
+  final scrollController = ScrollController();
   var type = '';
   var dataList;
- 
+  bool loading = true;
+  bool beyondPages = false;
+  bool startLoading = false;
+   var pageParams={
+    'current_page': 1,
+    'per_page': 10
+  };
 
 
   @override
   void initState() {
     super.initState();
     getRequest();
+     scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent == scrollController.offset) {
+        if(beyondPages){
+          setState(() {
+            startLoading = true;
+            pageParams['current_page']+=1;
+            
+          });
+          getRequest();
+          print(pageParams['current_page']);
+        }else{
+          setState(() {
+            startLoading = false;
+          });
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
   }
 
   getRequest() async {
@@ -39,13 +69,22 @@ class _AllTransactionRecordState extends State<AllTransactionRecord> {
     if (contentData['code'] == 0) {
       if (mounted) {
         setState(() {
+          loading=false; 
           dataList = contentData['data']['data'];
           print(dataList);
         });
+        if(contentData['data']['last_page']>1){
+         
+          if(pageParams['current_page']<=contentData['data']['last_page']){
+            beyondPages =true;
+             print('123123');
+          }else{
+            beyondPages =false;
+             print('ccccccccccccc');
+          }
+        }
       }
     }
-
-    
   }
 
   @override
@@ -62,157 +101,157 @@ class _AllTransactionRecordState extends State<AllTransactionRecord> {
         onTap: () {
           FocusScope.of(context).requestFocus(new FocusNode());
         },
-        child: Stack(
-          children: [
+        child: Container(
+        child: Column(
+          children: <Widget>[
             Container(
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.5),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                             alignment: Alignment.centerLeft,
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.keyboard_arrow_left,
-                                color: Colors.white,
-                              ),
-                              onPressed: () => Navigator.pop(context, true)),
-                          ),
-                           Expanded(
-                            child: 
-                            Container(
-                               alignment: Alignment.centerLeft,
-                              child: Text(MyLocalizations.of(context).getData('transaction_details'),style: TextStyle(color: Colors.white,fontSize: 20),))),
-                          
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                dataList==null?Container():
-                ListView.builder(
-                  primary: false,
-                  shrinkWrap: true,
-                  itemCount: dataList.length,
-                  itemBuilder: (BuildContext ctxt, int index) {
-                  return Container(
-                    padding: EdgeInsets.all(10),
-                    margin: EdgeInsets.all(10),
-                    decoration: new BoxDecoration(
-                    color: Color(0xff595c64),
-                    borderRadius: BorderRadius.circular(10),
+              height: 50,
+              decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.5),
+            ),
+            child: Row(
+              children: [
+                Container(
+                   alignment: Alignment.centerLeft,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.keyboard_arrow_left,
+                      color: Colors.white,
                     ),
-                    child: Column(
-                      children: [
-                        Container(
-                          child: ExpansionTile(
-                            title: Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                    onPressed: () => Navigator.pop(context, true)),
+                ),
+                 Expanded(
+                  child: 
+                  Container(
+                     alignment: Alignment.centerLeft,
+                    child: Text(MyLocalizations.of(context).getData('transaction_details'),style: TextStyle(color: Colors.white,fontSize: 20),))),
+                
+              ],
+            ),
+          ),
+          dataList==null?Container():
+          Expanded(
+            child: ListView.builder(
+              controller: scrollController,
+              primary: false,
+              shrinkWrap: true,
+              itemCount: dataList.length,
+              itemBuilder: (BuildContext ctxt, int index) {
+              if(index < dataList.length){
+                return Container(
+                padding: EdgeInsets.all(10),
+                margin: EdgeInsets.all(10),
+                decoration: new BoxDecoration(
+                color: Color(0xff595c64),
+                borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      child: ExpansionTile(
+                        title: Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
                                 children: [
-                                  Row(
-                                    children: [
-                                      dataList[index]['platform'] =='binance'?
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.white
-                                        ),
-                                        margin: EdgeInsets.only(right: 10),
-                                        padding: EdgeInsets.all(5),
-                                        child: Image(
-                                          image: AssetImage(
-                                              "lib/assets/img/BNB.png"),
-                                          height: 15,
-                                          width: 15,
-                                        )
-                                      ):
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.white
-                                        ),
-                                        margin: EdgeInsets.only(right: 10),
-                                        padding: EdgeInsets.all(5),
-                                        child: Image(
-                                          image: AssetImage(
-                                              "lib/assets/img/HT.png"),
-                                          height: 15,
-                                          width: 15,
-                                        )
-                                      ),
-                                      Text(dataList[index]['market'],style: TextStyle(color: Colors.white,fontSize: 18),),
-                                    ],
+                                  dataList[index]['platform'] =='binance'?
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.white
+                                    ),
+                                    margin: EdgeInsets.only(right: 10),
+                                    padding: EdgeInsets.all(5),
+                                    child: Image(
+                                      image: AssetImage(
+                                          "lib/assets/img/BNB.png"),
+                                      height: 15,
+                                      width: 15,
+                                    )
+                                  ):
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.white
+                                    ),
+                                    margin: EdgeInsets.only(right: 10),
+                                    padding: EdgeInsets.all(5),
+                                    child: Image(
+                                      image: AssetImage(
+                                          "lib/assets/img/HT.png"),
+                                      height: 15,
+                                      width: 15,
+                                    )
                                   ),
-                                  SizedBox(height:5),
-                                  Text(double.parse(dataList[index]['price']).toStringAsFixed(5),style: TextStyle(color: Colors.white,fontSize: 18)),
-                                  SizedBox(height:5),
-                                  Text(MyLocalizations.of(context).getData('deal_price') + ' (USDT)',style: TextStyle(color: Colors.white70,fontSize: 14)),
+                                  Text(dataList[index]['market'],style: TextStyle(color: Colors.white,fontSize: 18),),
                                 ],
                               ),
-                            ),
-                            children: <Widget>[
-                              Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height:10),
-                                  Container(
-                                    alignment: Alignment.bottomLeft,
-                                    padding: EdgeInsets.only(left:15),
-                                    child: Row(
-                                      children: [
-                                        Text(MyLocalizations.of(context).getData('order_time'),style: TextStyle(color: Colors.white70)),
-                                        Text(dataList[index]['ctime'],style: TextStyle(color: Colors.white70)),
-                                      ],
-                                    )),
-                                  SizedBox(height:5),
-                                  Container(
-                                    alignment: Alignment.bottomLeft,
-                                    padding: EdgeInsets.only(left:15),
-                                    child: Row(
-                                      children: [
-                                        Text(MyLocalizations.of(context).getData('deal_money'),style: TextStyle(color: Colors.white70)),
-                                        Text(double.parse(dataList[index]['deal_money']).toStringAsFixed(8),style: TextStyle(color: Colors.white70)),
-                                      ],
-                                    )),
-                                  SizedBox(height:5),
-                                  Container(
-                                    alignment: Alignment.bottomLeft,
-                                    padding: EdgeInsets.only(left:15),
-                                    child: Row(
-                                      children: [
-                                        Text(MyLocalizations.of(context).getData('deal_amount'),style: TextStyle(color: Colors.white70)),
-                                        Text(dataList[index]['deal_amount'],style: TextStyle(color: Colors.white70)),
-                                      ],
-                                    )),
-                                  SizedBox(height:5),
-                                  
-                                ],
-                              ),
+                              SizedBox(height:5),
+                              Text(double.parse(dataList[index]['price']).toStringAsFixed(5),style: TextStyle(color: Colors.white,fontSize: 18)),
+                              SizedBox(height:5),
+                              Text(MyLocalizations.of(context).getData('deal_price') + ' (USDT)',style: TextStyle(color: Colors.white70,fontSize: 14)),
                             ],
                           ),
-                        )
-                      ],
-                    ),
-                  );
-                  }),
-                ],
-              ),
-            ),
+                        ),
+                        children: <Widget>[
+                          Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height:10),
+                              Container(
+                                alignment: Alignment.bottomLeft,
+                                padding: EdgeInsets.only(left:15),
+                                child: Row(
+                                  children: [
+                                    Text(MyLocalizations.of(context).getData('order_time'),style: TextStyle(color: Colors.white70)),
+                                    Text(dataList[index]['ctime'],style: TextStyle(color: Colors.white70)),
+                                  ],
+                                )),
+                              SizedBox(height:5),
+                              Container(
+                                alignment: Alignment.bottomLeft,
+                                padding: EdgeInsets.only(left:15),
+                                child: Row(
+                                  children: [
+                                    Text(MyLocalizations.of(context).getData('deal_money'),style: TextStyle(color: Colors.white70)),
+                                    Text(double.parse(dataList[index]['deal_money']).toStringAsFixed(8),style: TextStyle(color: Colors.white70)),
+                                  ],
+                                )),
+                              SizedBox(height:5),
+                              Container(
+                                alignment: Alignment.bottomLeft,
+                                padding: EdgeInsets.only(left:15),
+                                child: Row(
+                                  children: [
+                                    Text(MyLocalizations.of(context).getData('deal_amount'),style: TextStyle(color: Colors.white70)),
+                                    Text(dataList[index]['deal_amount'],style: TextStyle(color: Colors.white70)),
+                                  ],
+                                )),
+                              SizedBox(height:5),
+                              
+                            ],
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              );
+              }
+              return Container(
+                  padding: EdgeInsets.only(top: 5,bottom: 10),
+                  child: Center(
+                    child:(beyondPages)?(startLoading)
+                      ?CircularProgressIndicator(valueColor:AlwaysStoppedAnimation<Color>(Colors.red),)
+                      :Text('No More Data',style: TextStyle(color: Colors.black),):null
+                  ),
+                );
+              }),
           ),
           ],
         ),
+          ),
       ),
     );
   }
