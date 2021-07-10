@@ -376,6 +376,7 @@
     "deposit_details4": "* Account after 1 network confirmation",
     "address": "Address",
     "get_vcode": "Get Vcode",
+    "incorrect_email": "Incorrect Email",
 
     "not_enough_point_2": "Not Enough Gas",
     "robot_exist": "Robot Exist",

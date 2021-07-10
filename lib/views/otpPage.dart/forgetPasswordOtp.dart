@@ -389,7 +389,7 @@ class _ForgetPasswordOtpState extends State<ForgetPasswordOtp>
                 }
               },
             child: 
-            _start ==10?
+            _start ==60?
             Icon(Icons.send,color: Color(0xfff6fb15),):
             Container(
               margin: EdgeInsets.only(left:20),

@@ -73,6 +73,13 @@ class _VerifyOtpState extends State<VerifyOtp>
   getLanguage() async{
     final prefs = await SharedPreferences.getInstance();
     language = prefs.getString('language');
+    setState(() {
+       if(language=='zh'){
+        language='cn';
+    }
+    });
+   
+    print(language);
     token = prefs.getString('token');
   }
 
@@ -379,7 +386,7 @@ class _VerifyOtpState extends State<VerifyOtp>
                     print('===========================================');
                     print(tmap['country_id']);
                     print(tmap['email']);
-                    print(tmap['contact_number']);
+                    print(tmap['lang']);
                     print('===========================================');
                     postOtp(tmap);
                     startTimer();
@@ -388,7 +395,7 @@ class _VerifyOtpState extends State<VerifyOtp>
                 }
               },
             child: 
-            _start ==10?
+            _start ==60?
             Icon(Icons.send,color: Color(0xfff6fb15),):
             Container(
               margin: EdgeInsets.only(left:20),

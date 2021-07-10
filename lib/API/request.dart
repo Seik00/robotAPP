@@ -47,6 +47,19 @@ class Request {
           btnOkColor: Colors.red)
           ..show();
         }
+        else if(contentData['message'] =='INCORRECT_EMAIL_FORMAT'){
+          AwesomeDialog(
+          context: context,
+          dialogType: DialogType.ERROR,
+          animType: AnimType.RIGHSLIDE,
+          headerAnimationLoop: false,
+          title: MyLocalizations.of(context).getData('error'),
+          desc: MyLocalizations.of(context).getData('incorrect_email'),
+          btnOkOnPress: () {},
+          btnOkIcon: Icons.cancel,
+          btnOkColor: Colors.red)
+          ..show();
+        }
         else if(contentData['message'] =='INCORRECT_USERNAME'){
           AwesomeDialog(
           context: context,
@@ -182,6 +195,19 @@ class Request {
           headerAnimationLoop: false,
           title: MyLocalizations.of(context).getData('error'),
           desc: MyLocalizations.of(context).getData('sec_pwd_wrong'),
+          btnOkOnPress: () {},
+          btnOkIcon: Icons.cancel,
+          btnOkColor: Colors.red)
+          ..show();
+        }
+        else if(contentData['message'] =='INCORRECT_OTP'){
+          AwesomeDialog(
+          context: context,
+          dialogType: DialogType.ERROR,
+          animType: AnimType.RIGHSLIDE,
+          headerAnimationLoop: false,
+          title: MyLocalizations.of(context).getData('error'),
+          desc: MyLocalizations.of(context).getData('incorrect_otp'),
           btnOkOnPress: () {},
           btnOkIcon: Icons.cancel,
           btnOkColor: Colors.red)

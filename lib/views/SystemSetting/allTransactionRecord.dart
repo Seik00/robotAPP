@@ -62,9 +62,7 @@ class _AllTransactionRecordState extends State<AllTransactionRecord> {
   getRequest() async {
     var contentData = await Request().getRequest(
         Config().url +
-            "api/trade-revenue/tradeOrder?page=" +
-            pageParams['current_page'].toString(),
-        context);
+            "api/trade-revenue/tradeOrder?page=" +pageParams['current_page'].toString(),context);
     if (contentData['code'] == 0) {
       if (mounted) {
         setState(() {
@@ -329,12 +327,12 @@ class _AllTransactionRecordState extends State<AllTransactionRecord> {
                                           ? CircularProgressIndicator(
                                               valueColor:
                                                   AlwaysStoppedAnimation<Color>(
-                                                      Colors.red),
+                                                      Color(0xfff6fb15)),
                                             )
                                           : Text(
                                               'No More Data',
                                               style: TextStyle(
-                                                  color: Colors.black),
+                                                  color: Colors.white),
                                             )
                                       : null),
                             );

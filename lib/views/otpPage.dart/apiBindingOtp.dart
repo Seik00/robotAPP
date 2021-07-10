@@ -40,13 +40,13 @@ class _ApiBindingOtpState extends State<ApiBindingOtp>
   var token;
   var otp;
   var userEmail;
-  Timer _timer2;
+  Timer _timer;
   int _start = 60;
   var _firstPress = true ;
 
   void startTimer() {
     const oneSec = const Duration(seconds: 1);
-    _timer2 = new Timer.periodic(
+    _timer = new Timer.periodic(
       oneSec,
       (Timer timer) {
         if (_start == 0) {
@@ -58,7 +58,6 @@ class _ApiBindingOtpState extends State<ApiBindingOtp>
         } else {
           setState(() {
             _start--;
-            print(_start);
           });
         }
       },
@@ -93,7 +92,7 @@ class _ApiBindingOtpState extends State<ApiBindingOtp>
   @override
   void dispose() {
     super.dispose();
-     _timer2.cancel();
+     _timer.cancel();
   }
 
   @override
@@ -163,8 +162,9 @@ class _ApiBindingOtpState extends State<ApiBindingOtp>
                             onTap: ()async{
                               var tmap = new Map<String, dynamic>();
                               setState(() {
-                                tmap['otp'] = otp.toString();
+                                tmap['otp'] =vcodeController.text;
                                 postData(tmap);
+                                print(tmap['otp']);
                               });
                             }, 
                             child: Center(
@@ -255,7 +255,7 @@ class _ApiBindingOtpState extends State<ApiBindingOtp>
                 }
               },
             child: 
-            _start ==10?
+            _start ==60?
             Icon(Icons.send,color: Color(0xfff6fb15),):
             Container(
               margin: EdgeInsets.only(left:20),

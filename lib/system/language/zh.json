@@ -70,7 +70,7 @@
     "sales": "业绩 :",
     "check": "查看",
     "sponsor_amount": "推荐人数: ",
-    "team_amount": "团队人数: ",
+    "team_amount": "团队人数",
     "active_amount": "激活人数: ",
     "top": "置顶",
 
@@ -376,6 +376,7 @@
     "deposit_details4": "* 1次网络确认后上账",
     "address": "地址",
     "get_vcode": "获取验证码",
+    "incorrect_email": "邮箱错误",
     
 
     "not_enough_point_2": "燃料不足",

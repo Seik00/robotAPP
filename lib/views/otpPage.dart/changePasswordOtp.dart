@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
 
@@ -39,6 +40,30 @@ class _ChangePasswordOtpState extends State<ChangePasswordOtp>
   var token;
   var otp;
   var userEmail;
+  Timer _timer;
+  int _start = 60;
+  var _firstPress = true ;
+
+  void startTimer() {
+    const oneSec = const Duration(seconds: 1);
+    _timer = new Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (_start == 0) {
+          setState(() {
+            timer.cancel();
+            _start = 60;
+            _firstPress = true ;
+          });
+        } else {
+          setState(() {
+            _start--;
+            print(_start);
+          });
+        }
+      },
+    );
+  }
 
   getLanguage() async{
     final prefs = await SharedPreferences.getInstance();
@@ -68,6 +93,7 @@ class _ChangePasswordOtpState extends State<ChangePasswordOtp>
   @override
   void dispose() {
     super.dispose();
+    _timer.cancel();
   }
 
   @override
@@ -137,7 +163,7 @@ class _ChangePasswordOtpState extends State<ChangePasswordOtp>
                             onTap: ()async{
                               var tmap = new Map<String, dynamic>();
                               setState(() {
-                                tmap['otp'] = otp.toString();
+                                tmap['otp'] = vcodeController.text;
                                 postData(tmap);
                               });
                             }, 
@@ -202,29 +228,39 @@ class _ChangePasswordOtpState extends State<ChangePasswordOtp>
           ],
         ),
         Expanded(
-          child: GestureDetector(
-            onTap: (){
-              if(emailController.text == ''){
-                  AwesomeDialog(
-                  context: context,
-                  dialogType: DialogType.ERROR,
-                  animType: AnimType.RIGHSLIDE,
-                  headerAnimationLoop: false,
-                  title: MyLocalizations.of(context).getData('error'),
-                  desc: MyLocalizations.of(context).getData('enter_email'),
-                  btnOkOnPress: () {},
-                  btnOkIcon: Icons.cancel,
-                  btnOkColor: Colors.red)
-                  ..show();
-              }else{
-                 setState(() {
-                  var tmap = new Map<String, dynamic>();
-                  tmap['otp_type'] = 'email';
-                  postOtp(tmap);
-              });
-              }
-            },
-          child: Icon(Icons.send,color: Color(0xfff6fb15),)
+          child: AbsorbPointer(
+            absorbing: !_firstPress,
+            child: GestureDetector(
+              onTap: (){
+                if(emailController.text == ''){
+                    AwesomeDialog(
+                    context: context,
+                    dialogType: DialogType.ERROR,
+                    animType: AnimType.RIGHSLIDE,
+                    headerAnimationLoop: false,
+                    title: MyLocalizations.of(context).getData('error'),
+                    desc: MyLocalizations.of(context).getData('enter_email'),
+                    btnOkOnPress: () {},
+                    btnOkIcon: Icons.cancel,
+                    btnOkColor: Colors.red)
+                    ..show();
+                }else{
+                   setState(() {
+                    var tmap = new Map<String, dynamic>();
+                    tmap['otp_type'] = 'email';
+                    postOtp(tmap);
+                     startTimer();
+                      _firstPress = false ;
+                });
+                }
+              },
+             child: 
+              _start ==60?
+              Icon(Icons.send,color: Color(0xfff6fb15),):
+              Container(
+                margin: EdgeInsets.only(left:20),
+                child: Text("$_start",style: TextStyle(color: Colors.white,fontSize: 20),))
+            ),
           )
         )
       ],
