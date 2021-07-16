@@ -184,14 +184,14 @@ class _MyTeamState extends State<MyTeam> {
                                 children: [
                                   Column(
                                     children: [
-                                      Text(directActive.toString(),style: TextStyle(color: Colors.white),),
+                                      Text(directNoActive.toString(),style: TextStyle(color: Colors.white),),
                                       Text(MyLocalizations.of(context).getData('not_active'),style: TextStyle(color: Colors.white),),
                                     ],
                                   ),
                                   VerticalDivider(color: Colors.white,),
                                   Column(
                                     children: [
-                                      Text(directNoActive.toString(),style: TextStyle(color: Colors.white),),
+                                      Text(directActive.toString(),style: TextStyle(color: Colors.white),),
                                       Text(MyLocalizations.of(context).getData('active'),style: TextStyle(color: Colors.white),),
                                     ],
                                   ),

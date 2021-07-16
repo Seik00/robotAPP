@@ -259,66 +259,66 @@ class _SettingsState extends State<Settings>
                               //     ),
                               //   ),
                               // ),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => RegisterStepOne(widget.url,widget.onChangeLanguage)),
-                                  );
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.all(6),
-                                  decoration: new BoxDecoration(
-                                    color: Color(0xff595c64),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  margin: EdgeInsets.only(left:10,right:10,bottom: 10),
-                                  child: Row(
-                                    children: <Widget>[
-                                      Container(
-                                        padding: EdgeInsets.all(5),
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Color(0xff212630),
-                                        ),
-                                        margin: EdgeInsets.only(right: 20),
-                                        child: Image(
-                                          image: AssetImage(
-                                              "lib/assets/img/register.png"),
-                                          height: 30,
-                                          width: 40,
-                                        )
-                                      ),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Container(
-                                              child: Text(
-                                                MyLocalizations.of(context)
-                                                    .getData('register'),
-                                                style: TextStyle(color: Colors.white,fontSize: 16),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.end,
-                                          children: <Widget>[
-                                            Container(
-                                                child: (Icon(
-                                                    Icons.chevron_right_outlined,color: Colors.white,))),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                              // InkWell(
+                              //   onTap: () {
+                              //     Navigator.push(
+                              //       context,
+                              //       MaterialPageRoute(
+                              //           builder: (context) => RegisterStepOne(widget.url,widget.onChangeLanguage)),
+                              //     );
+                              //   },
+                              //   child: Container(
+                              //     padding: EdgeInsets.all(6),
+                              //     decoration: new BoxDecoration(
+                              //       color: Color(0xff595c64),
+                              //       borderRadius: BorderRadius.circular(10),
+                              //     ),
+                              //     margin: EdgeInsets.only(left:10,right:10,bottom: 10),
+                              //     child: Row(
+                              //       children: <Widget>[
+                              //         Container(
+                              //           padding: EdgeInsets.all(5),
+                              //           decoration: BoxDecoration(
+                              //             shape: BoxShape.circle,
+                              //             color: Color(0xff212630),
+                              //           ),
+                              //           margin: EdgeInsets.only(right: 20),
+                              //           child: Image(
+                              //             image: AssetImage(
+                              //                 "lib/assets/img/register.png"),
+                              //             height: 30,
+                              //             width: 40,
+                              //           )
+                              //         ),
+                              //         Expanded(
+                              //           child: Column(
+                              //             crossAxisAlignment:
+                              //                 CrossAxisAlignment.start,
+                              //             children: <Widget>[
+                              //               Container(
+                              //                 child: Text(
+                              //                   MyLocalizations.of(context)
+                              //                       .getData('register'),
+                              //                   style: TextStyle(color: Colors.white,fontSize: 16),
+                              //                 ),
+                              //               ),
+                              //             ],
+                              //           ),
+                              //         ),
+                              //         Expanded(
+                              //           child: Column(
+                              //             crossAxisAlignment: CrossAxisAlignment.end,
+                              //             children: <Widget>[
+                              //               Container(
+                              //                   child: (Icon(
+                              //                       Icons.chevron_right_outlined,color: Colors.white,))),
+                              //             ],
+                              //           ),
+                              //         ),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
                               InkWell(
                                 onTap: () {
                                   Navigator.push(

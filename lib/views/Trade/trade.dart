@@ -30,6 +30,7 @@ class Trade extends StatefulWidget {
 }
 
 class _TradeState extends State<Trade> {
+  final TextEditingController secPwdController = new TextEditingController();
   var type = '';
   
   var robotList;
@@ -148,19 +149,45 @@ class _TradeState extends State<Trade> {
         return WillPopScope(
           onWillPop: () async => false,
           child: AlertDialog(
-            backgroundColor: Colors.blue[100],
+            backgroundColor: Color(0xfffFDE323),
             title: Center(
               child: Icon(
               Icons.play_arrow, 
-              color: Colors.white,
+              color: Colors.black,
               size: 60,
             ),),
             content: Container(
               child: Wrap(
                 children: <Widget>[
-                  Container(
-                    alignment: Alignment.center,
-                    child: Text('Play Robot'),
+                  Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        child: Text(MyLocalizations.of(context).getData('start_robot')),
+                      ),
+                      SizedBox(height: 10,),
+                      TextField(
+                        onChanged: (value) {
+                          setState(() {
+                          });
+                        },
+                        obscureText: true,
+                        controller: secPwdController,
+                        decoration: InputDecoration(
+                          filled: true,
+                          hintText: MyLocalizations.of(context).getData('sec_password'),
+                            contentPadding: const EdgeInsets.all(14.0),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(color: Colors.black, width: 1),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                               borderSide: BorderSide(color: Colors.black, width: 1),
+                            ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -169,17 +196,18 @@ class _TradeState extends State<Trade> {
               Row(
                 children: [
                   TextButton(
-                    child: Text('Cancel',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                    child: Text(MyLocalizations.of(context).getData('cancel'),style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
                     onPressed: () {
                       Navigator.pop(context, true);
                     },
                   ),
                   TextButton(
-                    child: Text('Play',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                    child: Text(MyLocalizations.of(context).getData('start_up'),style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
                     onPressed: () {
                       setState(() {
                         var tmap = new Map<String, dynamic>();
                         tmap['robot_id'] = robotList['id'].toString();
+                        tmap['sec_password'] = secPwdController.text;
                         print(tmap);
                         playRobot(tmap);
                       });
@@ -204,11 +232,11 @@ class _TradeState extends State<Trade> {
         return WillPopScope(
           onWillPop: () async => false,
           child: AlertDialog(
-            backgroundColor: Colors.blue[100],
+            backgroundColor: Color(0xfffFDE323),
             title: Center(
               child: Icon(
               Icons.pause, 
-              color: Colors.white,
+              color: Colors.black,
               size: 60,
             ),),
             content: Container(
@@ -216,7 +244,7 @@ class _TradeState extends State<Trade> {
                 children: <Widget>[
                   Container(
                     alignment: Alignment.center,
-                    child: Text('Pause Robot'),
+                    child: Text(MyLocalizations.of(context).getData('pause_robot')),
                   ),
                 ],
               ),
@@ -225,13 +253,13 @@ class _TradeState extends State<Trade> {
               Row(
                 children: [
                   TextButton(
-                    child: Text('Cancel',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                    child: Text(MyLocalizations.of(context).getData('cancel'),style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
                     onPressed: () {
                       Navigator.pop(context, true);
                     },
                   ),
                   TextButton(
-                    child: Text('Pause',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                    child: Text(MyLocalizations.of(context).getData('pause'),style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
                     onPressed: () {
                       setState(() {
                         var tmap = new Map<String, dynamic>();
@@ -413,11 +441,11 @@ class _TradeState extends State<Trade> {
         return WillPopScope(
           onWillPop: () async => false,
           child: AlertDialog(
-            backgroundColor: Colors.blue[100],
+            backgroundColor: Color(0xfffFDE323),
             title: Center(
               child: Icon(
               Icons.delete, 
-              color: Colors.white,
+              color: Colors.black,
               size: 60,
             ),),
             content: Container(
@@ -425,7 +453,7 @@ class _TradeState extends State<Trade> {
                 children: <Widget>[
                   Container(
                     alignment: Alignment.center,
-                    child: Text('Clean Robot'),
+                    child: Text(MyLocalizations.of(context).getData('clean_robot')),
                   ),
                 ],
               ),
@@ -434,13 +462,13 @@ class _TradeState extends State<Trade> {
               Row(
                 children: [
                   TextButton(
-                    child: Text('Cancel',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                    child: Text(MyLocalizations.of(context).getData('cancel'),style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
                     onPressed: () {
                       Navigator.pop(context, true);
                     },
                   ),
                   TextButton(
-                    child: Text('Clean',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                    child: Text(MyLocalizations.of(context).getData('clean'),style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
                     onPressed: () {
                       setState(() {
                         var tmap = new Map<String, dynamic>();
@@ -501,11 +529,11 @@ class _TradeState extends State<Trade> {
         return WillPopScope(
           onWillPop: () async => false,
           child: AlertDialog(
-            backgroundColor: Colors.blue[100],
+            backgroundColor: Color(0xfffFDE323),
             title: Center(
               child: Icon(
               Icons.looks_one, 
-              color: Colors.white,
+              color: Colors.black,
               size: 60,
             ),),
             content: Container(
@@ -525,13 +553,13 @@ class _TradeState extends State<Trade> {
               Row(
                 children: [
                   TextButton(
-                    child: Text('Cancel',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                    child: Text(MyLocalizations.of(context).getData('cancel'),style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
                     onPressed: () {
                       Navigator.pop(context, true);
                     },
                   ),
                   TextButton(
-                    child: Text('Confirm',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                    child: Text(MyLocalizations.of(context).getData('confirm'),style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
                     onPressed: () {
                       setState(() {
                         _sendToServer();
@@ -556,11 +584,11 @@ class _TradeState extends State<Trade> {
         return WillPopScope(
           onWillPop: () async => false,
           child: AlertDialog(
-            backgroundColor: Colors.blue[100],
+            backgroundColor: Color(0xfffFDE323),
             title: Center(
               child: Icon(
               Icons.looks_one, 
-              color: Colors.white,
+              color: Colors.black,
               size: 60,
             ),),
             content: Container(
@@ -578,13 +606,13 @@ class _TradeState extends State<Trade> {
               Row(
                 children: [
                   TextButton(
-                    child: Text('Cancel',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                    child: Text(MyLocalizations.of(context).getData('cancel'),style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
                     onPressed: () {
                       Navigator.pop(context, true);
                     },
                   ),
                   TextButton(
-                    child: Text('Confirm',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                    child: Text(MyLocalizations.of(context).getData('confirm'),style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
                     onPressed: () {
                       setState(() {
                         _sendToServer2();
@@ -870,6 +898,38 @@ class _TradeState extends State<Trade> {
                               ),
                             ],
                           ),
+                            SizedBox(height: 20,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      child: Container(
+                                        child: Text(
+                                          robotList == null  || robotList == '' ?'0.00':
+                                          robotList['estimate_cover_price'].toStringAsFixed(5),
+                                          style: TextStyle(color: Colors.white,fontSize: 14),
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      child: Container(
+                                        child: Text(
+                                          MyLocalizations.of(context).getData('estimate_cover_price'),
+                                          style: TextStyle(color: Colors.white,fontSize: 14),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
@@ -955,7 +1015,7 @@ class _TradeState extends State<Trade> {
                           child: Column(children: <Widget>[
                           FlatButton(
                             onPressed: () => {
-                              info2==null? Container():
+                              info2==null || robotList['is_restock'] ==1 ? Container():
                               reStock(),
                             },
                             padding: EdgeInsets.all(10.0),
@@ -980,6 +1040,23 @@ class _TradeState extends State<Trade> {
                             ),
                           ),
                         ])),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    margin: EdgeInsets.all(10),
+                    width: MediaQuery.of(context).size.width,
+                    decoration: new BoxDecoration(
+                      color: Color(0xff595c64),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(MyLocalizations.of(context).getData('operation_remind'),style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 15)),
+                        SizedBox(height: 10,),
+                        Text(MyLocalizations.of(context).getData('operation_remind_details'),style:TextStyle(color: Colors.white)),
                       ],
                     ),
                   ),
@@ -1315,7 +1392,7 @@ class _TradeState extends State<Trade> {
                 },
                 color: Colors.yellowAccent,
                 textColor: Colors.black,
-                child: Text(MyLocalizations.of(context).getData('transaction_settings')),
+                child: Text(robotList==null || robotList.isEmpty?MyLocalizations.of(context).getData('robot_setup'):MyLocalizations.of(context).getData('transaction_settings')),
               ),
             ),
             Expanded(

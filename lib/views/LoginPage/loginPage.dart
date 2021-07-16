@@ -249,7 +249,7 @@ class _LoginPageState extends State<LoginPage>
         return WillPopScope(
           onWillPop: () async => false,
           child: AlertDialog(
-            backgroundColor: Colors.blue[100],
+            backgroundColor: Color(0xfffFDE323),
             title: Center(
               child: Icon(
               Icons.update, 
@@ -305,18 +305,18 @@ class _LoginPageState extends State<LoginPage>
         return WillPopScope(
           onWillPop: () async => false,
           child: AlertDialog(
-            backgroundColor: Color(0xff9957ED),
+            backgroundColor: Color(0xfffFDE323),
             title: Center(
               child: Icon(
               Icons.update, 
-              color: Colors.white,
+              color: Colors.black,
               size: 60,
             ),),
             content: Container(
               child: Wrap(
                 children: <Widget>[
                   Center(
-                    child: Text(MyLocalizations.of(context).getData('download_new_version'),style: TextStyle(color: Colors.white),textAlign: TextAlign.center,),
+                    child: Text(MyLocalizations.of(context).getData('download_new_version'),style: TextStyle(color: Colors.black),textAlign: TextAlign.center,),
                   ),
                 ],
               ),
@@ -330,7 +330,7 @@ class _LoginPageState extends State<LoginPage>
 
                 }
               }, 
-              child: Text(MyLocalizations.of(context).getData('go_download'),style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),))
+              child: Text(MyLocalizations.of(context).getData('go_download'),style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),))
             ],
           ),
         );
@@ -346,18 +346,18 @@ class _LoginPageState extends State<LoginPage>
         return WillPopScope(
           onWillPop: () async => false,
           child: AlertDialog(
-            backgroundColor: Color(0xff9957ED),
+            backgroundColor: Color(0xfffFDE323),
             title: Center(
               child: Icon(
               Icons.access_time, 
-              color: Colors.white,
+              color: Colors.black,
               size: 60,
             ),),
             content: Container(
               child: Wrap(
                 children: <Widget>[
                   Center(
-                    child: Text(MyLocalizations.of(context).getData('maintanence'),style: TextStyle(color: Colors.white),textAlign: TextAlign.center,),
+                    child: Text(MyLocalizations.of(context).getData('maintanence'),style: TextStyle(color: Colors.black),textAlign: TextAlign.center,),
                   ),
                 ],
               ),

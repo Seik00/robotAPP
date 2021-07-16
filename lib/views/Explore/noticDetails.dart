@@ -56,6 +56,7 @@ class _NoticDetailsState extends State<NoticDetails> {
         retime = contentData['data']['ticket']['re_time'];
         print(title);
         print(body);
+        print(body);
         print(time);
         print('--------');
         print(contentData);
@@ -119,40 +120,43 @@ class _NoticDetailsState extends State<NoticDetails> {
                                   gradient: LinearGradient(
                                   begin: Alignment.topCenter,
                                   end: Alignment.bottomCenter,
-                                  colors: [Color(0xff9957ED), Color(0xff7835E5)])
+                                  colors: [Color(0xfffFDE323), Color(0xfffF6FB15)])
                               ),
                               child: Column(
                                 children: [
                                   Container(
                                     alignment: Alignment.topRight,
                                     padding: EdgeInsets.all(10),
-                                    child:Text(time,style: TextStyle(color:Colors.white,fontSize:16,fontWeight:FontWeight.bold)),
+                                    child:Text(time,style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold)),
                                    
                                   ),
                                   Container(
                                     alignment: Alignment.centerLeft,
                                     padding: EdgeInsets.all(10),
-                                    child:Text(title,style: TextStyle(color:Colors.white,fontSize:20,fontWeight:FontWeight.bold),),
+                                    child:Text(title,style: TextStyle(color:Colors.black,fontSize:20,fontWeight:FontWeight.bold),),
                                   ),
                                    Container(
                                     alignment: Alignment.centerLeft,
-                                    padding: EdgeInsets.all(10),
-                                    child:Text(body,style: TextStyle(color:Colors.white,fontSize:16,),),
+                                    padding: EdgeInsets.only(bottom:10,left:10,right:10,),
+                                    child:Text(body,style: TextStyle(color:Colors.black,fontSize:16,),),
                                   ),
+                                  rebody==null?Container():
                                   Container(
                                     alignment: Alignment.centerLeft,
                                     padding: EdgeInsets.all(10),
-                                    child:Text(MyLocalizations.of(context).getData('reply'),style: TextStyle(color:Colors.white,fontSize:16,),),
+                                    child:Text(MyLocalizations.of(context).getData('reply'),style: TextStyle(color:Colors.black,fontSize:16,),),
                                   ),
+                                  rebody==null?Container():
                                   Container(
                                     alignment: Alignment.centerLeft,
                                     padding: EdgeInsets.all(10),
-                                    child:Text(rebody,style: TextStyle(color:Colors.white,fontSize:16,),),
+                                    child:Text(rebody,style: TextStyle(color:Colors.black,fontSize:16,),),
                                   ),
+                                  retime==null?Container():
                                    Container(
                                     alignment: Alignment.bottomLeft,
-                                    padding: EdgeInsets.all(10),
-                                    child:Text(retime,style: TextStyle(color:Colors.white,fontSize:16,fontWeight:FontWeight.bold)),
+                                    padding: EdgeInsets.only(bottom:10,left:10,right:10,),
+                                    child:Text(retime,style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold)),
                                   ),
                                 ],
                               )

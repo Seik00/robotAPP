@@ -5,6 +5,7 @@ import 'package:robot/API/request.dart';
 import 'package:robot/main.dart';
 import 'package:robot/views/Explore/investRecord.dart';
 import 'package:robot/views/Part/pageView.dart';
+import 'package:robot/views/clientSide/quantity.dart';
 import '../../vendor/i18n/localizations.dart' show MyLocalizations;
 import 'package:skeleton_text/skeleton_text.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -204,10 +205,10 @@ class _StartUpState extends State<StartUp> {
                               _hasBeenPressed4 = false;
                               firstOrderController.text = '100';
                               maxOrderController.text = '6';
-                              stopProfitRateController.text = '1';
+                              stopProfitRateController.text = '1.8';
                               stopProfitCallbackController.text = '0.3';
-                              coverRateController.text = '1.8';
-                              coverCallBackRateController.text = '0.3';
+                              coverRateController.text = '3';
+                              coverCallBackRateController.text = '0.2';
                             })
                           },
                       ),
@@ -229,8 +230,8 @@ class _StartUpState extends State<StartUp> {
                               maxOrderController.text = '6';
                               stopProfitRateController.text = '1.3';
                               stopProfitCallbackController.text = '0.3';
-                              coverRateController.text = '1.5';
-                              coverCallBackRateController.text = '0.3';
+                              coverRateController.text = '5';
+                              coverCallBackRateController.text = '0.5';
                             })
                           },
                         ),
@@ -252,8 +253,8 @@ class _StartUpState extends State<StartUp> {
                               maxOrderController.text = '6';
                               stopProfitRateController.text = '1.5';
                               stopProfitCallbackController.text = '0.3';
-                              coverRateController.text = '2';
-                              coverCallBackRateController.text = '0.5';
+                              coverRateController.text = '4';
+                              coverCallBackRateController.text = '0.3';
                             })
                           },
                       ),
@@ -386,12 +387,12 @@ class _StartUpState extends State<StartUp> {
                                 coverCallBackRate(),
                                 SizedBox(height: 20.0),
 
-                                Container(
-                                  child: Text(MyLocalizations.of(context).getData('sec_password'),style: TextStyle(color: Colors.white,fontSize: 16),),
-                                ),
-                                SizedBox(height: 5.0),
-                                _inputPassword(),
-                                SizedBox(height: 20.0),
+                                // Container(
+                                //   child: Text(MyLocalizations.of(context).getData('sec_password'),style: TextStyle(color: Colors.white,fontSize: 16),),
+                                // ),
+                                // SizedBox(height: 5.0),
+                                // _inputPassword(),
+                                // SizedBox(height: 20.0),
                                 
                                 Container(
                                   child: Text(MyLocalizations.of(context).getData('strategy_type'),style: TextStyle(color:Colors.white),),
@@ -736,11 +737,10 @@ class _StartUpState extends State<StartUp> {
             title: MyLocalizations.of(context).getData('success'),
             desc:MyLocalizations.of(context).getData('operation_success'),
             onDissmissCallback: () {
-              
               Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => TopViewing(
+                  builder: (context) => Quantity(
                       widget.url, widget.onChangeLanguage)));
             })
           ..show();
@@ -793,7 +793,7 @@ class _StartUpState extends State<StartUp> {
             tmap['cover_rate'] = coverRateController.text.toString();
             tmap['cover_callback_rate'] = coverCallBackRateController.text.toString();
             tmap['recycle_status'] = _radioValue.toString();
-            tmap['sec_password'] = secpwdController.text;
+            //tmap['sec_password'] = secpwdController.text;
             print(tmap['platform']);
             print(tmap['market_id']);
           });

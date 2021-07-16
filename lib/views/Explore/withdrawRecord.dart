@@ -102,8 +102,40 @@ class _WithdrawRecordState extends State<WithdrawRecord> {
                         shrinkWrap: true,
                         itemCount: dataList.length,
                         itemBuilder: (BuildContext ctxt, int index) {
-                        return Container(
-                          margin: EdgeInsets.only(bottom:15),
+                        return Column(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [Color(0xfffFDE323), Color(0xfffF6FB15)])
+                              ),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        child: Text(MyLocalizations.of(context).getData('withdraw_usdt'),style: TextStyle(color:Colors.black,fontSize:16)),
+                                      ),
+                                      Container(
+                                        child: Text(dataList[index]['created_at'],style: TextStyle(color:Colors.black,fontSize:14)),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 5,),
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text('-'+dataList[index]['amount'] + ' USDT',style: TextStyle(color:Colors.black,fontSize:20,fontWeight:FontWeight.bold)),
+                                  )
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 5,),
+                            Container(
+                              margin: EdgeInsets.only(bottom:30),
                           child: ConstrainedBox(
                               constraints: new BoxConstraints(
                                 minHeight: MediaQuery.of(context).size.height/8,
@@ -112,7 +144,6 @@ class _WithdrawRecordState extends State<WithdrawRecord> {
                               ),
                               child: new DecoratedBox(
                                  decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10),
                                           gradient: LinearGradient(
                                           begin: Alignment.topCenter,
                                           end: Alignment.bottomCenter,
@@ -120,12 +151,26 @@ class _WithdrawRecordState extends State<WithdrawRecord> {
                                       ),
                                 child: Column(
                                   children: [
+                                    Container(
+                                      padding: EdgeInsets.all(10),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children:[
+                                          Text(MyLocalizations.of(context).getData('amount'),style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold)),
+                                          Text('-'+dataList[index]['amount']+' USDT',style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold)),
+                                        ]
+                                      ),
+                                    ),
+                                    Divider(
+                                      height: 2,
+                                      color: Colors.black,
+                                    ),
                                      Container(
                                       padding: EdgeInsets.all(10),
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children:[
-                                          Text(MyLocalizations.of(context).getData('status'),style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold)),
+                                          Text(MyLocalizations.of(context).getData('status'),style: TextStyle(color:Colors.black,fontSize:16,)),
                                           if(dataList[index]['status'] == 0)
                                           Text(MyLocalizations.of(context).getData('pending'),style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold)),
 
@@ -149,9 +194,9 @@ class _WithdrawRecordState extends State<WithdrawRecord> {
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children:[
-                                          Text(MyLocalizations.of(context).getData('address'),style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold)),
+                                          Text(MyLocalizations.of(context).getData('link_name'),style: TextStyle(color:Colors.black,fontSize:16)),
                                           SizedBox(width:10),
-                                          Expanded(child: Text('123123123123123123123123123123123123123',style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold),overflow: TextOverflow.ellipsis)),
+                                          Flexible(child: Text('TRC20',style: TextStyle(color:Colors.black,fontSize:16),textAlign: TextAlign.right,)),
                                         ]
                                       ),
                                     ),
@@ -164,8 +209,9 @@ class _WithdrawRecordState extends State<WithdrawRecord> {
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children:[
-                                          Text(MyLocalizations.of(context).getData('amount'),style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold)),
-                                          Text(dataList[index]['amount'],style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold)),
+                                          Text(MyLocalizations.of(context).getData('address'),style: TextStyle(color:Colors.black,fontSize:16)),
+                                          SizedBox(width:10),
+                                          Flexible(child: Text(dataList[index]['address'],style: TextStyle(color:Colors.black,fontSize:16,),textAlign: TextAlign.right,)),
                                         ]
                                       ),
                                     ),
@@ -178,8 +224,9 @@ class _WithdrawRecordState extends State<WithdrawRecord> {
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children:[
-                                          Text(MyLocalizations.of(context).getData('get_amount'),style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold)),
-                                          Text(dataList[index]['get_amount'],style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold)),
+                                          Text(MyLocalizations.of(context).getData('fees'),style: TextStyle(color:Colors.black,fontSize:16)),
+                                          SizedBox(width:10),
+                                          Flexible(child: Text(dataList[index]['fee']+' USDT',style: TextStyle(color:Colors.black,fontSize:16,),textAlign: TextAlign.right,)),
                                         ]
                                       ),
                                     ),
@@ -192,8 +239,22 @@ class _WithdrawRecordState extends State<WithdrawRecord> {
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children:[
-                                          Text(MyLocalizations.of(context).getData('date'),style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold)),
-                                          Text(dataList[index]['created_at'],style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold)),
+                                          Text(MyLocalizations.of(context).getData('reached_amount'),style: TextStyle(color:Colors.black,fontSize:16)),
+                                          Text(dataList[index]['get_amount']+' USDT',style: TextStyle(color:Colors.black,fontSize:16)),
+                                        ]
+                                      ),
+                                    ),
+                                    Divider(
+                                      height: 2,
+                                      color: Colors.black,
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.all(10),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children:[
+                                          Text(MyLocalizations.of(context).getData('date'),style: TextStyle(color:Colors.black,fontSize:16)),
+                                          Text(dataList[index]['created_at'],style: TextStyle(color:Colors.black,fontSize:16)),
                                         ]
                                       ),
                                     ),
@@ -201,6 +262,8 @@ class _WithdrawRecordState extends State<WithdrawRecord> {
                                 )
                               ),
                             ),
+                            )
+                          ],
                         );
                         }),
                     ]

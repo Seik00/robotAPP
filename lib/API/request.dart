@@ -212,6 +212,18 @@ class Request {
           btnOkIcon: Icons.cancel,
           btnOkColor: Colors.red)
           ..show();
+        }else if(contentData['message'] =='MIN_WITHDRAW_AMOUNT'){
+          AwesomeDialog(
+          context: context,
+          dialogType: DialogType.ERROR,
+          animType: AnimType.RIGHSLIDE,
+          headerAnimationLoop: false,
+          title: MyLocalizations.of(context).getData('error'),
+          desc: MyLocalizations.of(context).getData('withdraw_minimum_10'),
+          btnOkOnPress: () {},
+          btnOkIcon: Icons.cancel,
+          btnOkColor: Colors.red)
+          ..show();
         }else if(contentData['message'] =='NOT_ENUF_GAS'){
           AwesomeDialog(
           context: context,

@@ -116,7 +116,7 @@ class _ServiceCenterState extends State<ServiceCenter> {
                                 children: <Widget>[
                                   Container(
                                     child: Text(
-                                      MyLocalizations.of(context).getData('service_reply'),
+                                      MyLocalizations.of(context).getData('notification_list'),
                                       style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
                                     ),
                                   ),

@@ -29,7 +29,14 @@ class _MyAssestsState extends State<MyAssests>
   var gas;
   var gasPingyi;
   var walletType = 'point1';
+  var language;
   
+  getLanguage() async{
+    final prefs = await SharedPreferences.getInstance();
+    language = prefs.getString('language');
+    print(language);
+  }
+
   getRequest() async {
     var contentData = await Request().getRequest(Config().url + "api/member/get-member-info", context);
     if(contentData != null){
@@ -73,6 +80,7 @@ class _MyAssestsState extends State<MyAssests>
     super.initState();
     _tabController = new TabController(length: 3, vsync: this);
     getRequest();
+    getLanguage();
     initializeData(walletType);
   }
   @override
@@ -144,6 +152,7 @@ class _MyAssestsState extends State<MyAssests>
                 
                 Expanded(
                   child: TabBarView(
+                    physics: NeverScrollableScrollPhysics(),
                     children: [
                       SingleChildScrollView(
                         child: Column(
@@ -347,7 +356,7 @@ class _MyAssestsState extends State<MyAssests>
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              Text(dataList[index]['detail'],style: TextStyle(color: Colors.white,fontSize: 12),),
+                                              Text(language == 'zh'?dataList[index]['detail']:dataList[index]['detailen'],style: TextStyle(color: Colors.white,fontSize: 12),),
                                               SizedBox(height:5),
                                               dataList[index]['action'] =='-'?
                                               Text('-'+dataList[index]['found'],style: TextStyle(color: Colors.redAccent,fontSize: 16)):
@@ -456,7 +465,7 @@ class _MyAssestsState extends State<MyAssests>
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              Text(dataList[index]['detail'],style: TextStyle(color: Colors.white,fontSize: 12),),
+                                              Text(language == 'zh'?dataList[index]['detail']:dataList[index]['detailen'],style: TextStyle(color: Colors.white,fontSize: 12),),
                                               SizedBox(height:5),
                                               dataList[index]['action'] =='-'?
                                               Text('-'+dataList[index]['found'],style: TextStyle(color: Colors.redAccent,fontSize: 16)):
@@ -565,7 +574,7 @@ class _MyAssestsState extends State<MyAssests>
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              Text(dataList[index]['detail'],style: TextStyle(color: Colors.white,fontSize: 12),),
+                                              Text(language == 'zh'?dataList[index]['detail']:dataList[index]['detailen'],style: TextStyle(color: Colors.white,fontSize: 12),),
                                               SizedBox(height:5),
                                               dataList[index]['action'] =='-'?
                                               Text('-'+dataList[index]['found'],style: TextStyle(color: Colors.redAccent,fontSize: 16)):

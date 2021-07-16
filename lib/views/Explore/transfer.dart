@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:robot/API/config.dart';
 import 'package:robot/API/request.dart';
 import 'package:robot/vendor/i18n/localizations.dart';
+import 'package:robot/views/Explore/transferRecord.dart';
 import 'package:skeleton_text/skeleton_text.dart';
 import 'package:robot/API/config.dart';
 import 'package:robot/API/request.dart';
@@ -28,6 +30,9 @@ final TextEditingController amountController =
     new TextEditingController();
 final TextEditingController secpwdController =
     new TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController vcodeController = TextEditingController();
+
 final GlobalKey<FormState> _key = new GlobalKey();    
 bool _validate = false;
 bool visible = true;
@@ -38,6 +43,31 @@ var finalValue;
  var pointTwo;
  var pointThree;
  var _firstPress = true ;
+ var otp;
+var userEmail;
+Timer _timer;
+int _start = 60;
+var _firstPressTwo = true ;
+
+  void startTimer() {
+    const oneSec = const Duration(seconds: 1);
+    _timer = new Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (_start == 0) {
+          setState(() {
+            timer.cancel();
+            _start = 60;
+            _firstPressTwo = true ;
+          });
+        } else {
+          setState(() {
+            _start--;
+          });
+        }
+      },
+    );
+  }
 
  getRequest() async {
     var contentData = await Request()
@@ -47,6 +77,7 @@ var finalValue;
           pointOne = contentData['point1'];
           pointTwo = contentData['point2'];
           pointThree = contentData['point3'];
+          emailController.text = contentData['email'];
         });
       }
 
@@ -58,6 +89,12 @@ var finalValue;
   void initState() {
     super.initState();
    getRequest();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+     _timer.cancel();
   }
 
   @override
@@ -81,12 +118,29 @@ var finalValue;
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  IconButton(
-                    icon: Icon(
-                      Icons.keyboard_arrow_left,
-                      color: Colors.white,
-                    ),
-                  onPressed: () => Navigator.pop(context)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          Icons.keyboard_arrow_left,
+                          color: Colors.white,
+                        ),
+                      onPressed: () => Navigator.pop(context)),
+                      GestureDetector(
+                        onTap: (){
+                           Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => TransferRecord(widget.url)),
+                            );
+                        },
+                        child:Container(
+                          alignment: Alignment.bottomRight,
+                          child: 
+                          Text(MyLocalizations.of(context).getData('transfer_record'),style: TextStyle(color: Colors.white,fontSize: 16),)),
+                      )
+                    ],
+                  ),
                   Center(
                       child: Text(
                           MyLocalizations.of(context).getData('transfer'),
@@ -245,6 +299,20 @@ var finalValue;
                                 }),
                           ),
                            SizedBox(height: 20.0),
+                          
+                          Container(
+                            child: Text(MyLocalizations.of(context).getData('email'),style: TextStyle(color: Colors.white,fontSize: 16),),
+                          ),
+                          SizedBox(height: 5.0),
+                          _inputEmail(),
+                          SizedBox(height: 20.0),
+                          
+                          Container(
+                            child: Text(MyLocalizations.of(context).getData('vcode'),style: TextStyle(color: Colors.white,fontSize: 16),),
+                          ),
+                          SizedBox(height: 5.0),
+                          _inputVcode(),
+                          SizedBox(height: 20.0),
 
                           Container(
                             child: Text(MyLocalizations.of(context).getData('sec_password'),style: TextStyle(color: Colors.white,fontSize: 16),),
@@ -257,9 +325,12 @@ var finalValue;
                             absorbing: !_firstPress,
                             child: GestureDetector(
                               onTap: ()async{
+                                var tmap = new Map<String, dynamic>();
                                 setState(() {
-                                  _sendToServer();
+                                  tmap['otp'] =vcodeController.text;
+                                  checkOtp(tmap);
                                   _firstPress = false ;
+                                  print(tmap['otp']);
                                 });
                               }, 
                               child: Center(
@@ -279,7 +350,8 @@ var finalValue;
                                     )),
                               ),
                             ),
-                          )
+                          ),
+                          SizedBox(height: 20.0),
                         ],
                       )),
                 ),
@@ -289,6 +361,98 @@ var finalValue;
           ),
           ],
         ),
+      ),
+    );
+  }
+
+   _inputEmail() {
+    return Row(
+      children: [
+        Stack(
+          children: [
+            Container(
+              width: 250,
+              child: TextFormField(
+                  textAlign: TextAlign.left,
+                  keyboardType: TextInputType.text,
+                  enabled: false,
+                  controller: emailController,
+                  validator: validateInput,
+                  decoration: new InputDecoration(
+                  contentPadding: const EdgeInsets.all(8.0),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(color: Colors.grey, width: 1),
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                ),
+                  onSaved: (str) {
+                  }),
+            ),
+          ],
+        ),
+        Expanded(
+          child: AbsorbPointer(
+            absorbing: !_firstPressTwo,
+            child: GestureDetector(
+              onTap: (){
+                if(emailController.text == ''){
+                    AwesomeDialog(
+                    context: context,
+                    dialogType: DialogType.ERROR,
+                    animType: AnimType.RIGHSLIDE,
+                    headerAnimationLoop: false,
+                    title: MyLocalizations.of(context).getData('error'),
+                    desc: MyLocalizations.of(context).getData('enter_email'),
+                    btnOkOnPress: () {},
+                    btnOkIcon: Icons.cancel,
+                    btnOkColor: Colors.red)
+                    ..show();
+                }else{
+                   setState(() {
+                    var tmap = new Map<String, dynamic>();
+                    tmap['otp_type'] = 'email';
+                    postOtp(tmap);
+                    startTimer();
+                    _firstPressTwo = false ;
+                });
+                }
+              },
+            child: 
+            _start ==60?
+            Icon(Icons.send,color: Color(0xfff6fb15),):
+            Container(
+              margin: EdgeInsets.only(left:20),
+              child: Text("$_start",style: TextStyle(color: Colors.white,fontSize: 20),))
+            ),
+          )
+        )
+      ],
+    );
+  }
+
+ 
+
+  _inputVcode() {
+    return new Container(
+      child: TextFormField(
+        controller: vcodeController,
+        validator: validateInput,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        decoration: new InputDecoration(
+        contentPadding: const EdgeInsets.all(8.0),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide(color: Colors.grey, width: 1),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+      ),
+        keyboardType: TextInputType.text,
+        onSaved: (str) {
+          print(str);
+        },
       ),
     );
   }
@@ -366,6 +530,13 @@ var finalValue;
     );
   }
 
+  String validateInput(String value) {
+    if (value.isEmpty) {
+      return MyLocalizations.of(context).getData('value_fill_in');
+    } 
+    return null;
+  }
+
   String validateUsername(String value) {
     if (value.isEmpty) {
       return  MyLocalizations.of(context).getData('value_fill_in');
@@ -387,7 +558,51 @@ var finalValue;
     return null;
   }
 
-  
+  postOtp(bodyData) async {
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var contentData = await Request().postRequest(Config().url+"api/member/requestUserOTP", bodyData, token, context);
+
+    print(contentData);
+    if (contentData != null) {
+      if (contentData['code'] == 0) {
+        AwesomeDialog(
+        context: context,
+        animType: AnimType.LEFTSLIDE,
+        headerAnimationLoop: false,
+        dialogType: DialogType.SUCCES,
+        autoHide: Duration(seconds: 2),
+        title: MyLocalizations.of(context).getData('success'),
+        desc:MyLocalizations.of(context).getData('otp_sent'),
+        onDissmissCallback: () {
+         otp = contentData['data'];
+         print(otp);
+        })
+      ..show();
+    } else {
+     
+    }
+    }
+  }
+
+  checkOtp(bodyData) async {
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var contentData = await Request().postRequest(Config().url+"api/member/checkUserOTP", bodyData, token, context);
+
+    print(contentData);
+    if (contentData != null) {
+      if (contentData['code'] == 0) {
+       _sendToServer();
+    } else {
+     
+    }
+    setState(() {
+      _firstPress = true ;
+    });
+    }
+  }
+
   postData(bodyData) async {
     final prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');

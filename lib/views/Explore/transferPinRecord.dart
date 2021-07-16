@@ -12,56 +12,41 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-class TransactionRecord extends StatefulWidget {
+class TransferPinRecord extends StatefulWidget {
    final url;
-   final robotID;
 
-  TransactionRecord(this.url,this.robotID);
+  TransferPinRecord(this.url);
   @override
-  _TransactionRecordState createState() => _TransactionRecordState();
+  _TransferPinRecordState createState() => _TransferPinRecordState();
 }
 
-class _TransactionRecordState extends State<TransactionRecord> {
+class _TransferPinRecordState extends State<TransferPinRecord> {
   var type = '';
-  var dataList;
-  var language;
-  
-  getLanguage() async{
-    final prefs = await SharedPreferences.getInstance();
-    language = prefs.getString('language');
-    print(language);
-  }
-
-  initializeData() async {
-      final prefs = await SharedPreferences.getInstance();
-      var token = prefs.getString('token');
-
-      var body = {
-        'robot_id': widget.robotID.toString(),
-      };
-      print(body);
-      var uri = Uri.https(Config().url2, 'api/trade-robot/log', body);
-   
-      var response = await http.get(uri, headers: {
-        'Authorization': 'Bearer $token'
-      }).timeout(new Duration(seconds: 10));
-      var contentData = json.decode(response.body);
-        print(contentData);
+  List dataList=[];
+  var username=[];
+  var date=[];
+ 
+  getPinRecord() async {
+    var contentData = await Request().getRequest(Config().url + "api/pin/pinTransferRecord", context);
+    
+    if(contentData != null){
       if (contentData['code'] == 0) {
-        setState(() {
-           dataList = contentData['data']['data'];
-      
-        });
+          setState(() {
+             dataList = contentData['data']['data'].toList();
+             for(int i= 0; i<dataList.length; i++){
+              print(username);
+              print(date);
+            }
+          });
       }
-      
+    }
   }
 
 
   @override
   void initState() {
     super.initState();
-    initializeData();
-    getLanguage();
+    getPinRecord();
   }
 
 
@@ -110,14 +95,13 @@ class _TransactionRecordState extends State<TransactionRecord> {
                             child: 
                             Container(
                                alignment: Alignment.centerLeft,
-                              child: Text(MyLocalizations.of(context).getData('log'),style: TextStyle(color: Colors.white,fontSize: 20),))),
+                              child: Text(MyLocalizations.of(context).getData('transfer_pin_record'),style: TextStyle(color: Colors.white,fontSize: 20),))),
                           
                         ],
                       ),
                     ],
                   ),
                 ),
-                dataList==null?Container():
                 ListView.builder(
                   primary: false,
                   shrinkWrap: true,
@@ -132,42 +116,44 @@ class _TransactionRecordState extends State<TransactionRecord> {
                     ),
                     child: Column(
                       children: [
-                        Container(
-                          child: ExpansionTile(
-                            title: Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(dataList[index]['platform'],style: TextStyle(color: Colors.white,fontSize: 18),),
-                                  SizedBox(height:5),
-                                  Text(
-                                    language=='zh'?
-                                    dataList[index]['content']:
-                                    dataList[index]['content_log']
-                                    ,style: TextStyle(color: Colors.white,fontSize: 14)),
-                                  SizedBox(height:5),
-                                ],
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          textBaseline: TextBaseline.alphabetic,
+                          children: [
+                            Container(
+                              child: Text(
+                                MyLocalizations.of(context).getData('transfer_pin_to'),
+                                style: TextStyle(color: Colors.white,fontSize:16),
                               ),
                             ),
-                            children: <Widget>[
-                              Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height:10),
-                                  Container(
-                                    alignment: Alignment.bottomLeft,
-                                    padding: EdgeInsets.only(left:15),
-                                    child: Row(
-                                      children: [
-                                        Text(MyLocalizations.of(context).getData('order_time'),style: TextStyle(color: Colors.white70)),
-                                        Text(dataList[index]['ctime'],style: TextStyle(color: Colors.white70)),
-                                      ],
-                                    )),
-                                  SizedBox(height:5),
-                                ],
+                            Container(
+                              child: Text(
+                                dataList[index]['to_user']['username'],
+                                style: TextStyle(color: Colors.white,fontSize:14),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height:10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          textBaseline: TextBaseline.alphabetic,
+                          children: [
+                            Container(
+                              child: Text(
+                                  MyLocalizations.of(context).getData('time'),
+                                style: TextStyle(color: Colors.white,fontSize:16),
+                              ),
+                            ),
+                              Container(
+                              child: Text(
+                                dataList[index]['to_user']['created_at'],
+                                style: TextStyle(color: Colors.white,fontSize:14),
+                              ),
+                            ),
+                          ],
                         )
                       ],
                     ),

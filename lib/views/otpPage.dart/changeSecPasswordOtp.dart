@@ -328,7 +328,7 @@ class _ChangeSecPasswordOtpState extends State<ChangeSecPasswordOtp>
         dialogType: DialogType.SUCCES,
         autoHide: Duration(seconds: 2),
         title: MyLocalizations.of(context).getData('success'),
-        desc:MyLocalizations.of(context).getData('operation_success'),
+        desc:MyLocalizations.of(context).getData('otp_sent'),
         onDissmissCallback: () {
          otp = contentData['data'];
          print(otp);

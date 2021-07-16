@@ -50,6 +50,11 @@ class _TradeDetailsState extends State<TradeDetails> {
   int _radioValue = 0;
   int _value = 1;
   var finalValue;
+  
+  bool _hasBeenPressed = false;
+  bool _hasBeenPressed2 = false;
+  bool _hasBeenPressed3 = false;
+  bool _hasBeenPressed4 = false;
 
   void _handleRadioValueChange(int value) {
     setState(() {
@@ -141,7 +146,7 @@ class _TradeDetailsState extends State<TradeDetails> {
                             child: 
                             Container(
                                alignment: Alignment.centerLeft,
-                              child: Text(MyLocalizations.of(context).getData('trade_details'),style: TextStyle(color: Colors.white,fontSize: 20),))),     
+                              child: Text(MyLocalizations.of(context).getData('transaction_settings'),style: TextStyle(color: Colors.white,fontSize: 20),))),     
                         ],
                       ),
                     ],
@@ -163,6 +168,105 @@ class _TradeDetailsState extends State<TradeDetails> {
                         ],
                       ),
                     ),
+                    Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: RaisedButton(
+                          child: new Text(MyLocalizations.of(context).getData('radical'),style: TextStyle(fontSize: 12),),
+                          textColor: Colors.grey,
+                          // 2
+                          color: _hasBeenPressed ? Colors.yellowAccent : Colors.black,
+                          // 3
+                          onPressed: () => {
+                            setState(() {
+                              _hasBeenPressed = true;
+                              _hasBeenPressed2 = false;
+                              _hasBeenPressed3 = false;
+                              _hasBeenPressed4 = false;
+                              firstOrderValueController.text = '100';
+                              maxOrderCountController.text = '6';
+                              stopProfitRateController.text = '1.8';
+                              stopProfitCallbackRateController.text = '0.3';
+                              coverRateController.text = '3';
+                              coverCallbackRateController.text = '0.2';
+                            })
+                          },
+                      ),
+                        ),
+                      Expanded(
+                        child: RaisedButton(
+                          child: new Text(MyLocalizations.of(context).getData('conserve'),style: TextStyle(fontSize: 12)),
+                          textColor: Colors.grey,
+                          // 2
+                          color: _hasBeenPressed2 ? Colors.yellowAccent : Colors.black,
+                          // 3
+                          onPressed: () => {
+                            setState(() {
+                              _hasBeenPressed = false;
+                              _hasBeenPressed2 = true;
+                              _hasBeenPressed3 = false;
+                              _hasBeenPressed4 = false;
+                              firstOrderValueController.text = '100';
+                              maxOrderCountController.text = '6';
+                              stopProfitRateController.text = '1.3';
+                              stopProfitCallbackRateController.text = '0.3';
+                              coverRateController.text = '5';
+                              coverCallbackRateController.text = '0.5';
+                            })
+                          },
+                        ),
+                      ),
+                        Expanded(
+                          child: RaisedButton(
+                          child: new Text(MyLocalizations.of(context).getData('stable'),style: TextStyle(fontSize: 12)),
+                          textColor: Colors.grey,
+                          // 2
+                          color: _hasBeenPressed3 ? Colors.yellowAccent : Colors.black,
+                          // 3
+                          onPressed: () => {
+                            setState(() {
+                              _hasBeenPressed = false;
+                              _hasBeenPressed2 = false;
+                              _hasBeenPressed3 = true;
+                              _hasBeenPressed4 = false;
+                              firstOrderValueController.text = '100';
+                              maxOrderCountController.text = '6';
+                              stopProfitRateController.text = '1.5';
+                              stopProfitCallbackRateController.text = '0.3';
+                              coverRateController.text = '4';
+                              coverCallbackRateController.text = '0.3';
+                            })
+                          },
+                      ),
+                        ),
+                        Expanded(
+                          child: RaisedButton(
+                          child: new Text(MyLocalizations.of(context).getData('customize'),style: TextStyle(fontSize: 12)),
+                          textColor: Colors.grey,
+                          // 2
+                          color: _hasBeenPressed4 ? Colors.yellowAccent : Colors.black,
+                          // 3
+                          onPressed: () => {
+                            setState(() {
+                              _hasBeenPressed = false;
+                              _hasBeenPressed2 = false;
+                              _hasBeenPressed3 = false;
+                              _hasBeenPressed4 = true;
+                              firstOrderValueController.text = '';
+                              maxOrderCountController.text = '';
+                              stopProfitRateController.text = '';
+                              stopProfitCallbackRateController.text = '';
+                              coverRateController.text = '';
+                              coverCallbackRateController.text = '';
+                            })
+                          },
+                      ),
+                        )
+                      ],
+                    ),
+                  ),
                     Container(
                         padding: EdgeInsets.only(left: 30, right: 30, top: 0),
                         child: Form(
@@ -572,11 +676,7 @@ class _TradeDetailsState extends State<TradeDetails> {
             title: MyLocalizations.of(context).getData('success'),
             desc:MyLocalizations.of(context).getData('operation_success'),
             onDissmissCallback: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => TopViewing(
-                        widget.url, widget.onChangeLanguage)));
+              Navigator.pop(context);
               })
           ..show();
     } else {

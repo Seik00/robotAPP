@@ -295,7 +295,7 @@ class _ServicesState extends State<Services>
                               ),
                             ),
                           SizedBox(height:5),
-                          Text(MyLocalizations.of(context).getData('api_binding'),style: TextStyle(fontSize: 12,color: Colors.black),overflow: TextOverflow.ellipsis,)
+                          Text('API',style: TextStyle(fontSize: 12,color: Colors.black),overflow: TextOverflow.ellipsis,)
                         ],
                       ),
                     ),
@@ -329,7 +329,7 @@ class _ServicesState extends State<Services>
                               ),
                             ),
                             SizedBox(height:5),
-                          Text(MyLocalizations.of(context).getData('pin_manage'),style: TextStyle(fontSize: 12,color: Colors.black),overflow: TextOverflow.ellipsis,)
+                          Text('PIN',style: TextStyle(fontSize: 12,color: Colors.black),overflow: TextOverflow.ellipsis,)
                         ],
                       ),
                     ),

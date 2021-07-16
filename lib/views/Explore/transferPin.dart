@@ -4,6 +4,7 @@ import 'package:robot/API/config.dart';
 import 'package:robot/API/request.dart';
 import 'package:robot/main.dart';
 import 'package:robot/views/Explore/investRecord.dart';
+import 'package:robot/views/Explore/transferPinRecord.dart';
 import '../../vendor/i18n/localizations.dart' show MyLocalizations;
 import 'package:skeleton_text/skeleton_text.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -93,12 +94,21 @@ class _TransferPinState extends State<TransferPin> {
                             Container(
                                alignment: Alignment.centerLeft,
                               child: Text(MyLocalizations.of(context).getData('transfer_pin'),style: TextStyle(color: Colors.white,fontSize: 20),))),
-                          // Container(
-                          //   padding: EdgeInsets.only(right:5),
-                          //   child: Text(
-                          //     'Transfer Pin Record',style: TextStyle(color: Colors.white,fontSize: 16)
-                          //   ),
-                          // )
+                          GestureDetector(
+                            onTap: (){
+                               Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => TransferPinRecord(widget.url)),
+                              );
+                            },
+                            child: Container(
+                              padding: EdgeInsets.only(right:5),
+                              child: Text(
+                                MyLocalizations.of(context).getData('transfer_pin_record'),style: TextStyle(color: Colors.white,fontSize: 16)
+                              ),
+                            ),
+                          )
                           
                         ],
                       ),

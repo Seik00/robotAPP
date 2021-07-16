@@ -35,6 +35,7 @@ class _AllTransactionRecordState extends State<AllTransactionRecord> {
     super.initState();
     getRequest();
     scrollController.addListener(() {
+      print('qqqqq');
       if (scrollController.position.maxScrollExtent ==
           scrollController.offset) {
         if (beyondPages) {
@@ -43,7 +44,7 @@ class _AllTransactionRecordState extends State<AllTransactionRecord> {
             pageParams['current_page'] += 1;
           });
           getRequest();
-          // print(pageParams['current_page']);
+           print(pageParams['current_page']);
         } else {
           setState(() {
             startLoading = false;
@@ -60,9 +61,7 @@ class _AllTransactionRecordState extends State<AllTransactionRecord> {
   }
 
   getRequest() async {
-    var contentData = await Request().getRequest(
-        Config().url +
-            "api/trade-revenue/tradeOrder?page=" +pageParams['current_page'].toString(),context);
+    var contentData = await Request().getRequest(Config().url +"api/trade-revenue/tradeOrder?page=" +pageParams['current_page'].toString(),context);
     if (contentData['code'] == 0) {
       if (mounted) {
         setState(() {

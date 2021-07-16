@@ -132,21 +132,21 @@ class _NoticListState extends State<NoticList> {
                                       gradient: LinearGradient(
                                       begin: Alignment.topCenter,
                                       end: Alignment.bottomCenter,
-                                      colors: [Color(0xff9957ED), Color(0xff7835E5)])
+                                      colors: [Color(0xfffFDE323), Color(0xfffF6FB15)])
                                   ),
                                   child: Column(
                                     children: [
                                       Container(
                                         alignment: Alignment.topRight,
                                         padding: EdgeInsets.all(10),
-                                        child:Text(dataList[index]['created_at'],style: TextStyle(color:Colors.white,fontSize:16,fontWeight:FontWeight.bold)),
+                                        child:Text(dataList[index]['created_at'],style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold)),
                                        
                                       ),
                                       Container(
                                         alignment: Alignment.centerLeft,
                                         padding: EdgeInsets.all(10),
                                           child:
-                                            Text(dataList[index]['title'],style: TextStyle(color:Colors.white,fontSize:16,fontWeight:FontWeight.bold),overflow: TextOverflow.ellipsis,),
+                                            Text(dataList[index]['title'],style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold),overflow: TextOverflow.ellipsis,),
                                       ),
                                     ],
                                   )

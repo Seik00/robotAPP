@@ -31,45 +31,43 @@ class _CustomerServiceState extends State<CustomerService> {
   int _value = 1;
   var finalValue;
 
-  postData(String url, dynamic data) async {
-  final prefs = await SharedPreferences.getInstance();
-  var token = prefs.getString('token');
-  http.Response response =
-      await http.post(url + "api/ticket/create-ticket", body: data, headers: {
-    'Accept': 'application/json',
-    'Authorization': 'Bearer $token',
-  }).timeout(new Duration(seconds: 10));
-
-  var contentData = json.decode(response.body);
-  print(contentData);
-
-  if (contentData['code'] == 0) {
-     AwesomeDialog(
-      context: context,
-      animType: AnimType.LEFTSLIDE,
-      headerAnimationLoop: false,
-      dialogType: DialogType.SUCCES,
-      autoHide: Duration(seconds: 3),
-      title: MyLocalizations.of(context).getData('success'),
-      desc:MyLocalizations.of(context).getData('operation_success'),
-      onDissmissCallback: () {
-        Navigator.pop(context);
-      })
-    ..show();
-  } else {
-    AwesomeDialog(
-      context: context,
-      dialogType: DialogType.ERROR,
-      animType: AnimType.RIGHSLIDE,
-      headerAnimationLoop: false,
-      title: MyLocalizations.of(context).getData('error'),
-      desc: contentData['message'],
-      btnOkOnPress: () {},
-      btnOkIcon: Icons.cancel,
-      btnOkColor: Colors.red)
-    ..show();
+  postData(bodyData) async {
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    print(bodyData);
+    var contentData = await Request().postRequest(Config().url+"api/ticket/create-ticket", bodyData, token, context);
+    
+    print(contentData);
+    if (contentData['code'] == 0) {
+           AwesomeDialog(
+            context: context,
+            animType: AnimType.LEFTSLIDE,
+            headerAnimationLoop: false,
+            dialogType: DialogType.SUCCES,
+            autoHide: Duration(seconds: 2),
+            title: MyLocalizations.of(context).getData('success'),
+            desc:MyLocalizations.of(context).getData('operation_success'),
+            onDissmissCallback: () {
+              Navigator.pop(context);
+              })
+          ..show();
+    } else {
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.ERROR,
+        animType: AnimType.RIGHSLIDE,
+        headerAnimationLoop: false,
+        title: MyLocalizations.of(context).getData('error'),
+        desc: contentData['message'],
+        btnOkOnPress: () {},
+        btnOkIcon: Icons.cancel,
+        btnOkColor: Colors.red)
+      ..show();
+    }
+    setState(() {
+     
+    });
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -287,7 +285,7 @@ class _CustomerServiceState extends State<CustomerService> {
           tmap['body'] = _bodyController.text;
           print(tmap['title']);
         });
-        postData(widget.url,tmap);
+        postData(tmap);
     } else {
       setState(() {
         _validate = true;

@@ -49,7 +49,7 @@ class _SecurityCenterState extends State<SecurityCenter>
       barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
-            backgroundColor: Colors.blue[100],
+            backgroundColor: Color(0xfffFDE323),
             title: Text(MyLocalizations.of(context).getData('languageSetting'),style: TextStyle(color: Colors.black)),
             content: Wrap(
               direction: Axis.vertical,
