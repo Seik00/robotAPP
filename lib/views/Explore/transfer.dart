@@ -32,6 +32,8 @@ final TextEditingController secpwdController =
     new TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController vcodeController = TextEditingController();
+TextEditingController finalAmountController = TextEditingController();
+final TextEditingController feesController = new TextEditingController();
 
 final GlobalKey<FormState> _key = new GlobalKey();    
 bool _validate = false;
@@ -48,6 +50,10 @@ var userEmail;
 Timer _timer;
 int _start = 60;
 var _firstPressTwo = true ;
+var total;
+var inputValue;
+var fees;
+bool unhide = true;
 
   void startTimer() {
     const oneSec = const Duration(seconds: 1);
@@ -135,6 +141,7 @@ var _firstPressTwo = true ;
                             );
                         },
                         child:Container(
+                          padding: EdgeInsets.only(right: 5),
                           alignment: Alignment.bottomRight,
                           child: 
                           Text(MyLocalizations.of(context).getData('transfer_record'),style: TextStyle(color: Colors.white,fontSize: 16),)),
@@ -258,13 +265,6 @@ var _firstPressTwo = true ;
                            SizedBox(height: 20.0),
 
                           Container(
-                            child: Text(MyLocalizations.of(context).getData('amount'),style: TextStyle(color: Colors.white,fontSize: 16),),
-                          ),
-                          SizedBox(height: 5.0),
-                          _inputAmount(),
-                           SizedBox(height: 20.0),
-
-                          Container(
                             child: Text(MyLocalizations.of(context).getData('wallet_type'),style: TextStyle(color: Colors.white,fontSize: 16),),
                           ),
                           SizedBox(height: 5.0),
@@ -283,10 +283,10 @@ var _firstPressTwo = true ;
                                     child: Text('USDT'),
                                     value: 1,
                                   ),
-                                  DropdownMenuItem(
-                                    child: Text(MyLocalizations.of(context).getData('gas')),
-                                    value: 2,
-                                  ),
+                                  // DropdownMenuItem(
+                                  //   child: Text(MyLocalizations.of(context).getData('gas')),
+                                  //   value: 2,
+                                  // ),
                                   DropdownMenuItem(
                                     child: Text(MyLocalizations.of(context).getData('gas_pingyi')),
                                     value: 3,
@@ -298,6 +298,34 @@ var _firstPressTwo = true ;
                                   });
                                 }),
                           ),
+                          SizedBox(height: 20.0),
+                          Container(
+                            child: Text(MyLocalizations.of(context).getData('amount'),style: TextStyle(color: Colors.white,fontSize: 16),),
+                          ),
+                          SizedBox(height: 5.0),
+                          _inputAmount(),
+                          SizedBox(height: 5.0),
+                          if(unhide = true)
+                          Container(
+                            padding: EdgeInsets.only(left:15),
+                            child: Text(MyLocalizations.of(context).getData('transfer_minimum_10_gas_free'),style: TextStyle(color: Colors.red,fontSize: 12),)),
+                          
+                          if(_value !=3)
+                          Container(
+                            padding: EdgeInsets.only(top:20,bottom:5),
+                            child: Text(MyLocalizations.of(context).getData('fees')+' (USDT)',style: TextStyle(color: Colors.white,fontSize: 16),),
+                          ),
+                          if(_value !=3)
+                          _inputFees(),
+                        
+                          if(_value !=3)
+                          Container(
+                            padding: EdgeInsets.only(top:20,bottom:5),
+                            child: Text(MyLocalizations.of(context).getData('reached_amount'),style: TextStyle(color: Colors.white,fontSize: 16),),
+                          ),
+                          if(_value !=3)
+                          _inputFinalAmount(),
+                          
                            SizedBox(height: 20.0),
                           
                           Container(
@@ -481,9 +509,49 @@ var _firstPressTwo = true ;
     );
   }
 
+  _inputFinalAmount() {
+    return new Container(
+      child: TextFormField(
+        controller: finalAmountController,
+        enabled: false,
+        autofocus: false,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        decoration: new InputDecoration(
+              contentPadding: const EdgeInsets.all(8.0),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Colors.grey, width: 1),
+              ),
+              filled: true,
+              fillColor: Colors.white,
+            ),
+        keyboardType: TextInputType.number,
+        onSaved: (str) {
+          print(str);
+        },
+      ),
+    );
+  }
+
   _inputAmount() {
     return new Container(
       child: TextFormField(
+        onChanged: (String values) async {
+           setState(() {
+             print(values);
+           });
+          if (values == ""|| values.isEmpty || values =='0' ||values =='1') {
+            finalAmountController.text = '0';
+          } else {
+            inputValue = double.parse(values);
+            total = inputValue - 2;
+            setState(() {
+              finalAmountController.text = total.toStringAsFixed(2); 
+            });
+            
+            print(total);
+          }
+        },
         controller: amountController,
         validator: validateAmount,
         autofocus: false,
@@ -493,6 +561,32 @@ var _firstPressTwo = true ;
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.0),
                 borderSide: BorderSide(color: Colors.grey, width: 10),
+              ),
+              filled: true,
+              fillColor: Colors.white,
+            ),
+        keyboardType: TextInputType.number,
+        onSaved: (str) {
+          print(str);
+        },
+      ),
+    );
+  }
+
+   _inputFees() {
+    return new Container(
+      child: TextFormField(
+        controller: feesController,
+        enabled: false,
+        autofocus: false,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        decoration: new InputDecoration(
+              contentPadding: const EdgeInsets.all(8.0),
+              hintText: '2',
+              hintStyle: TextStyle(color: Colors.black),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Colors.grey, width: 1),
               ),
               filled: true,
               fillColor: Colors.white,
@@ -547,7 +641,10 @@ var _firstPressTwo = true ;
     String validateAmount(String value) {
     if (value.isEmpty) {
       return  MyLocalizations.of(context).getData('value_fill_in');
-    } 
+    } else if (double.parse(value) < 10) {
+      unhide = false;
+      return MyLocalizations.of(context).getData('transfer_minimum_10');
+    }
     return null;
   }
   

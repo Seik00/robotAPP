@@ -10,16 +10,16 @@ import 'package:robot/views/Explore/changeWallet.dart';
 import 'package:robot/views/Explore/comingSoon.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-class Product extends StatefulWidget {
+class Test extends StatefulWidget {
   final url;
   final onChangeLanguage;
 
-  Product(this.url, this.onChangeLanguage);
+  Test(this.url, this.onChangeLanguage);
   @override
-  _ProductState createState() => _ProductState();
+  _TestState createState() => _TestState();
 }
 
-class _ProductState extends State<Product>
+class _TestState extends State<Test>
     with SingleTickerProviderStateMixin {
 
   var dataList = [];
@@ -58,11 +58,7 @@ class _ProductState extends State<Product>
                  Center(
                     child: InkWell(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ComingSoon(widget.url,widget.onChangeLanguage)),
-                        );
+                        Navigator.pop(context,2);
                       },
                       child: Container(
                         decoration: BoxDecoration(  

@@ -143,6 +143,8 @@ class _TransactionRecordState extends State<TransactionRecord> {
                                   Text(
                                     language=='zh'?
                                     dataList[index]['content']:
+                                    language=='ms'?
+                                    dataList[index]['content_log_vn']:
                                     dataList[index]['content_log']
                                     ,style: TextStyle(color: Colors.white,fontSize: 14)),
                                   SizedBox(height:5),

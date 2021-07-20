@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:robot/API/config.dart';
+import 'package:robot/API/request.dart';
 import 'package:robot/vendor/i18n/localizations.dart';
 import 'package:robot/views/SystemSetting/changePwd.dart';
 import 'package:robot/views/SystemSetting/changeSecurityPwd.dart';
@@ -11,6 +13,7 @@ import 'package:robot/views/otpPage.dart/changePasswordOtp.dart';
 import 'package:robot/views/otpPage.dart/changeSecPasswordOtp.dart';
 import '../../vendor/i18n/localizations.dart' show MyLocalizations;
 import 'package:package_info/package_info.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SecurityCenter extends StatefulWidget {
   final url;
@@ -28,11 +31,13 @@ class _SecurityCenterState extends State<SecurityCenter>
 
   var currentLanguage;
   String versionName;
+  var language;
   
   @override
   void initState() {
     super.initState();
     package();
+    getLanguage();
   }
 
   package() async{
@@ -43,6 +48,34 @@ class _SecurityCenterState extends State<SecurityCenter>
     });
     
   }
+  getLanguage() async{
+    final prefs = await SharedPreferences.getInstance();
+    language = prefs.getString('language');
+    print(language);
+    if(language == 'zh'){
+      language = 'cn';
+    }
+    _sendToServer();
+  }
+
+  _sendToServer() {
+    var tmap = new Map<String, dynamic>();
+    if (mounted)
+      setState(() {
+        tmap['language'] =language;
+      });
+      postLanguage(tmap);
+  }
+
+  postLanguage(bodyData) async {
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var contentData = await Request().postRequest(Config().url+"api/member/setLanguage", bodyData, token, context);
+
+    print(contentData);
+    
+  }
+
   Future<void> _showLanguages() async {
     return showDialog<void>(
       context: context,
@@ -59,6 +92,7 @@ class _SecurityCenterState extends State<SecurityCenter>
                     onTap: () {
                       widget.onChangeLanguage("zh");
                       currentLanguage = "zh";
+                      print(currentLanguage);
                       Navigator.pop(context);
                     },
                     child: Row(children: [
@@ -80,6 +114,7 @@ class _SecurityCenterState extends State<SecurityCenter>
                     onTap: () {
                       widget.onChangeLanguage("en");
                       currentLanguage = "en";
+                       print(currentLanguage);
                       Navigator.pop(context);
                     },
                     child: Row(children:[
@@ -95,6 +130,28 @@ class _SecurityCenterState extends State<SecurityCenter>
                           )
                       )),
                       Text(MyLocalizations.of(context).getData('en'),style: TextStyle(color: Colors.black))
+                    ]),
+                   ),
+                 GestureDetector(
+                    onTap: () {
+                      widget.onChangeLanguage("vi");
+                      currentLanguage = "vi";
+                       print(currentLanguage);
+                      Navigator.pop(context);
+                    },
+                    child: Row(children:[
+                      Container(
+                        margin: EdgeInsets.only(right:10),
+                        width: 30.0,
+                        height: 30.0,
+                        decoration: new BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          image: new DecorationImage(
+                              fit: BoxFit.cover,
+                              image: AssetImage("lib/assets/img/vietnam_flag.png")
+                          )
+                      )),
+                      Text(MyLocalizations.of(context).getData('vn'),style: TextStyle(color: Colors.black))
                     ]),
                    ),
               ],

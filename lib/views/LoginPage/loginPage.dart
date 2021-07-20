@@ -534,8 +534,68 @@ class _LoginPageState extends State<LoginPage>
                             ),
                           ),
                           Spacer(flex: 1,),
-                          Container(
-                            child: Text('Login',style: TextStyle(color: Colors.white,fontSize: 30)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                child: Text(MyLocalizations.of(context).getData('login'),style: TextStyle(color: Colors.white,fontSize: 30)),
+                              ),
+                               Container(
+                              child: Row(children: <Widget>[
+                            GestureDetector(
+                                onTap: () {
+                                  widget.onChangeLanguage("en");
+                                  currentLanguage = "en";
+                                },
+                                child:Container(
+                                  margin: EdgeInsets.only(right:10),
+                                  width: 30.0,
+                                  height: 30.0,
+                                  decoration: new BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: new DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: AssetImage("lib/assets/img/uk_flag.png")
+                                    )
+                                )),
+                                
+                            ),
+                            GestureDetector(
+                                onTap: () {
+                                  widget.onChangeLanguage("zh");
+                                  currentLanguage = "zh";
+                                },
+                                child:Container(
+                                  margin: EdgeInsets.only(right:10),
+                                  width: 30.0,
+                                  height: 30.0,
+                                  decoration: new BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: new DecorationImage(
+                                        fit: BoxFit.fill,
+                                        image: AssetImage("lib/assets/img/cn_flag.png")
+                                    )
+                                )),
+                            ),
+                            GestureDetector(
+                                onTap: () {
+                                  widget.onChangeLanguage("vi");
+                                  currentLanguage = "vi";
+                                },
+                                 child:Container(
+                                  margin: EdgeInsets.only(right:10),
+                                  width: 30.0,
+                                  height: 30.0,
+                                  decoration: new BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: new DecorationImage(
+                                        fit: BoxFit.fill,
+                                        image: AssetImage("lib/assets/img/vietnam_flag.png")
+                                    )
+                                )),
+                            ),
+                          ])),
+                            ],
                           ),
                           SizedBox(height: 40.0),
                           _inputUserName(),
@@ -604,7 +664,7 @@ class _LoginPageState extends State<LoginPage>
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => VerifyOtp(widget.url,widget.onChangeLanguage)),
+                                                builder: (context) => FreeRegister(widget.url,widget.onChangeLanguage)),
                                           );
                                         },
                                         child: Text(

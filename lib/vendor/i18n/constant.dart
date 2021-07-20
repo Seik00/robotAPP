@@ -1,1 +1,1 @@
-List<String> languages = ['en', 'zh', 'id', 'ms', 'th'];
+List<String> languages = ['en', 'zh', 'id', 'ms', 'vi','th'];

@@ -62,6 +62,11 @@ void main() async{
       errorTitle = "Máy chủ bận";
       errorContent = "Máy chủ bận rộn xin vui lòng thử lại sau";
       prefs.setString(key, language);
+    } else if (language == "vi") {
+      loadingText = "Đang tải...";
+      errorTitle = "Máy chủ bận";
+      errorContent = "Máy chủ bận rộn xin vui lòng thử lại sau";
+      prefs.setString(key, language);
     } else if (language == "th") {
       loadingText = "กำลังโหลด...";
       errorTitle = "เซิร์ฟเวอร์ไม่ว่าง";
@@ -408,6 +413,13 @@ class _MyAppState extends State<MyApp> {
         errorContent = "Server sibuk, Silakan coba lagi nanti";
       });
     } else if (language == 'ms') {
+      setState(() {
+        languageType = "Thay đổi ngôn ngữ thành công";
+        loadingText = "Đang tải...";
+        errorTitle = "Máy chủ bận";
+        errorContent = "Máy chủ bận rộn xin vui lòng thử lại sau";
+      });
+    } else if (language == 'vi') {
       setState(() {
         languageType = "Thay đổi ngôn ngữ thành công";
         loadingText = "Đang tải...";

@@ -247,7 +247,7 @@ bool visible = true;
                 borderRadius: BorderRadius.circular(8.0),
                 borderSide: BorderSide(color: Colors.grey, width: 1),
               ),
-              hintText:'GAS',
+              hintText: MyLocalizations.of(context).getData('gas'),
               filled: true,
               fillColor: Colors.white,
             ),

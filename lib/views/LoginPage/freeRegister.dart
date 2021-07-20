@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -9,6 +11,7 @@ import '../../vendor/i18n/localizations.dart' show MyLocalizations;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'countryPicker.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:http/http.dart' as http;
 
 class FreeRegister extends StatefulWidget {
   final url;
@@ -45,6 +48,32 @@ class _FreeRegisterState extends State<FreeRegister>
 
   var language;
   var token;
+  var otp;
+  
+  Timer _timer;
+  int _start = 60;
+  var _firstPressTwo = true ;
+  var _firstPress = true ;
+
+  void startTimer() {
+    const oneSec = const Duration(seconds: 1);
+    _timer = new Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (_start == 0) {
+          setState(() {
+            timer.cancel();
+            _start = 60;
+            _firstPressTwo = true ;
+          });
+        } else {
+          setState(() {
+            _start--;
+          });
+        }
+      },
+    );
+  }
 
   getLanguage() async{
     final prefs = await SharedPreferences.getInstance();
@@ -79,9 +108,10 @@ class _FreeRegisterState extends State<FreeRegister>
     getLanguage();
   }
 
-  @override
+   @override
   void dispose() {
     super.dispose();
+    _timer.cancel();
   }
 
   @override
@@ -138,7 +168,7 @@ class _FreeRegisterState extends State<FreeRegister>
                                     color: Colors.white),
                               ),
                             ),
-                            SizedBox(height: 30.0),
+                            SizedBox(height: 20.0),
                            
                             countryList == null?Container():
                             _inputBankCountry(),
@@ -146,7 +176,10 @@ class _FreeRegisterState extends State<FreeRegister>
                            
                             
                             _inputUsername(),
-                            SizedBox(height: 30.0),
+                            SizedBox(height: 20.0),
+
+                            _inputVcode(),
+                            SizedBox(height: 20.0),
                             
                             // _inputMobile(),
                             // SizedBox(height: 30.0),
@@ -155,38 +188,67 @@ class _FreeRegisterState extends State<FreeRegister>
                             // SizedBox(height: 30.0),
 
                              _inputPassword(),
-                            SizedBox(height: 30.0),
+                            SizedBox(height: 20.0),
 
                              _inputConfirmPassword(),
-                            SizedBox(height: 30.0),
+                            SizedBox(height: 20.0),
 
                              _inputRefID(),
-                            SizedBox(height: 30.0),
+                            SizedBox(height: 20.0),
 
-                            Container(
+                          //   Container(
+                          //   child: GestureDetector(
+                          //   onTap: ()async{
+                          //     setState(() {
+                          //       _sendToServer();
+                          //     });
+                          //   }, 
+                          //   child: Center(
+                          //     child: Container(
+                          //         decoration: BoxDecoration(
+                          //             borderRadius: BorderRadius.circular(10),
+                          //             gradient: LinearGradient(
+                          //             begin: Alignment.topCenter,
+                          //             end: Alignment.bottomCenter,
+                          //             colors: [Color(0xfffaef1d), Color(0xfff9f21a)])
+                          //         ),
+                          //         height: MediaQuery.of(context).size.height / 15,
+                          //         alignment: Alignment.center,
+                          //         child: Text(
+                          //           MyLocalizations.of(context).getData('submit'),
+                          //           style: TextStyle(color: Colors.black),
+                          //         )),
+                          //   ),
+                          // ),),
+
+                          AbsorbPointer(
+                            absorbing: !_firstPress,
                             child: GestureDetector(
-                            onTap: ()async{
-                              setState(() {
-                                _sendToServer();
-                              });
-                            }, 
-                            child: Center(
-                              child: Container(
-                                  decoration: BoxDecoration(
+                              onTap: ()async{
+                                setState(() {
+                                  checkOtp();
+                                  _firstPress = false ;
+                                });
+                              }, 
+                              child: Center(
+                                child: Container(
+                                    decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
                                       gradient: LinearGradient(
                                       begin: Alignment.topCenter,
                                       end: Alignment.bottomCenter,
                                       colors: [Color(0xfffaef1d), Color(0xfff9f21a)])
                                   ),
-                                  height: MediaQuery.of(context).size.height / 15,
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    MyLocalizations.of(context).getData('submit'),
-                                    style: TextStyle(color: Colors.black),
-                                  )),
+                                    height: MediaQuery.of(context).size.height / 15,
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      MyLocalizations.of(context).getData('submit'),
+                                      style: TextStyle(color: Colors.black),
+                                    )),
+                              ),
                             ),
-                          ),),
+                          ),
+
                             SizedBox(height: 30.0),
                             // Container(
                             //   margin: EdgeInsets.only(bottom: 25),
@@ -226,61 +288,107 @@ class _FreeRegisterState extends State<FreeRegister>
  _inputBankCountry() {
     return Row(
       children: [
-            Container(
-               width:350,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(
-                  color: Colors.grey,
-                  width: 1,
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 1,
+                  ),
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                borderRadius: BorderRadius.circular(25),
-              ),
-             
-              child: CountryPicker(
-                name: selectedCountryCode,
-                lists: countryName,
-                iconColor: Colors.white,
-                backgroundColor: Colors.white,
-                borderRadius: BorderRadius.circular(5),
-                borderSide: BorderSide(width: 1, color: Colors.white),
-                onChange: (index) {
-                     setState(() {
-                    selectedCountryCode = language =='zh'?countryList[index]["name"]:countryList[index]["name_en"];
-                    selectedCountryID = countryList[index]["id"];
-                    phoneController.text = countryList[index]["country_code"];
-                    print(selectedPhoneCode);
-                  });
-                 
-                },
+               
+                child: CountryPicker(
+                  name: selectedCountryCode,
+                  lists: countryName,
+                  iconColor: Colors.white,
+                  backgroundColor: Colors.white,
+                  borderRadius: BorderRadius.circular(5),
+                  borderSide: BorderSide(width: 1, color: Colors.white),
+                  onChange: (index) {
+                       setState(() {
+                      selectedCountryCode = language =='zh'?countryList[index]["name"]:countryList[index]["name_en"];
+                      selectedCountryID = countryList[index]["id"];
+                      phoneController.text = countryList[index]["country_code"];
+                      print(selectedPhoneCode);
+                    });
+                   
+                  },
+                ),
               ),
             ),
       ],
     );
   }
 
-  _inputUsername() {
-    return new Container(
-      child: TextFormField(
-        controller: usernameController,
-        validator: validateInput,
-        autofocus: false,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        decoration: new InputDecoration(
-        hintText: MyLocalizations.of(context).getData('email'),
-        contentPadding: const EdgeInsets.all(18.0),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
-          borderSide: BorderSide(color: Colors.grey, width: 1),
+   _inputUsername() {
+    return Row(
+      children: [
+        Stack(
+          children: [
+            Container(
+              width: 250,
+              child: TextFormField(
+                  textAlign: TextAlign.left,
+                  keyboardType: TextInputType.text,
+                  controller: usernameController,
+                  validator: validateInput,
+                  decoration: new InputDecoration(
+                  hintText: MyLocalizations.of(context).getData('email'),
+                  contentPadding: const EdgeInsets.all(8.0),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(color: Colors.grey, width: 1),
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                ),
+                  onSaved: (str) {
+                  }),
+            ),
+          ],
         ),
-        filled: true,
-        fillColor: Colors.white,
-      ),
-        keyboardType: TextInputType.text,
-        onSaved: (str) {
-          print(str);
-        },
-      ),
+        Expanded(
+          child: AbsorbPointer(
+            absorbing: !_firstPressTwo,
+            child: GestureDetector(
+              onTap: (){
+                if(usernameController.text == ''){
+                    AwesomeDialog(
+                    context: context,
+                    dialogType: DialogType.ERROR,
+                    animType: AnimType.RIGHSLIDE,
+                    headerAnimationLoop: false,
+                    title: MyLocalizations.of(context).getData('error'),
+                    desc: MyLocalizations.of(context).getData('enter_email'),
+                    btnOkOnPress: () {},
+                    btnOkIcon: Icons.cancel,
+                    btnOkColor: Colors.red)
+                    ..show();
+                }else{
+                   setState(() {
+                    var tmap = new Map<String, dynamic>();
+
+                    tmap['country_id'] = selectedCountryID.toString();
+                    tmap['email'] = usernameController.text;
+                    tmap['lang'] = language;
+                    postOtp(tmap);
+                    startTimer();
+                    _firstPressTwo = false ;
+                });
+                }
+              },
+            child: 
+            _start ==60?
+            Icon(Icons.send,color: Color(0xfff6fb15),):
+            Container(
+              margin: EdgeInsets.only(left:20),
+              child: Text("$_start",style: TextStyle(color: Colors.white,fontSize: 20),))
+            ),
+          )
+        )
+      ],
     );
   }
 
@@ -369,9 +477,9 @@ class _FreeRegisterState extends State<FreeRegister>
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
         hintText: MyLocalizations.of(context).getData('password'),
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(8.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         filled: true,
@@ -395,9 +503,9 @@ class _FreeRegisterState extends State<FreeRegister>
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
         hintText: MyLocalizations.of(context).getData('confirm_password'),
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(8.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         filled: true,
@@ -419,9 +527,9 @@ class _FreeRegisterState extends State<FreeRegister>
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
         hintText: MyLocalizations.of(context).getData('ref_id'),
-        contentPadding: const EdgeInsets.all(18.0),
+        contentPadding: const EdgeInsets.all(8.0),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(color: Colors.grey, width: 1),
         ),
         filled: true,
@@ -495,12 +603,12 @@ class _FreeRegisterState extends State<FreeRegister>
 
   _inputVcode() {
     return new Container(
-      width: 250,
       child: TextFormField(
         controller: vcodeController,
         validator: validateInput,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: new InputDecoration(
+        hintText: MyLocalizations.of(context).getData('vcode'),
         contentPadding: const EdgeInsets.all(8.0),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
@@ -591,4 +699,72 @@ class _FreeRegisterState extends State<FreeRegister>
     }
     }
   }
+
+  checkOtp() async {
+      if (_key.currentState.validate()) {
+      _key.currentState.save();
+        var body = {
+          'contact': usernameController.text,
+          'otp': vcodeController.text,
+        };
+        print(body);
+        var uri = Uri.https(Config().url2, 'api/global/check-otp', body);
+
+        var response = await http.get(uri, headers: {
+          'Authorization': 'Bearer $token'
+        }).timeout(new Duration(seconds: 10));
+        var contentData = json.decode(response.body);
+        print(contentData);
+        if(contentData!=null){
+          if (contentData['code'] == 0) {
+             _sendToServer();
+          } else if(contentData['message']=='INCORRECT_OTP'){
+             AwesomeDialog(
+              context: context,
+              dialogType: DialogType.ERROR,
+              animType: AnimType.RIGHSLIDE,
+              headerAnimationLoop: false,
+              title: MyLocalizations.of(context).getData('error'),
+              desc: MyLocalizations.of(context).getData('incorrect_otp'),
+              btnOkOnPress: () {},
+              btnOkIcon: Icons.cancel,
+              btnOkColor: Colors.red)
+              ..show();
+          }
+          setState(() {
+            _firstPress = true ;
+          });
+        }
+    } else {
+      setState(() {
+        _validate = true;
+      });
+    }
+  }
+
+  postOtp(dynamic data) async {
+    var contentData = await Request().postWithoutToken(Config().url + "api/global/sent-otp", data, context);
+
+    print(contentData);
+    if (contentData != null) {
+      if (contentData['code'] == 0) {
+        AwesomeDialog(
+        context: context,
+        animType: AnimType.LEFTSLIDE,
+        headerAnimationLoop: false,
+        dialogType: DialogType.SUCCES,
+        autoHide: Duration(seconds: 2),
+        title: MyLocalizations.of(context).getData('success'),
+        desc:MyLocalizations.of(context).getData('otp_sent'),
+        onDissmissCallback: () {
+         otp = contentData['data'];
+         print(otp);
+        })
+      ..show();
+    } else {
+     
+    }
+    }
+  }
+
 }

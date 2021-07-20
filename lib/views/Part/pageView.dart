@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/services.dart';
 import 'package:robot/views/LoginPage/loginPage.dart';
+import 'package:robot/views/SystemSetting/chgUsername.dart';
 import 'package:robot/views/SystemSetting/setSecPassword.dart';
 import 'package:robot/views/SystemSetting/settings.dart';
 import 'package:robot/views/clientSide/myAssest.dart';
@@ -62,12 +63,14 @@ class _TopViewingState extends State<TopViewing>
   String _deviceId = 'Unknown';
   bool gms, hms;
 
-   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   @override
   void initState() {
     super.initState();
     getRequest();
     lookUp();
+    checkUsername();
+    getLanguage();
     _firebaseMessaging.getToken().then((String deviceToken) {
       assert(deviceToken != null);
       setState(() {
@@ -76,6 +79,59 @@ class _TopViewingState extends State<TopViewing>
     });
   }
 
+  getLanguage() async{
+    final prefs = await SharedPreferences.getInstance();
+    language = prefs.getString('language');
+    if(language == 'zh'){
+      language = 'cn';
+    }
+    _sendToServer();
+  }
+
+   checkUsername() async {
+    var contentData = await Request().getRequest(Config().url + "api/member/detectUsername", context);
+    if(contentData != null){
+      if (contentData['code'] == 0) {
+        
+      }else{
+        if (mounted) {
+            setState(() {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ChgUsername(widget.url, widget.onChangeLanguage)),
+            );
+            });
+          }
+      }
+     
+    }
+  }
+
+   _sendToServer() {
+    var tmap = new Map<String, dynamic>();
+    if (mounted)
+      setState(() {
+        tmap['language'] =language;
+      });
+      postLanguage(tmap);
+  }
+
+  postLanguage(bodyData) async {
+    final prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var contentData = await Request().postRequest(Config().url+"api/member/setLanguage", bodyData, token, context);
+
+    print(contentData);
+    if (contentData != null) {
+      if (contentData['code'] == 0) {
+       
+    } else {
+     
+    }
+    }
+  }
 
    lookUp() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -166,7 +222,7 @@ class _TopViewingState extends State<TopViewing>
     var token = prefs.getString('token');
     
     var contentData = await Request().postRequest(Config().url+"api/global/add_user_device_token", bodyData, token, context);
-    print(contentData);
+
   }
 
    getRequest() async {
@@ -201,7 +257,6 @@ class _TopViewingState extends State<TopViewing>
       //                 widget.url, widget.onChangeLanguage))));
       // });
     }else if(active == 0){
-      print('--------------------------------------');
        Navigator.pushReplacement(
         context,
         MaterialPageRoute(

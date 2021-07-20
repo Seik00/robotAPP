@@ -278,7 +278,7 @@ class _TradeDetailsState extends State<TradeDetails> {
                                 SizedBox(height: 20.0),
 
                                 Container(
-                                  child: Text('GAS',style: TextStyle(color: Colors.white),),
+                                  child: Text(MyLocalizations.of(context).getData('gas'),style: TextStyle(color: Colors.white),),
                                 ),
                                 SizedBox(height: 5),
                                 _inputPointTwo(),
@@ -307,17 +307,17 @@ class _TradeDetailsState extends State<TradeDetails> {
                                       value: _value,
                                       items: [
                                         DropdownMenuItem(
-                                          child: Text('GAS'),
+                                          child: Text(MyLocalizations.of(context).getData('gas'),),
                                           value: 1,
                                         ),
                                         DropdownMenuItem(
                                           child: Text(MyLocalizations.of(context).getData('gas_pingyi')),
                                           value: 2,
                                         ),
-                                        DropdownMenuItem(
-                                              child: Text(MyLocalizations.of(context).getData('gas_gas_pingyi')),
-                                              value: 3,
-                                            ),
+                                        // DropdownMenuItem(
+                                        //       child: Text(MyLocalizations.of(context).getData('gas_gas_pingyi')),
+                                        //       value: 3,
+                                        //     ),
                                       ],
                                       onChanged: (value) {
                                         setState(() {

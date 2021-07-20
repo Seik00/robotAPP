@@ -5,6 +5,7 @@ import 'package:robot/API/request.dart';
 import 'package:robot/main.dart';
 import 'package:robot/views/Explore/investRecord.dart';
 import 'package:robot/views/Part/pageView.dart';
+import 'package:robot/views/Trade/trade.dart';
 import 'package:robot/views/clientSide/quantity.dart';
 import '../../vendor/i18n/localizations.dart' show MyLocalizations;
 import 'package:skeleton_text/skeleton_text.dart';
@@ -297,7 +298,7 @@ class _StartUpState extends State<StartUp> {
                                 SizedBox(height: 20.0),
                                 
                                 Container(
-                                  child: Text('GAS',style: TextStyle(color: Colors.white),),
+                                  child: Text(MyLocalizations.of(context).getData('gas'),style: TextStyle(color: Colors.white),),
                                 ),
                                 SizedBox(height: 5),
                                 _inputPointTwo(),
@@ -326,17 +327,17 @@ class _StartUpState extends State<StartUp> {
                                       value: _value,
                                       items: [
                                         DropdownMenuItem(
-                                          child: Text('GAS'),
+                                          child: Text(MyLocalizations.of(context).getData('gas')),
                                           value: 1,
                                         ),
                                         DropdownMenuItem(
                                           child: Text(MyLocalizations.of(context).getData('gas_pingyi')),
                                           value: 2,
                                         ),
-                                        DropdownMenuItem(
-                                          child: Text(MyLocalizations.of(context).getData('gas_gas_pingyi')),
-                                          value: 3,
-                                        ),
+                                        // DropdownMenuItem(
+                                        //   child: Text(MyLocalizations.of(context).getData('gas_gas_pingyi')),
+                                        //   value: 3,
+                                        // ),
                                       ],
                                       onChanged: (value) {
                                         setState(() {
@@ -660,19 +661,23 @@ class _StartUpState extends State<StartUp> {
           groupValue: _radioValue,
           onChanged: _handleRadioValueChange,
         ),
-        new Text(
-          MyLocalizations.of(context).getData('single_strategy'),
-          style: new TextStyle(fontSize: 16.0,color: Colors.white),
+        Expanded(
+          child: new Text(
+            MyLocalizations.of(context).getData('single_strategy'),
+            style: new TextStyle(fontSize: 16.0,color: Colors.white),
+          ),
         ),
         new Radio(
           value: 1,
           groupValue: _radioValue,
           onChanged: _handleRadioValueChange,
         ),
-        new Text(
-          MyLocalizations.of(context).getData('circular_strategy'),
-          style: new TextStyle(
-            fontSize: 16.0,color: Colors.white
+        Expanded(
+          child: new Text(
+            MyLocalizations.of(context).getData('circular_strategy'),
+            style: new TextStyle(
+              fontSize: 16.0,color: Colors.white
+            ),
           ),
         ),
       ],
@@ -723,7 +728,7 @@ class _StartUpState extends State<StartUp> {
   postData(bodyData) async {
     final prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
-    print(bodyData);
+   
     var contentData = await Request().postRequest(Config().url+"api/trade-robot/create", bodyData, token, context);
     
     print(contentData);
@@ -737,11 +742,9 @@ class _StartUpState extends State<StartUp> {
             title: MyLocalizations.of(context).getData('success'),
             desc:MyLocalizations.of(context).getData('operation_success'),
             onDissmissCallback: () {
-              Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => Quantity(
-                      widget.url, widget.onChangeLanguage)));
+            print(contentData['data']);
+            print('------------------------');
+             Navigator.pop(context,contentData['data']);
             })
           ..show();
     }else{

@@ -24,11 +24,16 @@ class _BuyPinState extends State<BuyPin> {
 
   TextEditingController amountController = TextEditingController();
   TextEditingController usdtController = TextEditingController();
+  TextEditingController pingyiController = TextEditingController();
   TextEditingController secpwdController = TextEditingController();
   
   bool _validate = false;
   var body;
   var usdt;
+  int _pinValue = 1;
+  int _payValue = 1;
+  var finalPinValue;
+  var finalPayValue;
  
   @override
   void initState() {
@@ -42,6 +47,7 @@ class _BuyPinState extends State<BuyPin> {
     if(contentData != null){
       setState(() {
       usdtController.text = contentData['point1'];
+      pingyiController.text = contentData['point3'];
     });
     }
   }
@@ -129,13 +135,76 @@ class _BuyPinState extends State<BuyPin> {
                             ),
                              SizedBox(height: 5),
                             info(),
-                             SizedBox(height: 20.0),
+                            SizedBox(height: 20.0),
                             Container(
-                              child: Text(MyLocalizations.of(context).getData('pin_amount'),style: TextStyle(color:Colors.white),),
+                              child: Text(MyLocalizations.of(context).getData('gas_ping_yi_balance'),style: TextStyle(color:Colors.white),),
                             ),
                              SizedBox(height: 5),
-                            _inputAmount(),
-                             SizedBox(height: 20.0),
+                            pingyi_info(),
+
+                            SizedBox(height: 20.0),
+                             Container(
+                              child: Text(MyLocalizations.of(context).getData('pin_type'),style: TextStyle(color: Colors.white),),
+                            ),
+                            SizedBox(height: 5),
+                            Container(
+                                padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: Colors.white,
+                                border: Border.all()),
+                                child: DropdownButton(
+                                  isExpanded: true,
+                                  value: _pinValue,
+                                  items: [
+                                    DropdownMenuItem(
+                                      child: Text('100'),
+                                      value: 1,
+                                    ),
+                                    DropdownMenuItem(
+                                      child: Text('250'),
+                                      value: 2,
+                                    ),
+                                  ],
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _pinValue = value;
+                                    });
+                                  }),
+                            ),
+                            SizedBox(height: 20.0),
+                             Container(
+                              child: Text(MyLocalizations.of(context).getData('pay_type'),style: TextStyle(color: Colors.white),),
+                            ),
+                            SizedBox(height: 5),
+                            Container(
+                                padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: Colors.white,
+                                border: Border.all()),
+                                child: DropdownButton(
+                                  isExpanded: true,
+                                  value: _payValue,
+                                  items: [
+                                    DropdownMenuItem(
+                                      child: Text('USDT'),
+                                      value: 1,
+                                    ),
+                                    DropdownMenuItem(
+                                      child: Text(MyLocalizations.of(context).getData('gas_pingyi')),
+                                      value: 3,
+                                    ),
+                                  ],
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _payValue = value;
+                                    });
+                                  }),
+                            ),
+                            SizedBox(height: 20.0),
 
                             Container(
                               child: Text(MyLocalizations.of(context).getData('sec_password'),style: TextStyle(color: Colors.white,fontSize: 16),),
@@ -186,6 +255,31 @@ class _BuyPinState extends State<BuyPin> {
     return new Container(
       child: TextFormField(
         controller: usdtController,
+        enabled: false, 
+        validator: validateInput,
+        autofocus: false,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        decoration: new InputDecoration(
+        contentPadding: const EdgeInsets.all(14.0),
+        border: OutlineInputBorder(
+         borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.grey, width: 1),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+      ),
+        keyboardType: TextInputType.text,
+        onSaved: (str) {
+          print(str);
+        },
+      ),
+    );
+  }
+
+  pingyi_info() {
+    return new Container(
+      child: TextFormField(
+        controller: pingyiController,
         enabled: false, 
         validator: validateInput,
         autofocus: false,
@@ -297,7 +391,21 @@ class _BuyPinState extends State<BuyPin> {
       var tmap = new Map<String, dynamic>();
       if (mounted)
         setState(() {
-          tmap['amount'] = amountController.text;
+          if(_pinValue == 1){
+              finalPinValue = '1';
+          }
+          else if(_pinValue == 2){
+            finalPinValue = '2';
+          }
+
+          if(_payValue == 1){
+              finalPayValue = '1';
+          }
+          else if(_payValue == 3){
+            finalPayValue = '3';
+          }
+          tmap['pin_type'] = finalPinValue.toString();
+          tmap['pay_type'] = finalPayValue.toString();
           tmap['sec_password'] = secpwdController.text;
           print(tmap['amount']);
         });

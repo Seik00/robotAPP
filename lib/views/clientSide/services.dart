@@ -8,6 +8,8 @@ import 'package:robot/API/config.dart';
 import 'package:robot/API/request.dart';
 import 'package:robot/vendor/i18n/localizations.dart';
 import 'package:robot/views/Explore/apiBinding.dart';
+import 'package:robot/views/Explore/buyPin.dart';
+import 'package:robot/views/Explore/guideList.dart';
 import 'package:robot/views/Explore/newsList.dart';
 import 'package:robot/views/Explore/pinCenter.dart';
 import 'package:robot/views/Explore/revenue.dart';
@@ -171,6 +173,7 @@ class _ServicesState extends State<Services>
 
       var body = {
         'language': language.toString(),
+        'news_type': 1.toString(),
       };
       var uri = Uri.https(Config().url2, 'api/news/news-list', body);
 
@@ -178,6 +181,7 @@ class _ServicesState extends State<Services>
         'Authorization': 'Bearer $token'
       }).timeout(new Duration(seconds: 10));
       var contentData = json.decode(response.body);
+      print(contentData);
       setState(() {
         newsList = contentData['data']['data'];
     });
@@ -308,7 +312,7 @@ class _ServicesState extends State<Services>
                           Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => PinCenter(widget.url)),
+                              builder: (context) => BuyPin(widget.url)),
                         ).then((value) => startLoop())
                       },
                       padding: EdgeInsets.all(8.0),
@@ -373,12 +377,12 @@ class _ServicesState extends State<Services>
                       children: <Widget>[
                     FlatButton(
                       onPressed: () => {
-                        // _timer.cancel(),
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //       builder: (context) => RobotPackage(widget.url)),
-                        // ).then((value) => startLoop())
+                        _timer.cancel(),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GuideList(widget.url)),
+                        ).then((value) => startLoop())
                       },
                      padding: EdgeInsets.all(8.0),
                       child: Column(
@@ -466,7 +470,7 @@ class _ServicesState extends State<Services>
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('MIP '+MyLocalizations.of(context).getData('prize_pool'),style: TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.bold),),
+                            Text('GIP '+MyLocalizations.of(context).getData('prize_pool'),style: TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.bold),),
                             SizedBox(height: 3,),
                             mip==null?
                             Text('0.000',style: TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.bold),):
@@ -486,7 +490,7 @@ class _ServicesState extends State<Services>
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('PIP '+MyLocalizations.of(context).getData('prize_pool'),style: TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.bold),),
+                            Text('DIP '+MyLocalizations.of(context).getData('prize_pool'),style: TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.bold),),
                             SizedBox(height: 3,),
                             pip==null?
                             Text('0.000',style: TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.bold),):

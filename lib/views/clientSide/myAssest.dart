@@ -139,7 +139,7 @@ class _MyAssestsState extends State<MyAssests>
                       text: 'USDT',
                     ),
                     Tab(
-                      text: 'GAS',
+                      text: MyLocalizations.of(context).getData('gas'),
                     ),
                     Tab(
                       text: MyLocalizations.of(context).getData('gas_pingyi'),

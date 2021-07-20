@@ -93,7 +93,7 @@ class _WithdrawRecordState extends State<WithdrawRecord> {
                   ),
                 ):
                 Container(
-                padding: EdgeInsets.only(left: 10, right: 10),
+                padding: EdgeInsets.only(left: 15, right: 15),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children:[
@@ -105,7 +105,7 @@ class _WithdrawRecordState extends State<WithdrawRecord> {
                         return Column(
                           children: [
                             Container(
-                              padding: EdgeInsets.all(10),
+                              padding: EdgeInsets.all(6),
                               decoration: BoxDecoration(
                                   gradient: LinearGradient(
                                   begin: Alignment.topCenter,
@@ -118,17 +118,17 @@ class _WithdrawRecordState extends State<WithdrawRecord> {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Container(
-                                        child: Text(MyLocalizations.of(context).getData('withdraw_usdt'),style: TextStyle(color:Colors.black,fontSize:16)),
+                                        child: Text(MyLocalizations.of(context).getData('withdraw_usdt'),style: TextStyle(color:Colors.black,fontSize:14)),
                                       ),
                                       Container(
-                                        child: Text(dataList[index]['created_at'],style: TextStyle(color:Colors.black,fontSize:14)),
+                                        child: Text(dataList[index]['created_at'],style: TextStyle(color:Colors.black,fontSize:12)),
                                       ),
                                     ],
                                   ),
                                   SizedBox(height: 5,),
                                   Container(
                                     alignment: Alignment.centerLeft,
-                                    child: Text('-'+dataList[index]['amount'] + ' USDT',style: TextStyle(color:Colors.black,fontSize:20,fontWeight:FontWeight.bold)),
+                                    child: Text('-'+dataList[index]['amount'] + ' USDT',style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold)),
                                   )
                                 ],
                               ),
@@ -152,12 +152,12 @@ class _WithdrawRecordState extends State<WithdrawRecord> {
                                 child: Column(
                                   children: [
                                     Container(
-                                      padding: EdgeInsets.all(10),
+                                      padding: EdgeInsets.all(6),
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children:[
-                                          Text(MyLocalizations.of(context).getData('amount'),style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold)),
-                                          Text('-'+dataList[index]['amount']+' USDT',style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold)),
+                                          Text(MyLocalizations.of(context).getData('amount'),style: TextStyle(color:Colors.black,fontSize:14,fontWeight:FontWeight.bold)),
+                                          Text('-'+dataList[index]['amount']+' USDT',style: TextStyle(color:Colors.black,fontSize:14,fontWeight:FontWeight.bold)),
                                         ]
                                       ),
                                     ),
@@ -166,22 +166,22 @@ class _WithdrawRecordState extends State<WithdrawRecord> {
                                       color: Colors.black,
                                     ),
                                      Container(
-                                      padding: EdgeInsets.all(10),
+                                      padding: EdgeInsets.all(6),
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children:[
-                                          Text(MyLocalizations.of(context).getData('status'),style: TextStyle(color:Colors.black,fontSize:16,)),
+                                          Text(MyLocalizations.of(context).getData('status'),style: TextStyle(color:Colors.black,fontSize:14,)),
                                           if(dataList[index]['status'] == 0)
-                                          Text(MyLocalizations.of(context).getData('pending'),style: TextStyle(color:Colors.black,fontSize:16,fontWeight:FontWeight.bold)),
+                                          Text(MyLocalizations.of(context).getData('pending'),style: TextStyle(color:Colors.black,fontSize:14,fontWeight:FontWeight.bold)),
 
                                           if(dataList[index]['status'] == 1)
-                                          Text(MyLocalizations.of(context).getData('approved'),style: TextStyle(color:Colors.lightBlue,fontSize:16,fontWeight:FontWeight.bold)),
+                                          Text(MyLocalizations.of(context).getData('approved'),style: TextStyle(color:Colors.lightBlue,fontSize:14,fontWeight:FontWeight.bold)),
 
                                           if(dataList[index]['status'] == 2)
-                                          Text(MyLocalizations.of(context).getData('success'),style: TextStyle(color:Colors.greenAccent,fontSize:16,fontWeight:FontWeight.bold)),
+                                          Text(MyLocalizations.of(context).getData('success'),style: TextStyle(color:Colors.greenAccent,fontSize:14,fontWeight:FontWeight.bold)),
 
                                            if(dataList[index]['status'] == 3)
-                                          Text(MyLocalizations.of(context).getData('rejected'),style: TextStyle(color:Colors.redAccent,fontSize:16,fontWeight:FontWeight.bold)),
+                                          Text(MyLocalizations.of(context).getData('rejected'),style: TextStyle(color:Colors.redAccent,fontSize:14,fontWeight:FontWeight.bold)),
                                         ]
                                       ),
                                     ),
@@ -190,13 +190,13 @@ class _WithdrawRecordState extends State<WithdrawRecord> {
                                       color: Colors.black,
                                     ),
                                     Container(
-                                      padding: EdgeInsets.all(10),
+                                      padding: EdgeInsets.all(6),
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children:[
-                                          Text(MyLocalizations.of(context).getData('link_name'),style: TextStyle(color:Colors.black,fontSize:16)),
+                                          Text(MyLocalizations.of(context).getData('link_name'),style: TextStyle(color:Colors.black,fontSize:14)),
                                           SizedBox(width:10),
-                                          Flexible(child: Text('TRC20',style: TextStyle(color:Colors.black,fontSize:16),textAlign: TextAlign.right,)),
+                                          Flexible(child: Text('TRC20',style: TextStyle(color:Colors.black,fontSize:14),textAlign: TextAlign.right,)),
                                         ]
                                       ),
                                     ),
@@ -205,13 +205,13 @@ class _WithdrawRecordState extends State<WithdrawRecord> {
                                       color: Colors.black,
                                     ),
                                     Container(
-                                      padding: EdgeInsets.all(10),
+                                      padding: EdgeInsets.all(6),
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children:[
-                                          Text(MyLocalizations.of(context).getData('address'),style: TextStyle(color:Colors.black,fontSize:16)),
+                                          Text(MyLocalizations.of(context).getData('address'),style: TextStyle(color:Colors.black,fontSize:14)),
                                           SizedBox(width:10),
-                                          Flexible(child: Text(dataList[index]['address'],style: TextStyle(color:Colors.black,fontSize:16,),textAlign: TextAlign.right,)),
+                                          Flexible(child: Text(dataList[index]['address'],style: TextStyle(color:Colors.black,fontSize:14,),textAlign: TextAlign.right,)),
                                         ]
                                       ),
                                     ),
@@ -220,13 +220,13 @@ class _WithdrawRecordState extends State<WithdrawRecord> {
                                       color: Colors.black,
                                     ),
                                     Container(
-                                      padding: EdgeInsets.all(10),
+                                      padding: EdgeInsets.all(6),
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children:[
-                                          Text(MyLocalizations.of(context).getData('fees'),style: TextStyle(color:Colors.black,fontSize:16)),
+                                          Text(MyLocalizations.of(context).getData('fees'),style: TextStyle(color:Colors.black,fontSize:14)),
                                           SizedBox(width:10),
-                                          Flexible(child: Text(dataList[index]['fee']+' USDT',style: TextStyle(color:Colors.black,fontSize:16,),textAlign: TextAlign.right,)),
+                                          Flexible(child: Text(dataList[index]['fee']+' USDT',style: TextStyle(color:Colors.black,fontSize:14,),textAlign: TextAlign.right,)),
                                         ]
                                       ),
                                     ),
@@ -235,12 +235,12 @@ class _WithdrawRecordState extends State<WithdrawRecord> {
                                       color: Colors.black,
                                     ),
                                     Container(
-                                      padding: EdgeInsets.all(10),
+                                      padding: EdgeInsets.all(6),
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children:[
-                                          Text(MyLocalizations.of(context).getData('reached_amount'),style: TextStyle(color:Colors.black,fontSize:16)),
-                                          Text(dataList[index]['get_amount']+' USDT',style: TextStyle(color:Colors.black,fontSize:16)),
+                                          Text(MyLocalizations.of(context).getData('reached_amount'),style: TextStyle(color:Colors.black,fontSize:14)),
+                                          Text(dataList[index]['get_amount']+' USDT',style: TextStyle(color:Colors.black,fontSize:14)),
                                         ]
                                       ),
                                     ),
@@ -249,12 +249,12 @@ class _WithdrawRecordState extends State<WithdrawRecord> {
                                       color: Colors.black,
                                     ),
                                     Container(
-                                      padding: EdgeInsets.all(10),
+                                      padding: EdgeInsets.all(6),
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children:[
-                                          Text(MyLocalizations.of(context).getData('date'),style: TextStyle(color:Colors.black,fontSize:16)),
-                                          Text(dataList[index]['created_at'],style: TextStyle(color:Colors.black,fontSize:16)),
+                                          Text(MyLocalizations.of(context).getData('date'),style: TextStyle(color:Colors.black,fontSize:14)),
+                                          Text(dataList[index]['created_at'],style: TextStyle(color:Colors.black,fontSize:14)),
                                         ]
                                       ),
                                     ),

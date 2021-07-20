@@ -212,6 +212,30 @@ class Request {
           btnOkIcon: Icons.cancel,
           btnOkColor: Colors.red)
           ..show();
+        }else if(contentData['message'] =='ACCOUNT_ACTIVATED'){
+          AwesomeDialog(
+          context: context,
+          dialogType: DialogType.ERROR,
+          animType: AnimType.RIGHSLIDE,
+          headerAnimationLoop: false,
+          title: MyLocalizations.of(context).getData('error'),
+          desc: MyLocalizations.of(context).getData('account_activated'),
+          btnOkOnPress: () {},
+          btnOkIcon: Icons.cancel,
+          btnOkColor: Colors.red)
+          ..show();
+        }else if(contentData['message'] =='INCORRECT_EMAIL_FORMAT'){
+          AwesomeDialog(
+          context: context,
+          dialogType: DialogType.ERROR,
+          animType: AnimType.RIGHSLIDE,
+          headerAnimationLoop: false,
+          title: MyLocalizations.of(context).getData('error'),
+          desc: MyLocalizations.of(context).getData('incorrect_email_format'),
+          btnOkOnPress: () {},
+          btnOkIcon: Icons.cancel,
+          btnOkColor: Colors.red)
+          ..show();
         }else if(contentData['message'] =='MIN_WITHDRAW_AMOUNT'){
           AwesomeDialog(
           context: context,

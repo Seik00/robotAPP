@@ -347,7 +347,7 @@ class _QuantityState extends State<Quantity>
                             dataList[index]['robot_info'] == null?
                              Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => Trade(widget.url,widget.onChangeLanguage,type,dataList[index]['id'],dataList[index]['market_name'],dataList[index]['market_name'])),
+                              MaterialPageRoute(builder: (context) => Trade(widget.url,widget.onChangeLanguage,type,dataList[index]['id'],dataList[index]['market_name'],'')),
                             ).then((value) => startLoop()):
                             Navigator.push(
                               context,
@@ -528,8 +528,8 @@ class _QuantityState extends State<Quantity>
                               dataList2[index]['robot_info'] == null?
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => Trade(widget.url,widget.onChangeLanguage,type2,dataList2[index]['id'],dataList2[index]['market_name'],dataList2[index]['market_name'])),
-                              ).then((value) => startLoop()):
+                                MaterialPageRoute(builder: (context) => Trade(widget.url,widget.onChangeLanguage,type2,dataList2[index]['id'],dataList2[index]['market_name'],'')),
+                              ).then((value) => startLoop2()):
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) => Trade(widget.url,widget.onChangeLanguage,type2,dataList2[index]['id'],dataList2[index]['market_name'],dataList2[index]['robot_info']['id'])),
