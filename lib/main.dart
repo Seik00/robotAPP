@@ -468,6 +468,7 @@ class _MyAppState extends State<MyApp> {
         DefaultCupertinoLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: languages.map((language) => Locale(language, '')), 
 

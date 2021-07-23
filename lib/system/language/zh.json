@@ -352,10 +352,12 @@
     "transfer_minimum_10": "*划转金额为 10 USDT 以上",
     "transfer_minimum_10_gas_free": "*每笔USDT转账将收取2USDT手续费，Gas fee则不需要",
     "login": "登入",
+    "robot_date": "机器人期限",
+    "permanent": "永久",
 
     "not_enough_point_2": "燃料不足",
     "robot_exist": "已创建机器人",
-    "robot_not_active": "机器人未激活",
+    "robot_not_active": "机器人未启动",
     "no_bind_api": "请绑定API Key",
     "please_settings_robot": "请创建机器人"
 }

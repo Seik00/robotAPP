@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:robot/views/LoginPage/loginPage.dart';
 import 'package:robot/views/Part/pageView.dart';
@@ -52,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       LoginPage(widget.url, widget.onChangeLanguage)),
             );
           }
-          if(versionName != version){
+          if(Config().version != version){
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -69,7 +70,16 @@ class _SplashScreenState extends State<SplashScreen> {
 
   getRequest() async {
     var contentData = await Request().getRequest(Config().url + "api/member/get-member-info", context);
-   
+    
+    if(contentData == 401){
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                LoginPage(widget.url, widget.onChangeLanguage)),
+      );
+      return null;
+    }
     if(contentData != null){
       if (mounted) {
         setState(() {

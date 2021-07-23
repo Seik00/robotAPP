@@ -170,8 +170,8 @@ class _LoginPageState extends State<LoginPage>
           if(site == '0'){
             _showPendingInfo();
           }
-          if(versionName != version){
-            print('123123123');
+          if(Config().version != version){
+            print(Config().version);
            checkOSType();
           }
         });
@@ -323,7 +323,7 @@ class _LoginPageState extends State<LoginPage>
             ),
             actions: [
               TextButton(onPressed: ()async{
-                var url = androidLink;
+                var url = 'https://infinityrobot.net/';
                 if(await canLaunch(url)){
                   await launch(url);
                 }else{

@@ -659,6 +659,7 @@ class Request {
         return null;
 
       }else if(response.statusCode == 401){
+        var statusCode =  response.statusCode;
         Fluttertoast.showToast(
           msg: MyLocalizations.of(context).getData('unauthorized'),
           toastLength: Toast.LENGTH_SHORT,
@@ -666,7 +667,7 @@ class Request {
           backgroundColor: Color(0xFFDCDCDC),
           textColor: Colors.black,
         );
-        return null;
+        return statusCode;
 
       }else{
         return null;

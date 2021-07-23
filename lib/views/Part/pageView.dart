@@ -151,7 +151,7 @@ class _TopViewingState extends State<TopViewing>
                       LoginPage(widget.url, widget.onChangeLanguage)),
             );
           }
-          if(versionName != version){
+          if(Config().version != version){
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -223,7 +223,7 @@ class _TopViewingState extends State<TopViewing>
     
     var contentData = await Request().postRequest(Config().url+"api/global/add_user_device_token", bodyData, token, context);
 
-  }
+  } 
 
    getRequest() async {
     var contentData = await Request().getRequest(Config().url + "api/member/get-member-info", context);

@@ -41,6 +41,8 @@ class _FreeRegisterState extends State<FreeRegister>
   var selectedPhoneCode;
   var countryList;
   List<String> countryName = [];
+  String _selectedLocationCN; 
+  String _selectedLocationEN; 
 
   bool _validate = false;
   bool visible = true;
@@ -54,6 +56,9 @@ class _FreeRegisterState extends State<FreeRegister>
   int _start = 60;
   var _firstPressTwo = true ;
   var _firstPress = true ;
+  int _value = 1;
+  var cid;
+  var fcid;
 
   void startTimer() {
     const oneSec = const Duration(seconds: 1);
@@ -83,13 +88,14 @@ class _FreeRegisterState extends State<FreeRegister>
 
   getCountryList() async {
     var contentData = await Request().getWithoutRequest(Config().url + "api/global/country_list", context);
-    print(contentData);
+  
     if (contentData != null) {
       if (contentData['status'] == true) {
         countryList = contentData['data'];
+          print(countryList);
         for (var i = 0; i < countryList.length; i++) {
           setState(() {
-            if (countryList[i]["name_en"] == 'Malaysia') {
+            if (countryList[i]["name_en"] == 'India') {
               selectedCountryCode = language == 'zh'?countryList[i]["name"]:countryList[i]["name_en"];
               selectedCountryID = countryList[i]['id'];
               phoneController.text = countryList[i]["country_code"];
@@ -101,6 +107,22 @@ class _FreeRegisterState extends State<FreeRegister>
     }
   }
 
+  select(_selectedLocationCN) async{
+     var contentData = await Request().getWithoutRequest(Config().url + "api/global/country_list", context);
+     cid = contentData['data'].toList();
+      fcid = cid.singleWhere((element) =>
+          element['name'] ==_selectedLocationCN, orElse: () {
+            return null;
+        });  
+  }
+  selectEN(_selectedLocationEN) async{
+     var contentData = await Request().getWithoutRequest(Config().url + "api/global/country_list", context);
+     cid = contentData['data'].toList();
+      fcid = cid.singleWhere((element) =>
+          element['name_en'] ==_selectedLocationEN, orElse: () {
+            return null;
+        });
+  }
   @override
   void initState() {
     super.initState();
@@ -170,10 +192,60 @@ class _FreeRegisterState extends State<FreeRegister>
                             ),
                             SizedBox(height: 20.0),
                            
+                            
                             countryList == null?Container():
-                            _inputBankCountry(),
-                            SizedBox(height: 20.0),
-                           
+                            language == 'zh'?
+                            Container(
+                              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              color: Colors.white,
+                              border: Border.all()),
+                              child: DropdownButton(
+                                isExpanded: true,
+                                hint: Text(MyLocalizations.of(context).getData('country')),
+                                value: _selectedLocationCN,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _selectedLocationCN = newValue;
+                                    select(_selectedLocationCN);
+                                  });
+                                },
+                                items: countryName.map((location) {
+                                  return DropdownMenuItem(
+                                    child: new Text(location),
+                                    value: location,
+                                  );
+                                }).toList(),
+                              ),
+                            ):
+                            Container(
+                              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              color: Colors.white,
+                              border: Border.all()),
+                              child: DropdownButton(
+                                isExpanded: true,
+                                hint: Text(MyLocalizations.of(context).getData('country')),
+                                value: _selectedLocationEN,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _selectedLocationEN = newValue;
+                                    selectEN(_selectedLocationEN);
+                                  });
+                                },
+                                items: countryName.map((location) {
+                                  return DropdownMenuItem(
+                                    child: new Text(location),
+                                    value: location,
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                           SizedBox(height: 20.0),
                             
                             _inputUsername(),
                             SizedBox(height: 20.0),
@@ -285,42 +357,42 @@ class _FreeRegisterState extends State<FreeRegister>
     );
   }
 
- _inputBankCountry() {
-    return Row(
-      children: [
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 1,
-                  ),
-                  borderRadius: BorderRadius.circular(8),
-                ),
+//  _inputBankCountry() {
+//     return Row(
+//       children: [
+//             Expanded(
+//               child: Container(
+//                 decoration: BoxDecoration(
+//                   color: Colors.white,
+//                   border: Border.all(
+//                     color: Colors.grey,
+//                     width: 1,
+//                   ),
+//                   borderRadius: BorderRadius.circular(8),
+//                 ),
                
-                child: CountryPicker(
-                  name: selectedCountryCode,
-                  lists: countryName,
-                  iconColor: Colors.white,
-                  backgroundColor: Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide(width: 1, color: Colors.white),
-                  onChange: (index) {
-                       setState(() {
-                      selectedCountryCode = language =='zh'?countryList[index]["name"]:countryList[index]["name_en"];
-                      selectedCountryID = countryList[index]["id"];
-                      phoneController.text = countryList[index]["country_code"];
-                      print(selectedPhoneCode);
-                    });
+//                 child: CountryPicker(
+//                   name: selectedCountryCode,
+//                   lists: countryName,
+//                   iconColor: Colors.white,
+//                   backgroundColor: Colors.white,
+//                   borderRadius: BorderRadius.circular(5),
+//                   borderSide: BorderSide(width: 1, color: Colors.white),
+//                   onChange: (index) {
+//                        setState(() {
+//                       selectedCountryCode = language =='zh'?countryList[index]["name"]:countryList[index]["name_en"];
+//                       selectedCountryID = countryList[index]["id"];
+//                       phoneController.text = countryList[index]["country_code"];
+//                       print(selectedPhoneCode);
+//                     });
                    
-                  },
-                ),
-              ),
-            ),
-      ],
-    );
-  }
+//                   },
+//                 ),
+//               ),
+//             ),
+//       ],
+//     );
+//   }
 
    _inputUsername() {
     return Row(
@@ -649,7 +721,7 @@ class _FreeRegisterState extends State<FreeRegister>
       var tmap = new Map<String, dynamic>();
       if (mounted)
         setState(() {
-          tmap['country_id'] = selectedCountryID.toString();
+          tmap['country_id'] = fcid['id'].toString();
           tmap['username'] = usernameController.text;
           tmap['email'] = usernameController.text;
           // tmap['contact_number'] = mobileController.text;

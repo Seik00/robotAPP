@@ -377,12 +377,12 @@ class _ServicesState extends State<Services>
                       children: <Widget>[
                     FlatButton(
                       onPressed: () => {
-                        _timer.cancel(),
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => GuideList(widget.url)),
-                        ).then((value) => startLoop())
+                        // _timer.cancel(),
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //       builder: (context) => GuideList(widget.url)),
+                        // ).then((value) => startLoop())
                       },
                      padding: EdgeInsets.all(8.0),
                       child: Column(
@@ -494,7 +494,7 @@ class _ServicesState extends State<Services>
                             SizedBox(height: 3,),
                             pip==null?
                             Text('0.000',style: TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.bold),):
-                            Text(pip,style: TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.bold),),
+                            Text(pip.toString(),style: TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.bold),),
                             
                         ],),
                       ),
@@ -514,7 +514,7 @@ class _ServicesState extends State<Services>
                       children: [
                         Icon(Icons.announcement,color: Colors.white,),
                         SizedBox(width:5),
-                        Expanded(child: Text(newsList==null?'':newsList[0]['title'],style: TextStyle(color:Colors.white),overflow: TextOverflow.ellipsis,))
+                        Expanded(child: Text(newsList ==null || newsList.isEmpty?'':newsList[0]['title'],style: TextStyle(color:Colors.white),overflow: TextOverflow.ellipsis,))
                       ],
                     ),
                   ),
@@ -522,6 +522,7 @@ class _ServicesState extends State<Services>
                 GestureDetector(
                    onTap: () {
                     setState(() {
+                      _timer.cancel();
                       Navigator.push(
                         context,
                         MaterialPageRoute(

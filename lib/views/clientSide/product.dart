@@ -66,9 +66,9 @@ class _ProductState extends State<Product>
                       },
                       child: Container(
                         decoration: BoxDecoration(  
-                          color: Color(0xff595c64), 
+                          color: Color(0xffEA5F75), 
                           borderRadius: BorderRadius.circular(15),
-                          border: Border.all(color: Color(0xff595c64),width: 3,)
+                          border: Border.all(color: Color(0xffEA5F75),width: 3,)
                         ),
                         margin: EdgeInsets.only(top:50,bottom:10,left: 10,right: 10),
                         padding: EdgeInsets.all(10),

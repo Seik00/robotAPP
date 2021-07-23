@@ -41,6 +41,8 @@ class _SettingsState extends State<Settings>
   var language;
   var package;
   var robotList =[];
+  var expiredDate;
+  var pin;
 
    getLanguage() async{
       final prefs = await SharedPreferences.getInstance();
@@ -56,6 +58,8 @@ class _SettingsState extends State<Settings>
         setState(() {
           print(contentData);
           username = contentData['username'];
+          pin = contentData['pin'];
+          expiredDate = contentData['expired_date'];
           id = contentData['id'];
           packageName = contentData['package']['package_name'];
           packageNameEn = contentData['package']['package_name_en'];
@@ -126,6 +130,18 @@ class _SettingsState extends State<Settings>
                                     ),
                                     Container(
                                       child: Text(username==null?'':username,style: TextStyle(color:Colors.white),),
+                                    ),
+                                    if(pin == 0)
+                                    Container(
+                                      child: Text(expiredDate==null?'': MyLocalizations.of(context).getData('robot_date')+': ' + MyLocalizations.of(context).getData('not_active') ,style: TextStyle(color:Color(0xffa2c6ff)),),
+                                    ),
+                                    if(pin == 1)
+                                    Container(
+                                      child: Text(expiredDate==null?'': MyLocalizations.of(context).getData('robot_date')+': ' +expiredDate,style: TextStyle(color:Color(0xffa2c6ff)),),
+                                    ),
+                                    if(pin == 2)
+                                    Container(
+                                      child: Text(expiredDate==null?'': MyLocalizations.of(context).getData('robot_date')+': ' +MyLocalizations.of(context).getData('permanent'),style: TextStyle(color:Color(0xffa2c6ff)),),
                                     ),
                                     Container(
                                       child: 

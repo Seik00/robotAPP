@@ -39,6 +39,7 @@ class _NewsListState extends State<NewsList> {
 
       var body = {
         'language': language.toString(),
+        'news_type': 1.toString(),
       };
       var uri = Uri.https(Config().url2, 'api/news/news-list', body);
 

@@ -408,6 +408,8 @@
     "transfer_minimum_10": "*The transfer amount is more than 10 USDT",
     "transfer_minimum_10_gas_free": "*Each USDT will be charged a discount of 2 USDT, no gas fee",
     "login": "Login",
+    "robot_date": "Robot Deadline",
+    "permanent": "Permanent",
 
     "not_enough_point_2": "Not Enough Gas",
     "robot_exist": "Robot Exist",

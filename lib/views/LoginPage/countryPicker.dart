@@ -168,7 +168,7 @@ class CountryPickerState extends State<CountryPicker>
                   decoration: BoxDecoration(
                     borderRadius: _borderRadius,
                   ),
-                  child: (widget.lists.length>4)?MediaQuery.removePadding(
+                  child: (widget.lists.length>13)?MediaQuery.removePadding(
                     context: context,
                     removeTop: true,
                     child: ListView.builder(

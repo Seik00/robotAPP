@@ -38,6 +38,8 @@ class _ForgetPasswordOtpState extends State<ForgetPasswordOtp>
   var selectedPhoneCode;
   var countryList;
   List<String> countryName = [];
+  String _selectedLocationCN; 
+  String _selectedLocationEN;
 
   bool _validate = false;
   bool visible = true;
@@ -49,6 +51,8 @@ class _ForgetPasswordOtpState extends State<ForgetPasswordOtp>
   Timer _timer;
   int _start = 60;
   var _firstPress = true ;
+  var cid;
+  var fcid;
 
   void startTimer() {
     const oneSec = const Duration(seconds: 1);
@@ -95,6 +99,22 @@ class _ForgetPasswordOtpState extends State<ForgetPasswordOtp>
         }
       }
     }
+  }
+  select(_selectedLocationCN) async{
+     var contentData = await Request().getWithoutRequest(Config().url + "api/global/country_list", context);
+     cid = contentData['data'].toList();
+      fcid = cid.singleWhere((element) =>
+          element['name'] ==_selectedLocationCN, orElse: () {
+            return null;
+        });  
+  }
+  selectEN(_selectedLocationEN) async{
+     var contentData = await Request().getWithoutRequest(Config().url + "api/global/country_list", context);
+     cid = contentData['data'].toList();
+      fcid = cid.singleWhere((element) =>
+          element['name_en'] ==_selectedLocationEN, orElse: () {
+            return null;
+        });
   }
 
   @override
@@ -166,13 +186,63 @@ class _ForgetPasswordOtpState extends State<ForgetPasswordOtp>
                             ),
                             SizedBox(height: 20.0),
                            
-                           _inputEmail(),
-                            SizedBox(height: 20.0),
+                           
 
                             countryList == null?Container():
-                            _inputBankCountry(),
+                            language == 'zh'?
+                            Container(
+                              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              color: Colors.white,
+                              border: Border.all()),
+                              child: DropdownButton(
+                                isExpanded: true,
+                                hint: Text(MyLocalizations.of(context).getData('country')),
+                                value: _selectedLocationCN,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _selectedLocationCN = newValue;
+                                    select(_selectedLocationCN);
+                                  });
+                                },
+                                items: countryName.map((location) {
+                                  return DropdownMenuItem(
+                                    child: new Text(location),
+                                    value: location,
+                                  );
+                                }).toList(),
+                              ),
+                            ):
+                            Container(
+                              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              color: Colors.white,
+                              border: Border.all()),
+                              child: DropdownButton(
+                                isExpanded: true,
+                                hint: Text(MyLocalizations.of(context).getData('country')),
+                                value: _selectedLocationEN,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _selectedLocationEN = newValue;
+                                    selectEN(_selectedLocationEN);
+                                  });
+                                },
+                                items: countryName.map((location) {
+                                  return DropdownMenuItem(
+                                    child: new Text(location),
+                                    value: location,
+                                  );
+                                }).toList(),
+                              ),
+                            ),
                             SizedBox(height: 20.0),
-                            
+                            _inputEmail(),
+                            SizedBox(height: 20.0),
                             // _inputMobile(),
                             //   SizedBox(height: 20.0),
 
@@ -373,7 +443,7 @@ class _ForgetPasswordOtpState extends State<ForgetPasswordOtp>
                 }else{
                    setState(() {
                     var tmap = new Map<String, dynamic>();
-                    tmap['country_id'] = selectedCountryID.toString();
+                    tmap['country_id'] = fcid['id'].toString();
                     tmap['email'] = emailController.text;
                     tmap['lang'] = language;
                     //tmap['contact_number'] = mobileController.text;
@@ -405,7 +475,6 @@ class _ForgetPasswordOtpState extends State<ForgetPasswordOtp>
 
   _inputVcode() {
     return new Container(
-      width: 250,
       child: TextFormField(
         controller: vcodeController,
         validator: validateInput,
