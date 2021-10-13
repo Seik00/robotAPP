@@ -12,6 +12,7 @@ import 'package:robot/views/SystemSetting/invitation.dart';
 import 'package:robot/views/SystemSetting/myTeam.dart';
 import 'package:robot/views/SystemSetting/securityCenter.dart';
 import 'package:robot/views/SystemSetting/serviceCenter.dart';
+import 'package:robot/views/SystemSetting/teamRevenue.dart';
 import 'package:robot/views/Trade/tradeLog.dart';
 import '../../vendor/i18n/localizations.dart' show MyLocalizations;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -195,6 +196,67 @@ class _SettingsState extends State<Settings>
                                               child: Text(
                                                 MyLocalizations.of(context)
                                                     .getData('my_team'),
+                                                style: TextStyle(color: Colors.white,fontSize: 16),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          children: <Widget>[
+                                            Container(
+                                                child: (Icon(
+                                                    Icons.chevron_right_outlined,color: Colors.white,))),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => TeamRevenue(widget.url,widget.onChangeLanguage)),
+                                  );
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(6),
+                                  decoration: new BoxDecoration(
+                                    color: Color(0xff595c64),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  margin: EdgeInsets.only(left:10,right:10,bottom: 10),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Container(
+                                        padding: EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Color(0xff212630),
+                                        ),
+                                        margin: EdgeInsets.only(right: 20),
+                                        child: Image(
+                                          image: AssetImage(
+                                              "lib/assets/img/my_team.png"),
+                                          height: 30,
+                                          width: 40,
+                                        )
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Container(
+                                              child: Text(
+                                                MyLocalizations.of(context)
+                                                    .getData('team_revenue'),
                                                 style: TextStyle(color: Colors.white,fontSize: 16),
                                               ),
                                             ),

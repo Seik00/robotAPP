@@ -163,7 +163,7 @@ class _DepositState extends State<Deposit> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Address ng Wallet',style: TextStyle(fontSize: 16),),
+                          Text(MyLocalizations.of(context).getData('deposit_address'),style: TextStyle(fontSize: 16),),
                           SizedBox(height: 5,),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

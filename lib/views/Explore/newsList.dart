@@ -122,7 +122,7 @@ class _NewsListState extends State<NewsList> {
                           margin: EdgeInsets.only(bottom:15),
                           child: ConstrainedBox(
                               constraints: new BoxConstraints(
-                                minHeight: MediaQuery.of(context).size.height/8,
+                                minHeight: MediaQuery.of(context).size.height/10,
                                 minWidth: MediaQuery.of(context).size.width,
                                 maxWidth: MediaQuery.of(context).size.width,
                               ),

@@ -56,6 +56,36 @@ class _TradeDetailsState extends State<TradeDetails> {
   bool _hasBeenPressed3 = false;
   bool _hasBeenPressed4 = false;
 
+  List<dynamic> buyBackList = [
+    {
+      'percentage': 100,
+      'times': 1,
+    },
+    {
+      'percentage': 100,
+      'times': 1,
+    },
+    {
+      'percentage': 100,
+      'times': 1,
+    },
+    {
+      'percentage': 100,
+      'times': 1,
+    },
+    {
+      'percentage': 100,
+      'times': 1,
+    },
+    {
+      'percentage': 100,
+      'times': 1,
+    },
+  ];
+
+  bool isSwitched = false;
+  var doublePosition;
+
   void _handleRadioValueChange(int value) {
     setState(() {
       _radioValue = value;
@@ -86,6 +116,8 @@ class _TradeDetailsState extends State<TradeDetails> {
     coverRateController.text = widget.coverRate.toString();
     coverCallbackRateController.text = widget.coverCallbackRate.toString();
     _radioValue = widget.recycleStatus;
+
+    // buyBackList = jsonDecode(widget.customCover);
   }
 
   getRequest() async {
@@ -275,6 +307,29 @@ class _TradeDetailsState extends State<TradeDetails> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
+                                
+                                SizedBox(height: 20.0),
+                                
+                                Container(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(MyLocalizations.of(context).getData('first_double'),style: TextStyle(color: Colors.white),),
+                                      Switch(
+                                        value: isSwitched,
+                                        onChanged: (value){
+                                          setState(() {
+                                            isSwitched=value;
+                                            print(isSwitched);
+                                          });
+                                        },
+                                        inactiveTrackColor: Colors.grey,
+                                        activeTrackColor: Colors.green,
+                                        activeColor: Colors.greenAccent,
+                                      ),
+                                    ],
+                                  ),
+                                ),
                                 SizedBox(height: 20.0),
 
                                 Container(
@@ -360,6 +415,39 @@ class _TradeDetailsState extends State<TradeDetails> {
                                 SizedBox(height: 5),
                                 _inputcoverRate(),
                                 SizedBox(height: 20.0),
+
+                                // GestureDetector(
+                                    //   onTap: (){
+                                    //       Navigator.push(
+                                    //       context,
+                                    //       MaterialPageRoute(builder: (context) => MarginConfig(buyBackList)),
+                                    //     ).then((value) {
+                                    //       setState(() {
+                                    //         buyBackList = value;
+                                    //       });
+                                    //     });
+
+                                    //   },
+                                    //   child: Container(
+                                    //     padding: EdgeInsets.symmetric(vertical: 13, horizontal: 13),
+                                    //     decoration: BoxDecoration(
+                                    //       border: Border.all(
+                                    //         color: Colors.grey[800], width: 1
+                                    //       ),
+                                    //       borderRadius: BorderRadius.circular(10)
+                                    //     ),
+                                    //     width: double.infinity,
+                                    //     child: Row(
+                                    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //       children: [
+                                    //         Text(MyLocalizations.of(context)
+                                    //             .getData('margin_call_setting')),
+                                    //         Icon(Icons.chevron_right)
+                                    //       ],
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                    // SizedBox(height: 25.0),
 
                                 Container(
                                   child: Text(MyLocalizations.of(context).getData('buy_in_callback'),style: TextStyle(color: Colors.white)),
@@ -717,6 +805,14 @@ class _TradeDetailsState extends State<TradeDetails> {
             else if(_value == 3){
               finalValue = 'point2&point3';
             }
+
+            if(isSwitched == false){
+              doublePosition = '0';
+            }
+            else if(isSwitched == true){
+              doublePosition = '1';
+            }
+            tmap['first_order_double'] = doublePosition;
             tmap['gas_type'] = finalValue;
             tmap['robot_id'] = widget.robotId.toString();
             tmap['first_order_value'] = firstOrderValueController.text.toString();
@@ -726,6 +822,10 @@ class _TradeDetailsState extends State<TradeDetails> {
             tmap['cover_rate'] = coverRateController.text.toString();
             tmap['cover_callback_rate'] = coverCallbackRateController.text.toString();
             tmap['recycle_status'] = _radioValue.toString();
+            for (var i = 0; i < buyBackList.length; i++) {
+              tmap['custom_cover['+i.toString()+'][percentage]'] = buyBackList[i]['percentage'].toString();
+              tmap['custom_cover['+i.toString()+'][times]'] = buyBackList[i]['times'].toString();
+            }
           });
          postData(tmap);
         }

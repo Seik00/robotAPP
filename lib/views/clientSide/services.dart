@@ -11,6 +11,7 @@ import 'package:robot/views/Explore/apiBinding.dart';
 import 'package:robot/views/Explore/buyPin.dart';
 import 'package:robot/views/Explore/guideList.dart';
 import 'package:robot/views/Explore/newsList.dart';
+import 'package:robot/views/Explore/noticCenter.dart';
 import 'package:robot/views/Explore/pinCenter.dart';
 import 'package:robot/views/Explore/revenue.dart';
 import 'package:robot/views/SystemSetting/invitation.dart';
@@ -377,12 +378,12 @@ class _ServicesState extends State<Services>
                       children: <Widget>[
                     FlatButton(
                       onPressed: () => {
-                        // _timer.cancel(),
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //       builder: (context) => GuideList(widget.url)),
-                        // ).then((value) => startLoop())
+                        _timer.cancel(),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GuideList()),
+                        ).then((value) => startLoop())
                       },
                      padding: EdgeInsets.all(8.0),
                       child: Column(
@@ -512,7 +513,18 @@ class _ServicesState extends State<Services>
                     border: Border.all(color:Colors.white54)),
                     child: Row(
                       children: [
-                        Icon(Icons.announcement,color: Colors.white,),
+                        Container(
+                          padding: EdgeInsets.only(right:5),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              right: BorderSide(
+                              color: Colors.white,
+                              width: 1,
+                              ),
+                            ),
+                          ),
+                          child: Text(MyLocalizations.of(context).getData('annouce_center'),style: TextStyle(color: Colors.white,fontSize: 11),),
+                        ),
                         SizedBox(width:5),
                         Expanded(child: Text(newsList ==null || newsList.isEmpty?'':newsList[0]['title'],style: TextStyle(color:Colors.white),overflow: TextOverflow.ellipsis,))
                       ],
@@ -526,7 +538,7 @@ class _ServicesState extends State<Services>
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => NewsList(widget.url)),
+                            builder: (context) => NoticCenter(widget.url)),
                       ).then((value) => startLoop());
                     });
                   },

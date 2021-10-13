@@ -85,6 +85,7 @@ class _LoginPageState extends State<LoginPage>
   String firebaseToken = " ";
   var osType;
   String _deviceId = 'Unknown';
+  String versionName;
 
 
   setUpMsg()async{   
@@ -437,6 +438,7 @@ class _LoginPageState extends State<LoginPage>
   void initState() {
     super.initState();
     initialiseLanguage();
+    package();
     lookUp();
     setUpMsg();
     _requestPermissions();
@@ -470,6 +472,15 @@ class _LoginPageState extends State<LoginPage>
       print(firebaseToken);
       print('-----');
     });
+  }
+
+  package() async{
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    setState(() {      
+      versionName = packageInfo.version;
+      print(versionName);
+    });
+    
   }
 
   @override
@@ -516,6 +527,11 @@ class _LoginPageState extends State<LoginPage>
                           //           )
                           //       )),
                           // ),
+                          SizedBox(height: 40,),
+                          Container(
+                            alignment: Alignment.bottomRight,
+                            child:(Text('v '+versionName.toString(),style: TextStyle(color: Colors.white),))
+                          ),
                           Spacer(flex: 1,),
                           Center(
                             child: Container(

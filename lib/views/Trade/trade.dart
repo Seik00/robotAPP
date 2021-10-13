@@ -31,6 +31,7 @@ class Trade extends StatefulWidget {
 
 class _TradeState extends State<Trade> {
   final TextEditingController secPwdController = new TextEditingController();
+  final TextEditingController pauseSecPwdController = new TextEditingController();
   var type = '';
   
   var robotList;
@@ -44,8 +45,9 @@ class _TradeState extends State<Trade> {
   var language;
   var result;
   var robotNewId;
-
+  bool _clicked = true; 
   bool isLoading = true;
+  var status;
 
   @override
   void initState() {
@@ -125,7 +127,7 @@ class _TradeState extends State<Trade> {
       var uri = Uri.https(Config().url2, 'api/trade-robot/robotInfo', body);
    
      
-      print(count);
+      
       try {
         var response = await http.get(uri, headers: {
           'Authorization': 'Bearer $token'
@@ -136,9 +138,12 @@ class _TradeState extends State<Trade> {
             if (this.mounted) {
               setState(() {
               robotList = contentData['data'];  
+              print(robotList);
               if(robotList!=null){
                   revenue = double.parse(robotList['revenue']);
                   price = double.parse(robotList['price']);
+                  status = robotList['status'];
+                  print(status);
 
                   if(robotList['values_str']==null){
                      setState(() {
@@ -222,6 +227,7 @@ class _TradeState extends State<Trade> {
   }
 
   Future<void> play() async {
+    bool isPosting =  false;
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -283,15 +289,33 @@ class _TradeState extends State<Trade> {
                   ),
                   TextButton(
                     child: Text(MyLocalizations.of(context).getData('start_up'),style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
-                    onPressed: () {
-                      setState(() {
-                        var tmap = new Map<String, dynamic>();
-                        tmap['robot_id'] = robotList['id'].toString();
-                        tmap['sec_password'] = secPwdController.text;
-                        playRobot(tmap);
-                      });
+                    // onPressed: _clicked ? false :() {
+                    //   setState(() {
+                    //     var tmap = new Map<String, dynamic>();
+                    //     tmap['robot_id'] = robotList['id'].toString();
+                    //     tmap['sec_password'] = secPwdController.text;
+                    //     playRobot(tmap);
+                    //     _clicked=false;
+                    //   });
                      
-                    },
+                    // },
+
+                     onPressed: (!isPosting)?() async{
+                      setState(() {
+                        isPosting = true;
+                      });
+
+                      var tmap = new Map<String, dynamic>();
+                      tmap['robot_id'] = robotList['id'].toString();
+                      tmap['sec_password'] = secPwdController.text;
+                      print(tmap);
+                      var tmpValue = await playRobot(tmap);
+
+                      setState(() {
+                        isPosting = tmpValue;
+                      });
+                    }:null,
+
                   ),
                 ],
               ),
@@ -304,6 +328,7 @@ class _TradeState extends State<Trade> {
 
   
   Future<void> pause() async {
+    bool isPosting= false;
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -321,9 +346,35 @@ class _TradeState extends State<Trade> {
             content: Container(
               child: Wrap(
                 children: <Widget>[
-                  Container(
-                    alignment: Alignment.center,
-                    child: Text(MyLocalizations.of(context).getData('pause_robot')),
+                  Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        child: Text(MyLocalizations.of(context).getData('pause_robot')),
+                      ),
+                      SizedBox(height: 10,),
+                      TextField(
+                        onChanged: (value) {
+                          setState(() {
+                          });
+                        },
+                        obscureText: true,
+                        controller: pauseSecPwdController,
+                        decoration: InputDecoration(
+                          filled: true,
+                          hintText: MyLocalizations.of(context).getData('sec_password'),
+                            contentPadding: const EdgeInsets.all(14.0),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(color: Colors.black, width: 1),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                               borderSide: BorderSide(color: Colors.black, width: 1),
+                            ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -339,14 +390,32 @@ class _TradeState extends State<Trade> {
                   ),
                   TextButton(
                     child: Text(MyLocalizations.of(context).getData('pause'),style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
-                    onPressed: () {
-                      setState(() {
-                        var tmap = new Map<String, dynamic>();
-                        tmap['robot_id'] = robotList['id'].toString();
-                        pauseRobot(tmap);
-                      });
+                    // onPressed: () {
+                    //   setState(() {
+                    //     var tmap = new Map<String, dynamic>();
+                    //     tmap['robot_id'] = robotList['id'].toString();
+                    //     tmap['sec_password'] = pauseSecPwdController.text;
+                    //     pauseRobot(tmap);
+                    //   });
                      
-                    },
+                    // },
+
+                     onPressed: (!isPosting)?() async{
+                            setState(() {
+                              isPosting = true;
+                            });
+                            
+                            var tmap = new Map<String, dynamic>();
+                            tmap['robot_id'] = robotList['id'].toString();
+                            tmap['sec_password'] = pauseSecPwdController.text;
+                            print(tmap);
+                            var tmpValue = await pauseRobot(tmap);
+
+                            setState(() {
+                              isPosting = tmpValue;
+                            });
+                            
+                          }:null
                   ),
                 ],
               ),
@@ -380,12 +449,11 @@ class _TradeState extends State<Trade> {
                       widget.url, widget.onChangeLanguage)));
             })
           ..show();
-    } else {
-     
-    }
+    } 
     setState(() {
-     
+      secPwdController.text = '';
     });
+    return false;
   }
 
    pauseRobot(bodyData) async {
@@ -411,12 +479,11 @@ class _TradeState extends State<Trade> {
                       widget.url, widget.onChangeLanguage)));
             })
           ..show();
-    } else {
-     
-    }
+    }  
     setState(() {
-     
+      pauseSecPwdController.text = '';
     });
+    return false;
   }
 
    _sendToServer() {
@@ -424,6 +491,7 @@ class _TradeState extends State<Trade> {
       if (mounted)
         setState(() {
           tmap['robot_id'] = widget.robotID.toString();
+          tmap['sec_password'] = secPwdController.text;
         
         });
          postData(tmap);
@@ -435,6 +503,7 @@ class _TradeState extends State<Trade> {
       if (mounted)
         setState(() {
           tmap['robot_id'] = widget.robotID.toString();
+          tmap['sec_password'] = secPwdController.text;
         
         });
          postData2(tmap);
@@ -521,9 +590,39 @@ class _TradeState extends State<Trade> {
             content: Container(
               child: Wrap(
                 children: <Widget>[
-                  Container(
-                    alignment: Alignment.center,
-                    child: Text(MyLocalizations.of(context).getData('clean_robot')),
+                  Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        child: Text(MyLocalizations.of(context).getData('clean_robot')),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      TextField(
+                        onChanged: (value) {
+                          setState(() {});
+                        },
+                        obscureText: true,
+                        controller: secPwdController,
+                        decoration: InputDecoration(
+                          filled: true,
+                          hintText: MyLocalizations.of(context)
+                              .getData('sec_password'),
+                          contentPadding: const EdgeInsets.all(14.0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                BorderSide(color: Colors.black, width: 1),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            borderSide:
+                                BorderSide(color: Colors.black, width: 1),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -543,6 +642,7 @@ class _TradeState extends State<Trade> {
                       setState(() {
                         var tmap = new Map<String, dynamic>();
                         tmap['robot_id'] = widget.robotID.toString();
+                        tmap['sec_password'] = secPwdController.text;
                         deleteRobot(tmap);
                       });
                      
@@ -599,19 +699,49 @@ class _TradeState extends State<Trade> {
             backgroundColor: Color(0xfffFDE323),
             title: Center(
               child: Icon(
-              Icons.looks_one, 
+              Icons.play_arrow, 
               color: Colors.black,
               size: 60,
             ),),
             content: Container(
               child: Wrap(
                 children: <Widget>[
-                  Container(
-                    alignment: Alignment.center,
-                    child: 
-                    robotList['recycle_status'] == 0?
-                    Text(MyLocalizations.of(context).getData('chg_to_circular')):
-                    Text(MyLocalizations.of(context).getData('chg_to_one_shot')),
+                  Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        child: 
+                        robotList['recycle_status'] == 0?
+                        Text(MyLocalizations.of(context).getData('chg_to_circular')):
+                        Text(MyLocalizations.of(context).getData('chg_to_one_shot')),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      TextField(
+                        onChanged: (value) {
+                          setState(() {});
+                        },
+                        obscureText: true,
+                        controller: secPwdController,
+                        decoration: InputDecoration(
+                          filled: true,
+                          hintText: MyLocalizations.of(context)
+                              .getData('sec_password'),
+                          contentPadding: const EdgeInsets.all(14.0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                BorderSide(color: Colors.black, width: 1),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            borderSide:
+                                BorderSide(color: Colors.black, width: 1),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -654,17 +784,47 @@ class _TradeState extends State<Trade> {
             backgroundColor: Color(0xfffFDE323),
             title: Center(
               child: Icon(
-              Icons.looks_one, 
+              Icons.play_arrow, 
               color: Colors.black,
               size: 60,
             ),),
             content: Container(
               child: Wrap(
                 children: <Widget>[
-                  Container(
-                    alignment: Alignment.center,
-                    child: 
-                    Text(MyLocalizations.of(context).getData('repleshiment')),
+                  Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        child: 
+                        Text(MyLocalizations.of(context).getData('repleshiment')),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      TextField(
+                        onChanged: (value) {
+                          setState(() {});
+                        },
+                        obscureText: true,
+                        controller: secPwdController,
+                        decoration: InputDecoration(
+                          filled: true,
+                          hintText: MyLocalizations.of(context)
+                              .getData('sec_password'),
+                          contentPadding: const EdgeInsets.all(14.0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                                BorderSide(color: Colors.black, width: 1),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            borderSide:
+                                BorderSide(color: Colors.black, width: 1),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -791,15 +951,46 @@ class _TradeState extends State<Trade> {
                                 width: 30,
                               )
                             ),
-                              Expanded(
-                                child: Container(
-                                  child: Text(
-                                    widget.marketName,
-                                    style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
-                                  ),
+                              Container(
+                                child: Text(
+                                  widget.marketName,
+                                  style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
                                 ),
                               ),
-                              
+                              SizedBox(width:5),
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    SizedBox(width:10),
+                                    if(robotList!=null)
+                                    Container(
+                                      height: 10,
+                                      width: 10,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color:(robotList['status']==1)?Colors.greenAccent:Colors.red,
+                                      ),
+                                    ),
+                                    SizedBox(width:5),
+                                    if(robotList!=null)
+                                    if(robotList['status']==0&& robotList['values_str']!=null)
+                                    (robotList['values_str'].length != 0)?Text(
+                                      MyLocalizations.of(context).getData('stopped'),
+                                      style: TextStyle(color: Colors.red, fontSize: 14, fontWeight: FontWeight.w600),
+                                    ):Text(
+                                      MyLocalizations.of(context).getData('paused'),
+                                      style: TextStyle(color: Colors.red, fontSize: 14),
+                                    ),
+                                    if(robotList!=null)
+                                    if(robotList['status']==0&& robotList['values_str']==null)
+                                    Text(
+                                      MyLocalizations.of(context).getData('paused'),
+                                      style: TextStyle(color: Colors.red, fontSize: 14),
+                                    ),
+                                    SizedBox(width:15),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                           SizedBox(height: 20,),
@@ -1070,8 +1261,7 @@ class _TradeState extends State<Trade> {
                           child: Column(children: <Widget>[
                           FlatButton(
                             onPressed: () => {
-                              info2==null || robotList['is_restock'] ==1 ? Container():
-                              reStock(),
+                              info2==null || robotList['is_restock'] ==1 ? Container():reStock(),
                             },
                             child: Column(
                               // Replace with a Row for horizontal icon + text
@@ -1130,7 +1320,7 @@ class _TradeState extends State<Trade> {
                       children: [
                         Text(MyLocalizations.of(context).getData('message'),style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 13)),
                         SizedBox(height: 6,),
-                        Text(robotList==null?'':language=='zh'?robotList['show_msg']:language=='ms'?robotList['show_msg_vn']:robotList['show_msg_en'],style:TextStyle(color: Colors.white,fontSize: 13)),
+                        Text(robotList==null?'':language=='zh'?robotList['show_msg'].toString():language=='ms'?robotList['show_msg_vn'].toString():robotList['show_msg_en'].toString(),style:TextStyle(color: Colors.white,fontSize: 13)),
                       ],
                     ),
                   ),

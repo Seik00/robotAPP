@@ -11,6 +11,7 @@ import 'package:robot/views/SystemSetting/countryChanges.dart';
 import 'package:robot/views/SystemSetting/userBank.dart';
 import 'package:robot/views/otpPage.dart/changePasswordOtp.dart';
 import 'package:robot/views/otpPage.dart/changeSecPasswordOtp.dart';
+import 'package:robot/views/otpPage.dart/forgetSecPwd.dart';
 import '../../vendor/i18n/localizations.dart' show MyLocalizations;
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -281,7 +282,7 @@ class _SecurityCenterState extends State<SecurityCenter>
                                         "lib/assets/img/me_team.png"),
                                     height: 30,
                                     width: 40,
-                                  )
+                                  ),
                                 ),
                                 Expanded(
                                   child: Column(
@@ -369,7 +370,63 @@ class _SecurityCenterState extends State<SecurityCenter>
                             ),
                           ),
                         ),
-                     
+                        Divider(
+                          height: 1,
+                          color: Colors.grey[400],
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => ForgetSecPwdOtp(widget.url)),
+                            );
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(bottom: 10, top: 10),
+                            child: Row(
+                              children: <Widget>[
+                                Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                  margin: EdgeInsets.only(right: 20),
+                                  padding: EdgeInsets.all(10),
+                                  child: Image(
+                                    image: AssetImage(
+                                        "lib/assets/img/me_team.png"),
+                                    height: 30,
+                                    width: 40,
+                                  )
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Container(
+                                        child: Text(
+                                          MyLocalizations.of(context)
+                                              .getData('forget_sec_pwd'),
+                                          style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      Container(
+                                          child: (Icon(
+                                              Icons.chevron_right_outlined,color: Colors.white,))),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ])),
             ),
           ],

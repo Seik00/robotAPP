@@ -7,15 +7,16 @@ import 'package:robot/vendor/i18n/localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:robot/views/Explore/guideDetails.dart';
 import 'package:robot/views/Explore/newsDetails.dart';
+import 'package:robot/views/Explore/xinwenDetails.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-class GuideList extends StatefulWidget {
+class XinwenList extends StatefulWidget {
   @override
-  _GuideListState createState() => _GuideListState();
+  _XinwenListState createState() => _XinwenListState();
 }
 
-class _GuideListState extends State<GuideList> {
+class _XinwenListState extends State<XinwenList> {
   var dataList = [];
   var language;
   var annouceNumber;
@@ -26,6 +27,9 @@ class _GuideListState extends State<GuideList> {
     if (language == 'zh') {
       language = 'cn';
     }
+    if (language == 'vi') {
+      language = 'vn';
+    }
     print(language);
   }
 
@@ -35,7 +39,7 @@ class _GuideListState extends State<GuideList> {
 
     var body = {
       'language': language.toString(),
-      'news_type': 4.toString(),
+      'news_type': 5.toString(),
     };
     var uri = Uri.https(Config().url2, 'api/news/news-list', body);
 
@@ -103,7 +107,7 @@ class _GuideListState extends State<GuideList> {
                         ),
                         Container(
                             child: Text(
-                          MyLocalizations.of(context).getData('user_guide'),
+                          MyLocalizations.of(context).getData('xinwen'),
                           style: TextStyle(
                               color: Theme.of(context).backgroundColor,
                               fontSize: 20,
@@ -166,7 +170,7 @@ class _GuideListState extends State<GuideList> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          GuideDetails(
+                                                          XinwenDetails(
                                                               dataList[index]
                                                                   ['id'],
                                                               dataList[index]

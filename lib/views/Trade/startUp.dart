@@ -51,6 +51,9 @@ class _StartUpState extends State<StartUp> {
   int _value = 1;
   var finalValue;
 
+  bool isSwitched = false;
+  var doublePosition;
+
   void _handleRadioValueChange(int value) {
     setState(() {
       _radioValue = value;
@@ -296,7 +299,27 @@ class _StartUpState extends State<StartUp> {
                               children: <Widget>[
                                
                                 SizedBox(height: 20.0),
-                                
+                                Container(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(MyLocalizations.of(context).getData('first_double'),style: TextStyle(color: Colors.white),),
+                                      Switch(
+                                        value: isSwitched,
+                                        onChanged: (value){
+                                          setState(() {
+                                            isSwitched=value;
+                                            print(isSwitched);
+                                          });
+                                        },
+                                        inactiveTrackColor: Colors.grey,
+                                        activeTrackColor: Colors.green,
+                                        activeColor: Colors.greenAccent,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: 20.0),
                                 Container(
                                   child: Text(MyLocalizations.of(context).getData('gas'),style: TextStyle(color: Colors.white),),
                                 ),
@@ -719,7 +742,7 @@ class _StartUpState extends State<StartUp> {
   String validateFirst(String value) {
     if (value.isEmpty) {
       return MyLocalizations.of(context).getData('value_fill_in');
-    } else if (double.parse(value) < 10) {
+    } else if (double.parse(value) < 15) {
       return MyLocalizations.of(context).getData('minimum_10');
     }
     return null;
@@ -786,6 +809,14 @@ class _StartUpState extends State<StartUp> {
             else if(_value == 3){
               finalValue = 'point2&point3';
             }
+
+            if(isSwitched == false){
+              doublePosition = '0';
+            }
+            else if(isSwitched == true){
+              doublePosition = '1';
+            }
+            tmap['first_order_double'] = doublePosition;
             tmap['gas_type'] = finalValue;
             tmap['platform'] = widget.type;
             tmap['market_id'] = widget.marketId.toString();

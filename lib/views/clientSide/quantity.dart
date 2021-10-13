@@ -8,6 +8,7 @@ import 'package:robot/API/request.dart';
 import 'package:robot/vendor/i18n/localizations.dart';
 import 'package:robot/views/Trade/trade.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:http/http.dart' as http;
 
 class Quantity extends StatefulWidget {
@@ -145,7 +146,7 @@ class _QuantityState extends State<Quantity>
   }
 
 
-   initializeData() async {
+  initializeData() async {
       final prefs = await SharedPreferences.getInstance();
       var token = prefs.getString('token');
 
@@ -160,7 +161,6 @@ class _QuantityState extends State<Quantity>
         'Authorization': 'Bearer $token'
       }).timeout(new Duration(seconds: 10));
       var contentData = json.decode(response.body);
-
       try {
         if(contentData != null){
           if (contentData['code'] == 0) {
@@ -368,6 +368,17 @@ class _QuantityState extends State<Quantity>
                                       children: [
                                         Row(
                                           children: [
+                                             CachedNetworkImage(
+                                              placeholder: (context, url) => Container(height: 30, width: 30, child: CircularProgressIndicator()),
+                                              errorWidget: (context, url, error) =>Image.network(
+                                                    Config().url+'images/coin/USDT.png',
+                                                    height: 30, width: 30,
+                                                  ),
+                                              imageUrl:
+                                                  Config().url+'images/coin/'+dataList[index]['market_name'].split('/')[0]+'.png',
+                                                  height: 30, width: 30,
+                                            ),
+                                            SizedBox(width:10),
                                             Container(
                                               child: Text(dataList[index]['market_name'],style: TextStyle(color: Colors.white),),),
                                             SizedBox(width:10),
@@ -399,6 +410,36 @@ class _QuantityState extends State<Quantity>
                                                 MyLocalizations.of(context).getData('single'):
                                                 MyLocalizations.of(context).getData('cycle')
                                                 ,style: TextStyle(color: Colors.black,fontSize: 12),
+                                              ),
+                                            ),
+
+                                            if(dataList[index]['robot_info']!=null)
+                                            Container(
+                                              height: 10,
+                                              width: 10,
+                                              margin: EdgeInsets.only(left: 10),
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color:(dataList[index]['robot_info']['status']==1)?Colors.greenAccent:Colors.red,
+                                              ),
+                                            ),
+                                            if(dataList[index]['robot_info']!=null)
+                                            if(dataList[index]['robot_info']['status']==0 && dataList[index]['robot_info']['values_str']!=null)
+                                            Container(
+                                              margin: EdgeInsets.only(left: 5),
+                                              child: Text(
+                                                dataList[index]['robot_info']['values_str'].length != 0?
+                                                MyLocalizations.of(context).getData('stopped'):MyLocalizations.of(context).getData('paused')
+                                                ,style: TextStyle(color: Colors.red,fontSize: 12, fontWeight: FontWeight.w600),
+                                              ),
+                                            ),
+                                            if(dataList[index]['robot_info']!=null)
+                                            if(dataList[index]['robot_info']['status']==0 && dataList[index]['robot_info']['values_str']==null)
+                                            Container(
+                                              margin: EdgeInsets.only(left: 5),
+                                              child: Text(
+                                                MyLocalizations.of(context).getData('paused')
+                                                ,style: TextStyle(color: Colors.red,fontSize: 12, fontWeight: FontWeight.w600),
                                               ),
                                             ),
                                           ],
@@ -549,6 +590,17 @@ class _QuantityState extends State<Quantity>
                                       children: [
                                        Row(
                                           children: [
+                                            CachedNetworkImage(
+                                              placeholder: (context, url) => Container(height: 30, width: 30, child: CircularProgressIndicator()),
+                                              errorWidget: (context, url, error) =>Image.network(
+                                                    'https://atozbot.live/images/coin/USDT.png',
+                                                    height: 30, width: 30,
+                                                  ),
+                                              imageUrl:
+                                                  'https://atozbot.live/images/coin/'+dataList2[index]['market_name'].split('/')[0]+'.png',
+                                                  height: 30, width: 30,
+                                            ),
+                                            SizedBox(width:10),
                                             Container(
                                               child: Text(dataList2[index]['market_name'],style: TextStyle(color: Colors.white),),),
                                             SizedBox(width:10),
@@ -580,6 +632,36 @@ class _QuantityState extends State<Quantity>
                                                 MyLocalizations.of(context).getData('single'):
                                                 MyLocalizations.of(context).getData('cycle')
                                                 ,style: TextStyle(color: Colors.black,fontSize: 12),
+                                              ),
+                                            ),
+
+                                            if(dataList2[index]['robot_info']!=null)
+                                            Container(
+                                              height: 10,
+                                              width: 10,
+                                              margin: EdgeInsets.only(left: 10),
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color:(dataList2[index]['robot_info']['status']==1)?Colors.greenAccent:Colors.red,
+                                              ),
+                                            ),
+                                            if(dataList2[index]['robot_info']!=null)
+                                            if(dataList2[index]['robot_info']['status']==0 && dataList2[index]['robot_info']['values_str']!=null)
+                                            Container(
+                                              margin: EdgeInsets.only(left: 5),
+                                              child: Text(
+                                                dataList2[index]['robot_info']['values_str'].length != 0?
+                                                MyLocalizations.of(context).getData('stopped'):MyLocalizations.of(context).getData('paused')
+                                                ,style: TextStyle(color: Colors.red,fontSize: 12, fontWeight: FontWeight.w600),
+                                              ),
+                                            ),
+                                            if(dataList2[index]['robot_info']!=null)
+                                            if(dataList2[index]['robot_info']['status']==0 && dataList2[index]['robot_info']['values_str']==null)
+                                            Container(
+                                              margin: EdgeInsets.only(left: 5),
+                                              child: Text(
+                                                MyLocalizations.of(context).getData('paused')
+                                                ,style: TextStyle(color: Colors.red,fontSize: 12, fontWeight: FontWeight.w600),
                                               ),
                                             ),
                                           ],

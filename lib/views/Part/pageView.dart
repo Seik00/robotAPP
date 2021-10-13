@@ -31,6 +31,22 @@ class TopViewing extends StatefulWidget {
   _TopViewingState createState() => _TopViewingState();
 }
 
+class Style extends StyleHook {
+  @override
+  double get activeIconSize => 40;
+
+  @override
+  double get activeIconMargin => 10;
+
+  @override
+  double get iconSize => 20;
+
+  @override
+  TextStyle textStyle(Color color) {
+    return TextStyle(fontSize: 12, color: color,fontWeight: FontWeight.normal);
+  }
+}
+
 class _TopViewingState extends State<TopViewing>
     with SingleTickerProviderStateMixin {
   var _selectedPage = 0;
@@ -71,6 +87,7 @@ class _TopViewingState extends State<TopViewing>
     lookUp();
     checkUsername();
     getLanguage();
+    checkStoppedRobot();
     _firebaseMessaging.getToken().then((String deviceToken) {
       assert(deviceToken != null);
       setState(() {
@@ -107,6 +124,50 @@ class _TopViewingState extends State<TopViewing>
       }
      
     }
+  }
+  
+  checkStoppedRobot() async {
+    var contentData = await Request().getRequest(Config().url + "api/trade-robot/stoped-robot", context);
+    print(contentData);
+    print('----=======-----');
+    if(contentData != null){
+      if (contentData['code'] == 0) {
+        if(contentData['data'].length>0){
+           _showStopedInfo();
+        }else{
+           
+        }
+      }
+    }
+  }
+
+  Future<void> _showStopedInfo() async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return WillPopScope(
+          onWillPop: () async => true,
+          child: AlertDialog(
+            backgroundColor: Color(0xfffFDE323),
+            title: Center(
+              child: Icon(
+              Icons.stop_screen_share_outlined, 
+              color: Colors.black,
+              size: 60,
+            ),),
+            content: Container(
+              child: Wrap(
+                children: <Widget>[
+                  Center(
+                    child: Text(MyLocalizations.of(context).getData('detect_robot_stopped'),style: TextStyle(color: Colors.black),textAlign: TextAlign.center,),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
    _sendToServer() {
@@ -225,7 +286,7 @@ class _TopViewingState extends State<TopViewing>
 
   } 
 
-   getRequest() async {
+  getRequest() async {
     var contentData = await Request().getRequest(Config().url + "api/member/get-member-info", context);
     if(contentData != null){
       if (mounted) {
@@ -274,7 +335,6 @@ class _TopViewingState extends State<TopViewing>
         Services(widget.url, widget.onChangeLanguage),
         Quantity(widget.url, widget.onChangeLanguage),
         Product(widget.url, widget.onChangeLanguage),
-        //Market(widget.url, widget.onChangeLanguage),
         MyAssests(widget.url,widget.onChangeLanguage),
         Settings(widget.url, widget.onChangeLanguage),
       ];
@@ -284,7 +344,6 @@ class _TopViewingState extends State<TopViewing>
           TabItem(icon: Icons.home,title:MyLocalizations.of(context).getData('home')),
           TabItem(icon: Icons.compare_arrows,title: MyLocalizations.of(context).getData('quantitative')),
           TabItem(icon: Icons.construction_rounded,title: MyLocalizations.of(context).getData('derivatives')),
-          //TabItem(icon: Icons.language,title:'Market'),
           TabItem(icon: Icons.monetization_on,title:MyLocalizations.of(context).getData('my_assets')),
           TabItem(icon: Icons.person,title:MyLocalizations.of(context).getData('me')),
         ];
@@ -293,7 +352,9 @@ class _TopViewingState extends State<TopViewing>
     return Scaffold(
       // resizeToAvoidBottomPadding: true,
       body: _pageOptions[_selectedPage],
-      bottomNavigationBar:ConvexAppBar(
+      bottomNavigationBar:StyleProvider(
+        style: Style(),
+        child:  ConvexAppBar(
         backgroundColor: Color(0xff474c56),
         activeColor: Color(0xfffbf615),
         color: Colors.white,
@@ -306,6 +367,7 @@ class _TopViewingState extends State<TopViewing>
           });
         } 
       ),
+      )
     );
   }
 }
